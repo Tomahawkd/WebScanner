@@ -49,7 +49,6 @@ public class HTMLBaseFontElementImpl extends HTMLAbstractUIElement implements
 		try {
 			return Integer.parseInt(this.getAttribute("size"));
 		} catch (Exception thrown) {
-			this.warn("getSize(): Unable to parse size attribute in " + this + ".", thrown);
 			return 0;
 		}
 	}

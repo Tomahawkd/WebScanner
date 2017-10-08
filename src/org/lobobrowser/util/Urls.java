@@ -29,10 +29,8 @@ import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class Urls {
-	private static final Logger logger = Logger.getLogger(Urls.class.getName());
 	public static final DateFormat PATTERN_RFC1123 = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
 
 	static {
@@ -109,9 +107,7 @@ public class Urls {
 						try {
 							seconds = Integer.parseInt(value);
 							return new Long(baseTime + seconds * 1000);
-						} catch (NumberFormatException nfe) {
-							logger.warning("getExpiration(): Bad Cache-Control max-age value: " + value);
-							// ignore
+						} catch (NumberFormatException ignored) {
 						}
 					}
 				}
@@ -129,8 +125,7 @@ public class Urls {
 				try {
 					seconds = Integer.parseInt(expires);
 					return new Long(baseTime + seconds * 1000);
-				} catch (NumberFormatException nfe) {
-					logger.warning("getExpiration(): Bad Expires header value: " + expires);
+				} catch (NumberFormatException ignored) {
 				}
 			}
 		}

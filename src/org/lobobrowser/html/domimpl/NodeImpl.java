@@ -34,13 +34,10 @@ import org.w3c.dom.*;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class NodeImpl implements Node, ModelNode {
 	private static final NodeImpl[] EMPTY_ARRAY = new NodeImpl[0];
 	private static final RenderState INVALID_RENDER_STATE = new StyleSheetRenderState(null);
-	protected static final Logger logger = Logger.getLogger(NodeImpl.class.getName());
 	protected UINode uiNode;
 	protected ArrayList nodeList;
 	protected volatile Document document;
@@ -269,7 +266,6 @@ public abstract class NodeImpl implements Node, ModelNode {
 			try {
 				return nl == null ? null : (Node) nl.get(index);
 			} catch (IndexOutOfBoundsException iob) {
-				this.warn("getChildAtIndex(): Bad index=" + index + " for node=" + this + ".");
 				return null;
 			}
 		}
@@ -969,14 +965,6 @@ public abstract class NodeImpl implements Node, ModelNode {
 
 	public final ModelNode getParentModelNode() {
 		return (ModelNode) this.parentNode;
-	}
-
-	public void warn(String message, Throwable err) {
-		logger.log(Level.WARNING, message, err);
-	}
-
-	public void warn(String message) {
-		logger.log(Level.WARNING, message);
 	}
 
 	public void informSizeInvalid() {

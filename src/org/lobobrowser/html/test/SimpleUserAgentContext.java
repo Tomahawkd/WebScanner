@@ -5,8 +5,6 @@ import org.lobobrowser.html.UserAgentContext;
 
 import java.security.Policy;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Simple implementation of {@link org.lobobrowser.html.UserAgentContext}.
@@ -16,7 +14,6 @@ import java.util.logging.Logger;
  * Its setters can be called to modify certain user agent defaults.
  */
 public class SimpleUserAgentContext implements UserAgentContext {
-	private static final Logger logger = Logger.getLogger(SimpleUserAgentContext.class.getName());
 	private static final Set mediaNames = new HashSet();
 
 	static {
@@ -218,7 +215,6 @@ public class SimpleUserAgentContext implements UserAgentContext {
 		try {
 			results = handler.get(url.toURI(), new HashMap());
 		} catch (Exception err) {
-			logger.log(Level.WARNING, "getCookie()", err);
 			return "";
 		}
 		if (results == null) {
@@ -260,8 +256,7 @@ public class SimpleUserAgentContext implements UserAgentContext {
 		headers.put("Set-Cookie", Collections.singletonList(cookieSpec));
 		try {
 			handler.put(url.toURI(), headers);
-		} catch (Exception err) {
-			logger.log(Level.WARNING, "setCookie()", err);
+		} catch (Exception ignored) {
 		}
 	}
 

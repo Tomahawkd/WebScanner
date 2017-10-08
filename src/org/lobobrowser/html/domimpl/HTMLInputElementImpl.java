@@ -181,9 +181,6 @@ public class HTMLInputElementImpl extends HTMLBaseInputElement implements
 			} else if ("file".equals(type)) {
 				java.io.File file = this.getFileValue();
 				if (file == null) {
-					if (logger.isLoggable(Level.INFO)) {
-						logger.info("getFormInputs(): File input named " + name + " has null file.");
-					}
 					return null;
 				} else {
 					return new FormInput[]{new FormInput(name, file)};

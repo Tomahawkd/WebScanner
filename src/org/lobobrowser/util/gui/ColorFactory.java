@@ -27,14 +27,11 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author J. H. S.
  */
 public class ColorFactory {
-	private static final Logger logger = Logger.getLogger(ColorFactory.class.getName());
 	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private static ColorFactory instance;
 	private final Map colorMap = new HashMap(256);
@@ -276,9 +273,6 @@ public class ColorFactory {
 					}
 					color = new Color(rgba[0], rgba[1], rgba[2], rgba[3]);
 				} else {
-					if (logger.isLoggable(Level.INFO)) {
-						logger.warning("getColor(): Color spec [" + normalSpec + "] unknown.");
-					}
 					return Color.RED;
 				}
 				colorMap.put(normalSpec, color);

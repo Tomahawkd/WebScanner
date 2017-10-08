@@ -37,8 +37,6 @@ public interface ModelNode {
 
 	public java.net.URL getFullURL(String spec) throws MalformedURLException;
 
-	public void warn(String message, Throwable err);
-
 	public boolean isEqualOrDescendentOf(ModelNode otherNode);
 
 	public ModelNode getParentModelNode();

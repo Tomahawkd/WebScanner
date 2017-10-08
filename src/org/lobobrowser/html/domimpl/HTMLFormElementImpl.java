@@ -193,8 +193,7 @@ public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
 			try {
 				URL url = this.getFullURL(href);
 				context.submitForm(this.getMethod(), url, this.getTarget(), this.getEnctype(), fia);
-			} catch (MalformedURLException mfu) {
-				this.warn("submit()", mfu);
+			} catch (MalformedURLException ignored) {
 			}
 		}
 	}

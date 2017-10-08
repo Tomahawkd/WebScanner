@@ -40,11 +40,8 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class CSSUtilities {
-	private static final Logger logger = Logger.getLogger(CSSUtilities.class.getName());
 
 	private CSSUtilities() {
 	}
@@ -98,8 +95,7 @@ public class CSSUtilities {
 			try {
 				request.open("GET", scriptURI, false);
 				request.send(null);
-			} catch (java.io.IOException thrown) {
-				logger.log(Level.WARNING, "parse()", thrown);
+			} catch (java.io.IOException ignored) {
 			}
 
 		} else {
@@ -109,8 +105,7 @@ public class CSSUtilities {
 					try {
 						request.open("GET", scriptURI, false);
 						request.send(null);
-					} catch (java.io.IOException thrown) {
-						logger.log(Level.WARNING, "parse()", thrown);
+					} catch (java.io.IOException ignored) {
 					}
 					return null;
 				}
@@ -118,7 +113,6 @@ public class CSSUtilities {
 		}
 		int status = request.getStatus();
 		if (status != 200 && status != 0) {
-			logger.warning("Unable to parse CSS. URI=[" + scriptURI + "]. Response status was " + status + ".");
 			return null;
 		}
 
@@ -134,7 +128,6 @@ public class CSSUtilities {
 				sheet.setOwnerNode(ownerNode);
 				return sheet;
 			} catch (Throwable err) {
-				logger.log(Level.WARNING, "Unable to parse CSS. URI=[" + scriptURI + "].", err);
 				return null;
 			}
 		} else {

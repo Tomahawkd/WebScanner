@@ -44,8 +44,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Represents a HTML block in a rendered document, typically

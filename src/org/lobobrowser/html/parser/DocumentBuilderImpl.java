@@ -40,7 +40,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.logging.Logger;
 
 /**
  * The <code>DocumentBuilderImpl</code> class is an HTML
@@ -50,7 +49,6 @@ import java.util.logging.Logger;
  * @author J. H. S.
  */
 public class DocumentBuilderImpl extends DocumentBuilder {
-	private static final Logger logger = Logger.getLogger(DocumentBuilderImpl.class.getName());
 	private EntityResolver resolver;
 	private ErrorHandler errorHandler;
 	private final UserAgentContext bcontext;
@@ -125,9 +123,6 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 			charset = "US-ASCII";
 		}
 		String uri = is.getSystemId();
-		if (uri == null) {
-			logger.warning("parse(): InputSource has no SystemId (URI); document item URLs will not be resolvable.");
-		}
 		WritableLineReader wis;
 		Reader reader = is.getCharacterStream();
 		if (reader != null) {

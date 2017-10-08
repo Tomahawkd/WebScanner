@@ -29,14 +29,11 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The <code>HtmlParser</code> class is an HTML DOM parser.
@@ -46,10 +43,8 @@ import java.util.logging.Logger;
  * implementation is preferred.
  */
 public class HtmlParser {
-	private static final Logger logger = Logger.getLogger(HtmlParser.class.getName());
 	private final Document document;
 	private final UserAgentContext ucontext;
-	private final ErrorHandler errorHandler;
 	private final String publicId;
 	private final String systemId;
 
@@ -423,15 +418,13 @@ public class HtmlParser {
 	 * Constructs a <code>HtmlParser</code>.
 	 *
 	 * @param document     A W3C Document instance.
-	 * @param errorHandler The error handler.
 	 * @param publicId     The public ID of the document.
 	 * @param systemId     The system ID of the document.
 	 * @deprecated UserAgentContext should be passed in constructor.
 	 */
-	public HtmlParser(Document document, ErrorHandler errorHandler, String publicId, String systemId) {
+	public HtmlParser(Document document, String publicId, String systemId) {
 		this.ucontext = null;
 		this.document = document;
-		this.errorHandler = errorHandler;
 		this.publicId = publicId;
 		this.systemId = systemId;
 	}
@@ -441,14 +434,12 @@ public class HtmlParser {
 	 *
 	 * @param ucontext     The user agent context.
 	 * @param document     An W3C Document instance.
-	 * @param errorHandler The error handler.
 	 * @param publicId     The public ID of the document.
 	 * @param systemId     The system ID of the document.
 	 */
-	public HtmlParser(UserAgentContext ucontext, Document document, ErrorHandler errorHandler, String publicId, String systemId) {
+	public HtmlParser(UserAgentContext ucontext, Document document, String publicId, String systemId) {
 		this.ucontext = ucontext;
 		this.document = document;
-		this.errorHandler = errorHandler;
 		this.publicId = publicId;
 		this.systemId = systemId;
 	}
@@ -462,7 +453,6 @@ public class HtmlParser {
 	public HtmlParser(UserAgentContext ucontext, Document document) {
 		this.ucontext = ucontext;
 		this.document = document;
-		this.errorHandler = null;
 		this.publicId = null;
 		this.systemId = null;
 	}
@@ -577,7 +567,6 @@ public class HtmlParser {
 	 *
 	 * @param parent
 	 * @param reader
-	 * @param stopAtTagUC If this tag is encountered, the method throws StopException.
 	 * @param stopTags    If tags in this set are encountered, the method throws StopException.
 	 * @return
 	 * @throws IOException
@@ -596,10 +585,7 @@ public class HtmlParser {
 			Node textNode = doc.createTextNode(decText.toString());
 			try {
 				parent.appendChild(textNode);
-			} catch (DOMException de) {
-				if (parent.getNodeType() != Node.DOCUMENT_NODE || de.code != DOMException.HIERARCHY_REQUEST_ERR) {
-					logger.log(Level.WARNING, "parseToken(): Unable to append child to " + parent + ".", de);
-				}
+			} catch (DOMException ignored) {
 			}
 		}
 		if (this.justReadTagBegin) {
@@ -933,10 +919,7 @@ public class HtmlParser {
 					Node textNode = doc.createTextNode(ltText.toString());
 					try {
 						parent.appendChild(textNode);
-					} catch (DOMException de) {
-						if (parent.getNodeType() != Node.DOCUMENT_NODE || de.code != DOMException.HIERARCHY_REQUEST_ERR) {
-							logger.log(Level.WARNING, "parseToken(): Unable to append child to " + parent + ".", de);
-						}
+					} catch (DOMException ignored) {
 					}
 					if (chInt == -1) {
 						cont = false;
@@ -959,10 +942,7 @@ public class HtmlParser {
 					Node textNode = doc.createTextNode(ltText.toString());
 					try {
 						parent.appendChild(textNode);
-					} catch (DOMException de) {
-						if (parent.getNodeType() != Node.DOCUMENT_NODE || de.code != DOMException.HIERARCHY_REQUEST_ERR) {
-							logger.log(Level.WARNING, "parseToken(): Unable to append child to " + parent + ".", de);
-						}
+					} catch (DOMException ignored) {
 					}
 					if (chInt == -1) {
 						cont = false;
@@ -1329,7 +1309,6 @@ public class HtmlParser {
 						decimal = Integer.parseInt(number);
 					}
 				} catch (NumberFormatException nfe) {
-					logger.log(Level.WARNING, "entityDecode()", nfe);
 					decimal = 0;
 				}
 				sb.append((char) decimal);

@@ -58,8 +58,7 @@ public class HTMLHeadingElementImpl extends HTMLAbstractUIElement implements
 				case 6:
 					return 8.0f;
 			}
-		} catch (Exception thrown) {
-			this.warn("getHeadingFontSize(): Bad heading tag: " + this.getTagName(), thrown);
+		} catch (Exception ignored) {
 		}
 		return 14.0f;
 	}
@@ -82,8 +81,7 @@ public class HTMLHeadingElementImpl extends HTMLAbstractUIElement implements
 				case 6:
 					return "7.55pt";
 			}
-		} catch (Exception thrown) {
-			this.warn("getHeadingFontSizeText(): Bad heading tag: " + this.getTagName(), thrown);
+		} catch (Exception ignored) {
 		}
 		return "14px";
 	}

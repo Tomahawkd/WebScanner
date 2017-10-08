@@ -27,14 +27,11 @@ import org.lobobrowser.html.domimpl.ModelNode;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author J. H. S.
  */
 abstract class BaseBoundableRenderable extends BaseRenderable implements BoundableRenderable {
-	protected static final Logger logger = Logger.getLogger(BaseBoundableRenderable.class.getName());
 	protected static final Color SELECTION_COLOR = Color.BLUE;
 	protected static final Color SELECTION_XOR = Color.LIGHT_GRAY;
 
@@ -197,10 +194,6 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 		} else if (parent == null) {
 			// Has to be top RBlock.
 			this.container.relayout();
-		} else {
-			if (logger.isLoggable(Level.INFO)) {
-				logger.warning("relayout(): Don't know how to relayout " + this + ", parent being " + parent);
-			}
 		}
 	}
 
@@ -277,10 +270,6 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 		} else if (parent == null) {
 			// Has to be top RBlock.
 			this.container.repaint(x, y, width, height);
-		} else {
-			if (logger.isLoggable(Level.INFO)) {
-				logger.warning("repaint(): Don't know how to repaint " + this + ", parent being " + parent);
-			}
 		}
 	}
 

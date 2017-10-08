@@ -35,11 +35,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class AbstractCSS2Properties implements CSS2Properties {
-	private static final Logger logger = Logger.getLogger(AbstractCSS2Properties.class.getName());
 
 	public static final String FLOAT = "float";
 	public static final String AZIMUTH = "azimuth";
@@ -1692,9 +1689,6 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 							java.net.URL styleUrl = Urls.createURL(null, baseHref);
 							finalValue = "url(" + HtmlValues.quoteAndEscape(Urls.createURL(styleUrl, tentativeUri).toExternalForm()) + ")";
 						} catch (java.net.MalformedURLException mfu) {
-							logger.log(Level.WARNING, "Unable to create URL for URI=["
-											+ tentativeUri + "], with base=[" + baseHref + "].",
-									mfu);
 							finalValue = newValue;
 						}
 					}

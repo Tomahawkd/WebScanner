@@ -170,10 +170,7 @@ public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements
 							}
 
 
-						} catch (MalformedURLException mfe) {
-							this.warn("Will not parse CSS. URI=[" + this.getHref() + "] with BaseURI=[" + doc.getBaseURI() + "] does not appear to be a valid URI.");
 						} catch (Throwable err) {
-							this.warn("Unable to parse CSS. URI=[" + this.getHref() + "].", err);
 						}
 					}
 				}
@@ -190,8 +187,7 @@ public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements
 				try {
 					URL url = this.getFullURL(href);
 					return url == null ? null : url.toExternalForm();
-				} catch (MalformedURLException mfu) {
-					this.warn("Malformed URI: [" + href + "].", mfu);
+				} catch (MalformedURLException ignored) {
 				}
 			}
 		}
@@ -209,13 +205,10 @@ public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements
 				String target = this.getTarget();
 				try {
 					URL url = this.getFullURL(href);
-					if (url == null) {
-						this.warn("Unable to resolve URI: [" + href + "].");
-					} else {
+					if (url != null) {
 						rcontext.linkClicked(this, url, target);
 					}
-				} catch (MalformedURLException mfu) {
-					this.warn("Malformed URI: [" + href + "].", mfu);
+				} catch (MalformedURLException ignored) {
 				}
 			}
 		}

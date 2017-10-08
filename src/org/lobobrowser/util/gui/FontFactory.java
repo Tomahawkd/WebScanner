@@ -28,15 +28,11 @@ import org.lobobrowser.util.Objects;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author J. H. S.
  */
 public class FontFactory {
-	private static final Logger logger = Logger.getLogger(FontFactory.class.getName());
-	private static final boolean loggableFine = logger.isLoggable(Level.FINE);
 	private static final FontFactory instance = new FontFactory();
 	private final Set fontFamilies = new HashSet(40);
 	private final Map fontMap = new HashMap(50);
@@ -45,15 +41,11 @@ public class FontFactory {
 	 *
 	 */
 	private FontFactory() {
-		boolean liflag = loggableFine;
 		String[] ffns = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 		Set fontFamilies = this.fontFamilies;
 		synchronized (this) {
 			for (int i = 0; i < ffns.length; i++) {
 				String ffn = ffns[i];
-				if (liflag) {
-					logger.fine("FontFactory(): family=" + ffn);
-				}
 				fontFamilies.add(ffn.toLowerCase());
 			}
 		}

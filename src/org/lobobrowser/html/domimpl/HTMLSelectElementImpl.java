@@ -70,8 +70,7 @@ public class HTMLSelectElementImpl extends HTMLBaseInputElement implements
 	public void remove(int index) {
 		try {
 			this.removeChild(this.getOptions().item(index));
-		} catch (DOMException de) {
-			this.warn("remove(): Unable to remove option at index " + index + ".", de);
+		} catch (DOMException ignored) {
 		}
 	}
 

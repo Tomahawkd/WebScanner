@@ -464,7 +464,6 @@ abstract class BaseElementRenderable extends BaseRCollection implements RElement
 				try {
 					this.zIndex = Integer.parseInt(zIndex);
 				} catch (NumberFormatException err) {
-					logger.log(Level.WARNING, "Unable to parse z-index [" + zIndex + "] in element " + this.modelNode + ".", err);
 					this.zIndex = 0;
 				}
 			} else {
@@ -506,8 +505,7 @@ abstract class BaseElementRenderable extends BaseRCollection implements RElement
 				try {
 					request.open("GET", imageURL);
 					request.send(null);
-				} catch (java.io.IOException thrown) {
-					logger.log(Level.WARNING, "loadBackgroundImage()", thrown);
+				} catch (java.io.IOException ignored) {
 				}
 			} else {
 				AccessController.doPrivileged(new PrivilegedAction() {
@@ -517,8 +515,7 @@ abstract class BaseElementRenderable extends BaseRCollection implements RElement
 						try {
 							request.open("GET", imageURL);
 							request.send(null);
-						} catch (java.io.IOException thrown) {
-							logger.log(Level.WARNING, "loadBackgroundImage()", thrown);
+						} catch (java.io.IOException ignored) {
 						}
 						return null;
 					}

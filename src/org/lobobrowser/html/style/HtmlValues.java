@@ -30,13 +30,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class HtmlValues {
 	public static final Map SYSTEM_FONTS = new HashMap();
-	private static final Logger logger = Logger.getLogger(HtmlValues.class
-			.getName());
 	public static final float DEFAULT_FONT_SIZE = 14.0f;
 	public static final int DEFAULT_FONT_SIZE_INT = (int) DEFAULT_FONT_SIZE;
 	public static final Float DEFAULT_FONT_SIZE_BOX = new Float(DEFAULT_FONT_SIZE);
@@ -126,7 +122,6 @@ public class HtmlValues {
 	}
 
 	/**
-	 * Populates {@link BorderInfo.insets}.
 	 *
 	 * @param binfo         A BorderInfo with its styles already populated.
 	 * @param cssProperties The CSS properties object.
@@ -634,9 +629,6 @@ public class HtmlValues {
 		try {
 			return Urls.createURL(null, tentativeUri);
 		} catch (java.net.MalformedURLException mfu) {
-			logger.log(Level.WARNING, "Unable to create URL for URI=["
-							+ tentativeUri + "].",
-					mfu);
 			return null;
 		}
 	}

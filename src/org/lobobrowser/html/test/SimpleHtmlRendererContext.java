@@ -41,8 +41,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The <code>SimpleHtmlRendererContext</code> class implements
@@ -55,7 +53,6 @@ import java.util.logging.Logger;
  * renderer context is to invoke {@link #navigate(String)}.
  */
 public class SimpleHtmlRendererContext implements HtmlRendererContext {
-	private static final Logger logger = Logger.getLogger(SimpleHtmlRendererContext.class.getName());
 
 	private final HtmlPanel htmlPanel;
 	private final HtmlRendererContext parentRcontext;
@@ -136,8 +133,7 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 			try {
 				URL url = new URL(document.getDocumentURI());
 				this.navigate(url, null);
-			} catch (java.net.MalformedURLException throwable) {
-				this.warn("reload(): Malformed URL", throwable);
+			} catch (java.net.MalformedURLException ignored) {
 			}
 		}
 	}
@@ -211,9 +207,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 			HTMLCollection frames = topCtx.getFrames();
 			if (frames != null) {
 				org.w3c.dom.Node frame = frames.namedItem(target);
-				if (logger.isLoggable(Level.INFO)) {
-					logger.info("submitForm(): Frame matching target=" + target + " is " + frame);
-				}
 				if (frame instanceof FrameNode) {
 					BrowserFrame bframe = ((FrameNode) frame).getBrowserFrame();
 					if (bframe == null) {
@@ -240,8 +233,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 				return;
 			} else if ("_this".equals(actualTarget)) {
 				// fall through
-			} else {
-				logger.warning("submitForm(): Link target unrecognized: " + actualTarget);
 			}
 		}
 
@@ -251,20 +242,14 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 				public void run() {
 					try {
 						SimpleHtmlRendererContext.this.submitFormSync(method, action, target, enctype, formInputs);
-					} catch (Exception err) {
-						SimpleHtmlRendererContext.this.error(
-								"navigate(): Error loading or parsing request.",
-								err);
+					} catch (Exception ignored) {
 					}
 				}
 			}.start();
 		} else {
 			try {
 				SimpleHtmlRendererContext.this.submitFormSync(method, action, target, enctype, formInputs);
-			} catch (Exception err) {
-				SimpleHtmlRendererContext.this.error(
-						"navigate(): Error loading or parsing request.",
-						err);
+			} catch (Exception ignored) {
 			}
 		}
 	}
@@ -324,8 +309,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 					newUrlBuffer.append(encName);
 					newUrlBuffer.append("=");
 					newUrlBuffer.append(encValue);
-				} else {
-					logger.warning("postData(): Ignoring non-textual parameter " + name + " for GET.");
 				}
 			}
 			resolvedURL = new java.net.URL(newUrlBuffer.toString());
@@ -340,14 +323,10 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 				String refText = ref == null || ref.length() == 0 ? "" : "#" + ref;
 				urlForLoading = new URL(resolvedURL.getProtocol(), action.getHost(), action.getPort(), action.getPath() + refText);
 			} catch (java.net.MalformedURLException throwable) {
-				this.warn("malformed", throwable);
 				urlForLoading = action;
 			}
 		} else {
 			urlForLoading = resolvedURL;
-		}
-		if (logger.isLoggable(Level.INFO)) {
-			logger.info("process(): Loading URI=[" + urlForLoading + "].");
 		}
 		long time0 = System.currentTimeMillis();
 		// Using potentially different URL for loading.
@@ -383,8 +362,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 							bufOut.write(encName.getBytes("UTF-8"));
 							bufOut.write((byte) '=');
 							bufOut.write(encValue.getBytes("UTF-8"));
-						} else {
-							logger.warning("postData(): Ignoring non-textual parameter " + name + " for POST.");
 						}
 					}
 				}
@@ -403,16 +380,10 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 			if (connection instanceof HttpURLConnection) {
 				HttpURLConnection hc = (HttpURLConnection) connection;
 				int responseCode = hc.getResponseCode();
-				if (logger.isLoggable(Level.INFO)) {
-					logger.info("process(): HTTP response code: "
-							+ responseCode);
-				}
 				if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP || responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
 					String location = hc.getHeaderField("Location");
-					if (location == null) {
-						logger.warning("No Location header in redirect from " + action + ".");
-					} else {
-						java.net.URL href;
+					if (location != null) {
+						URL href;
 						href = Urls.createURL(action, location);
 						SimpleHtmlRendererContext.this.navigate(href, target);
 					}
@@ -434,11 +405,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 				// Now start loading.
 				document.load();
 				long time2 = System.currentTimeMillis();
-				if (logger.isLoggable(Level.INFO)) {
-					logger.info("Parsed URI=[" + urlForLoading + "]: Parse elapsed: "
-							+ (time2 - time1) + " ms. Connection elapsed: "
-							+ (time1 - time0) + " ms.");
-				}
 				String ref = urlForLoading.getRef();
 				if (ref != null && ref.length() != 0) {
 					panel.scrollToElement(ref);
@@ -497,7 +463,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * and should be overridden.
 	 */
 	public void blur() {
-		this.warn("back(): Not overridden");
 	}
 
 	/**
@@ -505,7 +470,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * and should be overridden.
 	 */
 	public void close() {
-		this.warn("close(): Not overridden");
 	}
 
 	/**
@@ -521,7 +485,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * and should be overridden.
 	 */
 	public void focus() {
-		this.warn("focus(): Not overridden");
 	}
 
 	/**
@@ -548,7 +511,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * @param replace        Whether an existing window with the same name should be replaced.
 	 */
 	public HtmlRendererContext open(java.net.URL url, String windowName, String windowFeatures, boolean replace) {
-		this.warn("open(): Not overridden");
 		return null;
 	}
 
@@ -582,7 +544,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * This implementation returns false and should be overridden.
 	 */
 	public boolean isClosed() {
-		this.warn("isClosed(): Not overridden");
 		return false;
 	}
 
@@ -591,7 +552,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * This implementation returns false and should be overridden.
 	 */
 	public String getDefaultStatus() {
-		this.warn("getDefaultStatus(): Not overridden");
 		return "";
 	}
 
@@ -601,7 +561,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * implementation returns a blank string, so it should be overridden.
 	 */
 	public String getName() {
-		this.warn("getName(): Not overridden");
 		return "";
 	}
 
@@ -620,12 +579,10 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	}
 
 	public String getStatus() {
-		this.warn("getStatus(): Not overridden");
 		return "";
 	}
 
 	public void setStatus(String message) {
-		this.warn("setStatus(): Not overridden");
 	}
 
 	public HtmlRendererContext getTop() {
@@ -640,30 +597,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 		return new SimpleBrowserFrame(this);
 	}
 
-	public void warn(String message, Throwable throwable) {
-		if (logger.isLoggable(Level.WARNING)) {
-			logger.log(Level.WARNING, message, throwable);
-		}
-	}
-
-	public void error(String message, Throwable throwable) {
-		if (logger.isLoggable(Level.SEVERE)) {
-			logger.log(Level.SEVERE, message, throwable);
-		}
-	}
-
-	public void warn(String message) {
-		if (logger.isLoggable(Level.WARNING)) {
-			logger.log(Level.WARNING, message);
-		}
-	}
-
-	public void error(String message) {
-		if (logger.isLoggable(Level.SEVERE)) {
-			logger.log(Level.SEVERE, message);
-		}
-	}
-
 	/**
 	 * Returns <code>null</code>. This method should be overridden
 	 * to provide OBJECT, EMBED or APPLET functionality.
@@ -673,7 +606,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	}
 
 	public void setDefaultStatus(String message) {
-		this.warn("setDefaultStatus(): Not overridden.");
 	}
 
 	private UserAgentContext bcontext = null;
@@ -690,7 +622,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	public UserAgentContext getUserAgentContext() {
 		synchronized (this) {
 			if (this.bcontext == null) {
-				this.warn("getUserAgentContext(): UserAgentContext not provided in constructor. Creating a simple one.");
 				this.bcontext = new SimpleUserAgentContext();
 			}
 			return this.bcontext;
@@ -765,15 +696,9 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * and should be overridden.
 	 */
 	public void back() {
-		if (logger.isLoggable(Level.WARNING)) {
-			logger.log(Level.WARNING, "back() does nothing, unless overridden.");
-		}
 	}
 
 	public void forward() {
-		if (logger.isLoggable(Level.WARNING)) {
-			logger.log(Level.WARNING, "forward() does nothing, unless overridden.");
-		}
 	}
 
 	public String getCurrentURL() {
@@ -798,14 +723,8 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	}
 
 	public void goToHistoryURL(String url) {
-		if (logger.isLoggable(Level.WARNING)) {
-			logger.log(Level.WARNING, "goToHistoryURL() does nothing, unless overridden.");
-		}
 	}
 
 	public void moveInHistory(int offset) {
-		if (logger.isLoggable(Level.WARNING)) {
-			logger.log(Level.WARNING, "moveInHistory() does nothing, unless overridden.");
-		}
 	}
 }

@@ -34,7 +34,6 @@ import org.lobobrowser.html.style.RenderState;
 import org.lobobrowser.util.Nodes;
 import org.lobobrowser.util.Objects;
 import org.lobobrowser.util.gui.ColorFactory;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
 import javax.swing.*;
@@ -45,8 +44,6 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * A Swing component that renders a HTML block, given

@@ -27,17 +27,12 @@ import org.lobobrowser.html.domimpl.HTMLElementImpl;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.logging.Logger;
 
 abstract class BaseControl extends JComponent implements UIControl {
-	private static final Logger logger = Logger.getLogger(BaseControl.class.getName());
 	protected static final Dimension ZERO_DIMENSION = new Dimension(0, 0);
 	protected final HTMLElementImpl controlElement;
 	protected RUIControl ruicontrol;
 
-	/**
-	 * @param context
-	 */
 	public BaseControl(HTMLElementImpl modelNode) {
 		this.controlElement = modelNode;
 	}
@@ -61,7 +56,6 @@ abstract class BaseControl extends JComponent implements UIControl {
 	protected void invalidateAndRepaint() {
 		RUIControl rc = this.ruicontrol;
 		if (rc == null) {
-			logger.severe("invalidateAndPaint(): RUIControl not set.");
 			return;
 		}
 		if (rc.isValid()) {

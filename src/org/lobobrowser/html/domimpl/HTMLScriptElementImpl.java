@@ -23,24 +23,11 @@
  */
 package org.lobobrowser.html.domimpl;
 
-import org.lobobrowser.html.HttpRequest;
-import org.lobobrowser.html.UserAgentContext;
-import org.mozilla.javascript.Context;
-import org.mozilla.javascript.EcmaError;
-import org.mozilla.javascript.Scriptable;
-import org.w3c.dom.Document;
 import org.w3c.dom.UserDataHandler;
 import org.w3c.dom.html2.HTMLScriptElement;
 
-import java.security.AccessController;
-import java.security.PrivilegedAction;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class HTMLScriptElementImpl extends HTMLElementImpl implements
 		HTMLScriptElement {
-	private static final Logger logger = Logger.getLogger(HTMLScriptElementImpl.class.getName());
-	private static final boolean loggableInfo = logger.isLoggable(Level.INFO);
 
 	public HTMLScriptElementImpl() {
 		super("SCRIPT", true);

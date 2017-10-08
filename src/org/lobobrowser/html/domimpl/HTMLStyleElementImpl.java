@@ -104,8 +104,7 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements
 					} else {
 						sheet.setDisabled(this.disabled);
 					}
-				} catch (Throwable err) {
-					this.warn("Unable to parse style sheet", err);
+				} catch (Throwable ignored) {
 				}
 			}
 		}

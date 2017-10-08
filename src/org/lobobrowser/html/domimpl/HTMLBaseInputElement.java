@@ -24,7 +24,6 @@
 package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.FormInput;
-import org.mozilla.javascript.Function;
 import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLFormElement;
 

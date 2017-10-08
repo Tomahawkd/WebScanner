@@ -37,7 +37,6 @@ import org.w3c.dom.html2.HTMLElement;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.*;
-import java.util.logging.Level;
 
 public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2PropertiesContext {
 	private final boolean noStyleSheet;
@@ -143,10 +142,7 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 				try {
 					CSSStyleDeclaration sd = parser.parseStyleDeclaration(inputSource);
 					sds.addStyleDeclaration(sd);
-				} catch (Exception err) {
-					String id = this.getId();
-					String withId = id == null ? "" : " with ID '" + id + "'";
-					this.warn("Unable to parse style attribute value for element " + this.getTagName() + withId + " in " + this.getDocumentURL() + ".", err);
+				} catch (Exception ignored) {
 				}
 			}
 			this.localStyleDeclarationState = sds;
@@ -233,20 +229,11 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 		this.setAttribute("charset", charset);
 	}
 
-	public void warn(String message, Throwable err) {
-		logger.log(Level.WARNING, message, err);
-	}
-
-	public void warn(String message) {
-		logger.log(Level.WARNING, message);
-	}
-
 	protected int getAttributeAsInt(String name, int defaultValue) {
 		String value = this.getAttribute(name);
 		try {
 			return Integer.parseInt(value);
 		} catch (Exception err) {
-			this.warn("Bad integer", err);
 			return defaultValue;
 		}
 	}
@@ -668,10 +655,9 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 	public void setInnerHTML(String newHtml) {
 		HTMLDocumentImpl document = (HTMLDocumentImpl) this.document;
 		if (document == null) {
-			this.warn("setInnerHTML(): Element " + this + " does not belong to a document.");
 			return;
 		}
-		HtmlParser parser = new HtmlParser(document.getUserAgentContext(), document, null, null, null);
+		HtmlParser parser = new HtmlParser(document.getUserAgentContext(), document, null, null);
 		synchronized (this) {
 			ArrayList nl = this.nodeList;
 			if (nl != null) {
@@ -686,8 +672,7 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 			} finally {
 				reader.close();
 			}
-		} catch (Exception thrown) {
-			this.warn("setInnerHTML(): Error setting inner HTML.", thrown);
+		} catch (Exception ignored) {
 		}
 	}
 

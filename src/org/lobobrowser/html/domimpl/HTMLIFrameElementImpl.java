@@ -21,8 +21,7 @@ public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
 			if (src != null) {
 				try {
 					frame.loadURL(this.getFullURL(src));
-				} catch (java.net.MalformedURLException mfu) {
-					this.warn("setBrowserFrame(): Unable to navigate to src.", mfu);
+				} catch (java.net.MalformedURLException ignored) {
 				}
 			}
 		}
@@ -128,8 +127,7 @@ public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
 			if (frame != null) {
 				try {
 					frame.loadURL(this.getFullURL(value));
-				} catch (java.net.MalformedURLException mfu) {
-					this.warn("assignAttributeField(): Unable to navigate to src.", mfu);
+				} catch (java.net.MalformedURLException ignored) {
 				}
 			}
 		} else {

@@ -37,7 +37,6 @@ import java.awt.*;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 /**
  * A Swing panel used to render FRAMESETs only. It is
@@ -48,7 +47,6 @@ import java.util.logging.Logger;
  * @see HtmlBlockPanel
  */
 public class FrameSetPanel extends JComponent implements NodeRenderer {
-	private static final Logger logger = Logger.getLogger(FrameSetPanel.class.getName());
 
 	public FrameSetPanel() {
 		super();
@@ -67,8 +65,7 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 			String token = tok.nextToken().trim();
 			try {
 				lengths.add(new HtmlLength(token));
-			} catch (Exception err) {
-				logger.warning("Frame rows or cols value [" + spec + "] is invalid.");
+			} catch (Exception ignored) {
 			}
 		}
 		return (HtmlLength[]) lengths.toArray(HtmlLength.EMPTY_ARRAY);
@@ -180,8 +177,7 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 									if (url != null) {
 										frame.loadURL(url);
 									}
-								} catch (MalformedURLException mfu) {
-									logger.warning("Frame URI=[" + src + "] is malformed.");
+								} catch (MalformedURLException ignored) {
 								}
 							}
 							frameComponents[i] = frame.getComponent();

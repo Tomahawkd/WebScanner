@@ -44,8 +44,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.EventObject;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * The <code>SimpleHttpRequest</code> class implements
@@ -57,7 +55,6 @@ import java.util.logging.Logger;
  * @author J. H. S.
  */
 public class SimpleHttpRequest implements HttpRequest {
-	private static final Logger logger = Logger.getLogger(SimpleHttpRequest.class.getName());
 	private int readyState;
 	private int status;
 	private String statusText;
@@ -110,7 +107,6 @@ public class SimpleHttpRequest implements HttpRequest {
 		try {
 			return bytes == null ? null : new String(bytes, encoding);
 		} catch (UnsupportedEncodingException uee) {
-			logger.log(Level.WARNING, "getResponseText(): Charset '" + encoding + "' did not work. Retrying with ISO-8859-1.", uee);
 			try {
 				return new String(bytes, "ISO-8859-1");
 			} catch (UnsupportedEncodingException uee2) {
@@ -129,7 +125,6 @@ public class SimpleHttpRequest implements HttpRequest {
 		try {
 			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
 		} catch (Exception err) {
-			logger.log(Level.WARNING, "Unable to parse response as XML.", err);
 			return null;
 		}
 	}
@@ -249,8 +244,7 @@ public class SimpleHttpRequest implements HttpRequest {
 				public void run() {
 					try {
 						sendSync(content);
-					} catch (Throwable thrown) {
-						logger.log(Level.WARNING, "send(): Error in asynchronous request on " + url, thrown);
+					} catch (Throwable ignored) {
 					}
 				}
 			}.start();

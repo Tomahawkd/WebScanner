@@ -44,7 +44,6 @@ import org.w3c.dom.html2.HTMLElement;
 import org.w3c.dom.html2.HTMLLinkElement;
 import org.w3c.dom.views.AbstractView;
 import org.w3c.dom.views.DocumentView;
-import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 
 import java.io.*;
@@ -53,14 +52,11 @@ import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Implementation of the W3C <code>HTMLDocument</code> interface.
  */
 public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, DocumentView {
-	private static final Logger logger = Logger.getLogger(HTMLDocumentImpl.class.getName());
 	private final ElementFactory factory;
 	private final HtmlRendererContext rcontext;
 	private final UserAgentContext ucontext;
@@ -96,8 +92,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 			}
 			this.documentURL = docURL;
 			this.domain = docURL.getHost();
-		} catch (java.net.MalformedURLException mfu) {
-			logger.warning("HTMLDocumentImpl(): Document URI [" + documentURI + "] is malformed.");
+		} catch (java.net.MalformedURLException ignored) {
 		}
 		this.document = this;
 	}
@@ -370,17 +365,15 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 		}
 		if (reader != null) {
 			try {
-				ErrorHandler errorHandler = new LocalErrorHandler();
 				String systemId = this.documentURI;
 				String publicId = systemId;
-				HtmlParser parser = new HtmlParser(this.ucontext, this, errorHandler, publicId, systemId);
+				HtmlParser parser = new HtmlParser(this.ucontext, this, publicId, systemId);
 				parser.parse(reader);
 			} finally {
 				if (closeReader) {
 					try {
 						reader.close();
-					} catch (Exception err) {
-						logger.log(Level.WARNING, "load(): Unable to close stream", err);
+					} catch (Exception ignored) {
 					}
 					synchronized (this.treeLock) {
 						this.reader = null;
@@ -435,16 +428,14 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 	private void openBufferChanged(String text) {
 		// Assumed to execute in a lock
 		// Assumed that text is not broken up HTML.
-		ErrorHandler errorHandler = new LocalErrorHandler();
 		String systemId = this.documentURI;
 		String publicId = systemId;
-		HtmlParser parser = new HtmlParser(this.ucontext, this, errorHandler, publicId, systemId);
+		HtmlParser parser = new HtmlParser(this.ucontext, this, publicId, systemId);
 		StringReader strReader = new StringReader(text);
 		try {
 			// This sets up another Javascript scope Window. Does it matter?
 			parser.parse(strReader);
 		} catch (Exception err) {
-			this.warn("Unable to parse written HTML text. BaseURI=[" + this.getBaseURI() + "].", err);
 		}
 	}
 
@@ -755,7 +746,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 			try {
 				return new URL(uri);
 			} catch (MalformedURLException mfu2) {
-				logger.log(Level.WARNING, "Unable to create URL for URI=[" + uri + "], with base=[" + this.getBaseURI() + "].", mfu);
 				return null;
 			}
 		}
@@ -848,8 +838,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 				ssa = new StyleSheetAggregator(this);
 				try {
 					ssa.addStyleSheets(this.styleSheets);
-				} catch (MalformedURLException mfu) {
-					logger.log(Level.WARNING, "getStyleSheetAggregator()", mfu);
+				} catch (MalformedURLException ignored) {
 				}
 				this.styleSheetAggregator = ssa;
 			}
@@ -1149,8 +1138,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 					try {
 						httpRequest.open("GET", url, true);
 						httpRequest.send(null);
-					} catch (java.io.IOException thrown) {
-						logger.log(Level.WARNING, "loadImage()", thrown);
+					} catch (java.io.IOException ignored) {
 					}
 				} else {
 					AccessController.doPrivileged(new PrivilegedAction() {
@@ -1160,8 +1148,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 							try {
 								httpRequest.open("GET", url, true);
 								httpRequest.send(null);
-							} catch (java.io.IOException thrown) {
-								logger.log(Level.WARNING, "loadImage()", thrown);
+							} catch (java.io.IOException ignored) {
 							}
 							return null;
 						}
