@@ -31,7 +31,6 @@ import org.lobobrowser.html.domimpl.HTMLDocumentImpl;
 import org.lobobrowser.html.domimpl.NodeImpl;
 import org.lobobrowser.html.parser.DocumentBuilderImpl;
 import org.lobobrowser.html.parser.InputSourceImpl;
-import org.lobobrowser.html.renderer.BoundableRenderable;
 import org.lobobrowser.html.renderer.FrameContext;
 import org.lobobrowser.html.renderer.NodeRenderer;
 import org.lobobrowser.html.renderer.RenderableSpot;
@@ -71,13 +70,12 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	private volatile boolean isFrameSet = false;
 	private volatile NodeRenderer nodeRenderer = null;
 	private volatile NodeImpl rootNode;
-	private volatile int preferredWidth = -1;
 	private volatile Insets defaultMarginInsets = new Insets(8, 8, 8, 8);
 	private volatile int defaultOverflowX = RenderState.OVERFLOW_AUTO;
 	private volatile int defaultOverflowY = RenderState.OVERFLOW_SCROLL;
 
-	protected volatile HtmlBlockPanel htmlBlockPanel;
-	protected volatile FrameSetPanel frameSetPanel;
+	private volatile HtmlBlockPanel htmlBlockPanel;
+	private volatile FrameSetPanel frameSetPanel;
 
 
 	/**
@@ -90,53 +88,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		this.notificationTimer = new javax.swing.Timer(NOTIF_TIMER_DELAY, new NotificationTimerAction());
 		this.notificationTimer.setRepeats(false);
 		this.notificationListener = new LocalDocumentNotificationListener();
-		this.notificationImmediateAction = new Runnable() {
-			public void run() {
-				processNotifications();
-			}
-		};
-	}
-
-	/**
-	 * Sets a preferred width that serves as a hint in calculating
-	 * the preferred size of the <code>HtmlPanel</code>. Note that
-	 * the preferred size can only be calculated when a document is
-	 * available, and it will vary during incremental rendering.
-	 * <p>
-	 * This method currently does not have any effect when the
-	 * document is a FRAMESET.
-	 * <p>
-	 * Note also that setting the preferred width (to a value other
-	 * than <code>-1</code>) will negatively impact performance.
-	 *
-	 * @param width The preferred width, or <code>-1</code> to unset.
-	 */
-	public void setPreferredWidth(int width) {
-		this.preferredWidth = width;
-		HtmlBlockPanel htmlBlock = this.htmlBlockPanel;
-		if (htmlBlock != null) {
-			htmlBlock.setPreferredWidth(width);
-		}
-	}
-
-	/**
-	 * If the current document is not a FRAMESET,
-	 * this method scrolls the body area to the given location.
-	 * <p>
-	 * This method should be called from the GUI thread.
-	 *
-	 * @param bounds    The bounds in the scrollable block area that should
-	 *                  become visible.
-	 * @param xIfNeeded If this parameter is true, scrolling will only occur if the
-	 *                  requested bounds are not currently visible horizontally.
-	 * @param yIfNeeded If this parameter is true, scrolling will only occur if the
-	 *                  requested bounds are not currently visible vertically.
-	 */
-	public void scrollTo(Rectangle bounds, boolean xIfNeeded, boolean yIfNeeded) {
-		HtmlBlockPanel htmlBlock = this.htmlBlockPanel;
-		if (htmlBlock != null) {
-			htmlBlock.scrollTo(bounds, xIfNeeded, yIfNeeded);
-		}
+		this.notificationImmediateAction = this::processNotifications;
 	}
 
 	/**
@@ -147,47 +99,17 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 *
 	 * @param node A DOM node.
 	 */
-	public void scrollTo(org.w3c.dom.Node node) {
+	private void scrollTo(org.w3c.dom.Node node) {
 		HtmlBlockPanel htmlBlock = this.htmlBlockPanel;
 		if (htmlBlock != null) {
 			htmlBlock.scrollTo(node);
 		}
 	}
 
-	/**
-	 * Gets the root <code>Renderable</code> of
-	 * the HTML block. It returns <code>null</code>
-	 * for FRAMESETs.
-	 */
-	public BoundableRenderable getBlockRenderable() {
-		HtmlBlockPanel htmlBlock = this.htmlBlockPanel;
-		return htmlBlock == null ? null : htmlBlock.getRootRenderable();
-	}
-
-	/**
-	 * Gets an instance of {@link FrameSetPanel} in case
-	 * the currently rendered page is a FRAMESET.
-	 * <p>
-	 * Note: This method should be invoked in the GUI thread.
-	 *
-	 * @return A <code>FrameSetPanel</code> instance or <code>null</code>
-	 * if the document currently rendered is not a FRAMESET.
-	 */
-	public FrameSetPanel getFrameSetPanel() {
-		int componentCount = this.getComponentCount();
-		if (componentCount == 0) {
-			return null;
-		}
-		Object c = this.getComponent(0);
-		if (c instanceof FrameSetPanel) {
-			return (FrameSetPanel) c;
-		}
-		return null;
-	}
-
 	private void setUpAsBlock(UserAgentContext ucontext, HtmlRendererContext rcontext) {
 		HtmlBlockPanel shp = this.createHtmlBlockPanel(ucontext, rcontext);
-		shp.setPreferredWidth(this.preferredWidth);
+		int preferredWidth = -1;
+		shp.setPreferredWidth(preferredWidth);
 		shp.setDefaultMarginInsets(this.defaultMarginInsets);
 		shp.setDefaultOverflowX(this.defaultOverflowX);
 		shp.setDefaultOverflowY(this.defaultOverflowY);
@@ -213,7 +135,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * Method invoked internally to create a {@link HtmlBlockPanel}.
 	 * It is made available so it can be overridden.
 	 */
-	protected HtmlBlockPanel createHtmlBlockPanel(UserAgentContext ucontext, HtmlRendererContext rcontext) {
+	private HtmlBlockPanel createHtmlBlockPanel(UserAgentContext ucontext, HtmlRendererContext rcontext) {
 		return new HtmlBlockPanel(java.awt.Color.WHITE, true, ucontext, rcontext, this);
 	}
 
@@ -221,88 +143,8 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * Method invoked internally to create a {@link FrameSetPanel}.
 	 * It is made available so it can be overridden.
 	 */
-	protected FrameSetPanel createFrameSetPanel() {
+	private FrameSetPanel createFrameSetPanel() {
 		return new FrameSetPanel();
-	}
-
-	/**
-	 * Scrolls the document such that x and y coordinates
-	 * are placed in the upper-left corner of the panel.
-	 * <p>
-	 * This method may be called outside of the GUI Thread.
-	 *
-	 * @param x The x coordinate.
-	 * @param y The y coordinate.
-	 */
-	public void scroll(final int x, final int y) {
-		if (EventQueue.isDispatchThread()) {
-			this.scrollImpl(x, y);
-		} else {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					scrollImpl(x, y);
-				}
-			});
-		}
-	}
-
-	public void scrollBy(final int x, final int y) {
-		if (EventQueue.isDispatchThread()) {
-			this.scrollByImpl(x, y);
-		} else {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					scrollByImpl(x, y);
-				}
-			});
-		}
-	}
-
-	private void scrollImpl(int x, int y) {
-		this.scrollTo(new Rectangle(x, y, 16, 16), false, false);
-	}
-
-	private void scrollByImpl(int xOffset, int yOffset) {
-		HtmlBlockPanel bp = this.htmlBlockPanel;
-		if (bp != null) {
-			bp.scrollBy(xOffset, yOffset);
-		}
-	}
-
-	/**
-	 * Clears the current document if any.
-	 * If called outside the GUI thread, the operation
-	 * will be scheduled to be performed in the GUI
-	 * thread.
-	 */
-	public void clearDocument() {
-		if (java.awt.EventQueue.isDispatchThread()) {
-			this.clearDocumentImpl();
-		} else {
-			java.awt.EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					HtmlPanel.this.clearDocumentImpl();
-				}
-			});
-		}
-	}
-
-	private void clearDocumentImpl() {
-		HTMLDocumentImpl prevDocument = (HTMLDocumentImpl) this.rootNode;
-		if (prevDocument != null) {
-			prevDocument.removeDocumentNotificationListener(this.notificationListener);
-		}
-		NodeRenderer nr = this.nodeRenderer;
-		if (nr != null) {
-			nr.setRootNode(null);
-		}
-		this.rootNode = null;
-		this.htmlBlockPanel = null;
-		this.nodeRenderer = null;
-		this.isFrameSet = false;
-		this.removeAll();
-		this.revalidate();
-		this.repaint();
 	}
 
 	/**
@@ -311,9 +153,6 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * <p>
 	 * If this method is called from a thread that is not the GUI
 	 * dispatch thread, the document is scheduled to be set later.
-	 * Note that {@link #setPreferredWidth(int) preferred size}
-	 * calculations should be done in the GUI dispatch thread for
-	 * this reason.
 	 *
 	 * @param node     This should
 	 *                 normally be a Document instance obtained with
@@ -327,11 +166,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		if (java.awt.EventQueue.isDispatchThread()) {
 			this.setDocumentImpl(node, rcontext);
 		} else {
-			java.awt.EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					HtmlPanel.this.setDocumentImpl(node, rcontext);
-				}
-			});
+			java.awt.EventQueue.invokeLater(() -> HtmlPanel.this.setDocumentImpl(node, rcontext));
 		}
 	}
 
@@ -349,11 +184,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		if (EventQueue.isDispatchThread()) {
 			this.scrollToElementImpl(nameOrId);
 		} else {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					scrollToElementImpl(nameOrId);
-				}
-			});
+			EventQueue.invokeLater(() -> scrollToElementImpl(nameOrId));
 		}
 	}
 
@@ -418,18 +249,13 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	public void setHtml(String htmlSource, String uri, HtmlRendererContext rcontext) {
 		try {
 			DocumentBuilderImpl builder = new DocumentBuilderImpl(rcontext.getUserAgentContext(), rcontext);
-			Reader reader = new StringReader(htmlSource);
-			try {
+			try (Reader reader = new StringReader(htmlSource)) {
 				InputSourceImpl is = new InputSourceImpl(reader, uri);
 				Document document = builder.parse(is);
 				this.setDocument(document, rcontext);
-			} finally {
-				reader.close();
 			}
-		} catch (java.io.IOException ioe) {
+		} catch (java.io.IOException | org.xml.sax.SAXException ioe) {
 			throw new IllegalStateException("Unexpected condition.", ioe);
-		} catch (org.xml.sax.SAXException se) {
-			throw new IllegalStateException("Unexpected condition.", se);
 		}
 	}
 
@@ -477,12 +303,10 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		if (children == null) {
 			return null;
 		}
-		int length = children.length;
 		NodeImpl frameSet = null;
-		for (int i = 0; i < length; i++) {
-			NodeImpl child = children[i];
+		for (NodeImpl child : children) {
 			if (child instanceof Text) {
-				// Ignore
+
 			} else if (child instanceof ElementImpl) {
 				String tagName = child.getNodeName();
 				if ("HEAD".equalsIgnoreCase(tagName) ||
@@ -491,7 +315,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 						"META".equalsIgnoreCase(tagName) ||
 						"SCRIPT".equalsIgnoreCase(tagName) ||
 						"NOSCRIPT".equalsIgnoreCase(tagName)) {
-					// ignore it
+
 				} else if ("FRAMESET".equalsIgnoreCase(tagName)) {
 					frameSet = child;
 					break;
@@ -512,11 +336,9 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		}
 		NodeImpl[] children = element.getChildrenArray();
 		if (children != null) {
-			int length = children.length;
-			for (int i = 0; i < length; i++) {
-				NodeImpl child = children[i];
+			for (NodeImpl child : children) {
 				if (child instanceof Text) {
-					String textContent = ((Text) child).getTextContent();
+					String textContent = child.getTextContent();
 					if (textContent != null && !"".equals(textContent.trim())) {
 						return false;
 					}
@@ -562,64 +384,12 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	}
 
 	/**
-	 * Gets the selection text.
-	 * <p>
-	 * Note: This method should be invoked in the GUI thread.
-	 */
-	public String getSelectionText() {
-		HtmlBlockPanel block = this.htmlBlockPanel;
-		if (block == null) {
-			return null;
-		} else {
-			return block.getSelectionText();
-		}
-	}
-
-	/**
-	 * Gets a DOM node enclosing the selection. The node returned should
-	 * be the inner-most node that encloses both selection start and end
-	 * points. Note that the selection end point may be just outside of
-	 * the selection.
-	 * <p>
-	 * Note: This method should be invoked in the GUI thread.
-	 *
-	 * @return A node enclosing the current selection, or <code>null</code>
-	 * if there is no such node. It also returns <code>null</code>
-	 * for FRAMESETs.
-	 */
-	public org.w3c.dom.Node getSelectionNode() {
-		HtmlBlockPanel block = this.htmlBlockPanel;
-		if (block == null) {
-			return null;
-		} else {
-			return block.getSelectionNode();
-		}
-	}
-
-	/**
-	 * Returns true only if the current block has a selection.
-	 * This method has no effect in FRAMESETs at the moment.
-	 */
-	public boolean hasSelection() {
-		HtmlBlockPanel block = this.htmlBlockPanel;
-		if (block == null) {
-			return false;
-		} else {
-			return block.hasSelection();
-		}
-	}
-
-	/**
 	 * Copies the current selection, if any, into the clipboard.
 	 * This method has no effect in FRAMESETs at the moment.
 	 */
 	public boolean copy() {
 		HtmlBlockPanel block = this.htmlBlockPanel;
-		if (block != null) {
-			return block.copy();
-		} else {
-			return false;
-		}
+		return block != null && block.copy();
 	}
 
 	/**
@@ -628,16 +398,8 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 *
 	 * @param listener An instance of {@link SelectionChangeListener}.
 	 */
-	public void addSelectionChangeListener(SelectionChangeListener listener) {
+	void addSelectionChangeListener(SelectionChangeListener listener) {
 		this.selectionDispatch.addListener(listener);
-	}
-
-	/**
-	 * Removes a listener of selection changes that was
-	 * previously added.
-	 */
-	public void removeSelectionChangeListener(SelectionChangeListener listener) {
-		this.selectionDispatch.removeListener(listener);
 	}
 
 	/**
@@ -686,13 +448,12 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		}
 	}
 
-	private ArrayList notifications = new ArrayList(1);
+	private final ArrayList<DocumentNotification> notifications = new ArrayList<>(1);
 
 	private void addNotification(DocumentNotification notification) {
 		// This can be called in a random thread.
-		ArrayList notifs = this.notifications;
-		synchronized (notifs) {
-			notifs.add(notification);
+		synchronized (this.notifications) {
+			this.notifications.add(notification);
 		}
 		if (EventQueue.isDispatchThread()) {
 			// In this case we want the notification to be processed
@@ -712,32 +473,27 @@ public class HtmlPanel extends JComponent implements FrameContext {
 	 * processed in a single document layout.
 	 */
 	public void delayedRelayout(NodeImpl node) {
-		ArrayList notifs = this.notifications;
-		synchronized (notifs) {
-			notifs.add(new DocumentNotification(DocumentNotification.SIZE, node));
+		synchronized (this.notifications) {
+			this.notifications.add(new DocumentNotification(DocumentNotification.SIZE, node));
 		}
 		this.notificationTimer.restart();
 	}
 
 	private void processNotifications() {
 		// This is called in the GUI thread.
-		ArrayList notifs = this.notifications;
 		DocumentNotification[] notifsArray;
-		synchronized (notifs) {
-			int size = notifs.size();
+		synchronized (this.notifications) {
+			int size = this.notifications.size();
 			if (size == 0) {
 				return;
 			}
 			notifsArray = new DocumentNotification[size];
-			notifsArray = (DocumentNotification[]) notifs.toArray(notifsArray);
-			notifs.clear();
+			notifsArray = this.notifications.toArray(notifsArray);
+			this.notifications.clear();
 		}
-		int length = notifsArray.length;
-		for (int i = 0; i < length; i++) {
-			DocumentNotification dn = notifsArray[i];
+		for (DocumentNotification dn : notifsArray) {
 			if (dn.node instanceof HTMLFrameSetElement && this.htmlBlockPanel != null) {
 				if (this.resetIfFrameSet()) {
-					// Revalidation already taken care of.
 					return;
 				}
 			}
