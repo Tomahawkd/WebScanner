@@ -136,22 +136,10 @@ public class HtmlBlockPanel extends JComponent implements NodeRenderer, Renderab
 	 * @param yIfNeeded If this parameter is true, scrolling will only occur if the
 	 *                  requested bounds are not currently visible vertically.
 	 */
-	void scrollTo(Rectangle bounds, boolean xIfNeeded, boolean yIfNeeded) {
+	private void scrollTo(Rectangle bounds, boolean xIfNeeded, boolean yIfNeeded) {
 		RBlock block = this.rblock;
 		if (block != null) {
 			block.scrollTo(bounds, xIfNeeded, yIfNeeded);
-		}
-	}
-
-	void scrollBy(int xOffset, int yOffset) {
-		RBlock block = this.rblock;
-		if (block != null) {
-			if (xOffset != 0) {
-				block.scrollBy(JScrollBar.HORIZONTAL, xOffset);
-			}
-			if (yOffset != 0) {
-				block.scrollBy(JScrollBar.VERTICAL, yOffset);
-			}
 		}
 	}
 
@@ -260,10 +248,6 @@ public class HtmlBlockPanel extends JComponent implements NodeRenderer, Renderab
 		return resultBounds;
 	}
 
-	BoundableRenderable getRootRenderable() {
-		return this.rblock;
-	}
-
 	/**
 	 * Allows {@link #getPreferredSize()} to render the HTML block
 	 * in order to determine the preferred size of this component.
@@ -326,22 +310,6 @@ public class HtmlBlockPanel extends JComponent implements NodeRenderer, Renderab
 
 	void setSelectionStart(RenderableSpot rpoint) {
 		this.startSelection = rpoint;
-	}
-
-	boolean isSelectionAvailable() {
-		RenderableSpot start = this.startSelection;
-		RenderableSpot end = this.endSelection;
-		return start != null && end != null && !start.equals(end);
-	}
-
-	org.w3c.dom.Node getSelectionNode() {
-		RenderableSpot start = this.startSelection;
-		RenderableSpot end = this.endSelection;
-		if (start != null && end != null) {
-			return Nodes.getCommonAncestor((Node) start.renderable.getModelNode(), (Node) end.renderable.getModelNode());
-		} else {
-			return null;
-		}
 	}
 
 	/**
@@ -534,7 +502,7 @@ public class HtmlBlockPanel extends JComponent implements NodeRenderer, Renderab
 		}
 	}
 
-	String getSelectionText() {
+	private String getSelectionText() {
 		RenderableSpot start = this.startSelection;
 		RenderableSpot end = this.endSelection;
 		if (start != null && end != null) {
@@ -544,12 +512,6 @@ public class HtmlBlockPanel extends JComponent implements NodeRenderer, Renderab
 		} else {
 			return null;
 		}
-	}
-
-	boolean hasSelection() {
-		RenderableSpot start = this.startSelection;
-		RenderableSpot end = this.endSelection;
-		return start != null && end != null && !start.equals(end);
 	}
 
 	protected void paintChildren(Graphics g) {
