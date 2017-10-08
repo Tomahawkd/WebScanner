@@ -23,29 +23,23 @@ package org.lobobrowser.html.renderer;
 import org.lobobrowser.html.domimpl.ModelNode;
 
 public class LineBreak {
-	public static final int NONE = 0;
-	public static final int LEFT = 1;
-	public static final int RIGHT = 2;
-	public static final int ALL = 3;
+	static final int NONE = 0;
+	static final int LEFT = 1;
+	static final int RIGHT = 2;
+	private static final int ALL = 3;
 
-	private final int breakType;
 	private final ModelNode newLineNode;
 
-	public LineBreak(final int breakType, ModelNode newLineNode) {
+	LineBreak(ModelNode newLineNode) {
 		super();
-		this.breakType = breakType;
 		this.newLineNode = newLineNode;
-	}
-
-	public int getBreakType() {
-		return this.breakType;
 	}
 
 	public ModelNode getModelNode() {
 		return this.newLineNode;
 	}
 
-	public static int getBreakType(String clearAttr) {
+	static int getBreakType(String clearAttr) {
 		if (clearAttr == null) {
 			return NONE;
 		} else if ("all".equalsIgnoreCase(clearAttr)) {

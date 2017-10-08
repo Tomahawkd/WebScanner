@@ -34,7 +34,7 @@ import java.awt.*;
 class InputTextAreaControl extends BaseInputControl {
 	private final JTextComponent widget;
 
-	public InputTextAreaControl(HTMLBaseInputElement modelNode) {
+	InputTextAreaControl(HTMLBaseInputElement modelNode) {
 		super(modelNode);
 		this.setLayout(WrapperLayout.getInstance());
 		JTextComponent widget = this.createTextField();
@@ -45,8 +45,7 @@ class InputTextAreaControl extends BaseInputControl {
 		//Otherwise, layout revalidation causes typed values to
 		//be lost (including revalidation due to hover.)
 
-		ElementImpl element = this.controlElement;
-		String value = element.getTextContent();
+		String value = this.controlElement.getTextContent();
 		((JTextArea) widget).setLineWrap(true);
 		widget.setText(value);
 	}
@@ -72,7 +71,7 @@ class InputTextAreaControl extends BaseInputControl {
 		}
 	}
 
-	protected JTextComponent createTextField() {
+	private JTextComponent createTextField() {
 		return new JTextArea();
 	}
 

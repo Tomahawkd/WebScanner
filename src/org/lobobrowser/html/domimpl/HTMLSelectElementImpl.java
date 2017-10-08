@@ -1,7 +1,6 @@
 package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.FormInput;
-import org.mozilla.javascript.Function;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.html2.HTMLElement;
 import org.w3c.dom.html2.HTMLOptionsCollection;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 
 public class HTMLSelectElementImpl extends HTMLBaseInputElement implements
 		HTMLSelectElement {
-	public HTMLSelectElementImpl(String name) {
+	HTMLSelectElementImpl(String name) {
 		super(name);
 	}
 
@@ -29,7 +28,7 @@ public class HTMLSelectElementImpl extends HTMLBaseInputElement implements
 	public boolean getMultiple() {
 		Boolean m = this.multipleState;
 		if (m != null) {
-			return m.booleanValue();
+			return m;
 		}
 		return this.getAttributeAsBoolean("multiple");
 	}
@@ -80,7 +79,7 @@ public class HTMLSelectElementImpl extends HTMLBaseInputElement implements
 
 	public void setMultiple(boolean multiple) {
 		boolean prevMultiple = this.getMultiple();
-		this.multipleState = Boolean.valueOf(multiple);
+		this.multipleState = multiple;
 		if (prevMultiple != multiple) {
 			this.informLayoutInvalid();
 		}
@@ -129,11 +128,11 @@ public class HTMLSelectElementImpl extends HTMLBaseInputElement implements
 		if (name == null) {
 			return null;
 		}
-		ArrayList formInputs = new ArrayList();
-		for (int i = 0; i < values.length; i++) {
-			formInputs.add(new FormInput(name, values[i]));
+		ArrayList<FormInput> formInputs = new ArrayList<>();
+		for (String value : values) {
+			formInputs.add(new FormInput(name, value));
 		}
-		return (FormInput[]) formInputs.toArray(FormInput.EMPTY_ARRAY);
+		return formInputs.toArray(FormInput.EMPTY_ARRAY);
 	}
 
 	public void resetInput() {
@@ -148,15 +147,5 @@ public class HTMLSelectElementImpl extends HTMLBaseInputElement implements
 		if (ic != null) {
 			ic.setSelectedIndex(this.deferredSelectedIndex);
 		}
-	}
-
-	private Function onchange;
-
-	public Function getOnchange() {
-		return this.getEventFunction(this.onchange, "onchange");
-	}
-
-	public void setOnchange(Function value) {
-		this.onchange = value;
 	}
 }

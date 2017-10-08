@@ -30,12 +30,7 @@ class Range {
 	public final int offset;
 	public final int length;
 
-
-	/**
-	 * @param offset
-	 * @param length
-	 */
-	public Range(final int offset, final int length) {
+	Range(final int offset, final int length) {
 		super();
 		this.offset = offset;
 		this.length = length;

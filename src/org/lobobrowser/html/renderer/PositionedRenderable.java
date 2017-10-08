@@ -23,11 +23,11 @@ package org.lobobrowser.html.renderer;
 class PositionedRenderable {
 	public static final PositionedRenderable[] EMPTY_ARRAY = new PositionedRenderable[0];
 	public final BoundableRenderable renderable;
-	public final boolean verticalAlignable;
-	public final int ordinal;
-	public final boolean isFloat;
+	final boolean verticalAlignable;
+	final int ordinal;
+	final boolean isFloat;
 
-	public PositionedRenderable(final BoundableRenderable renderable, final boolean verticalAlignable, int ordinal, boolean isFloat) {
+	PositionedRenderable(final BoundableRenderable renderable, final boolean verticalAlignable, int ordinal, boolean isFloat) {
 		super();
 		this.renderable = renderable;
 		this.verticalAlignable = verticalAlignable;

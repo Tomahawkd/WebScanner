@@ -29,8 +29,8 @@ public class ParentFloatingBoundsSource implements FloatingBoundsSource {
 	private final int newY;
 	private final FloatingBounds floatBounds;
 
-	public ParentFloatingBoundsSource(int blockShiftRight, int expectedWidth,
-	                                  int newX, int newY, FloatingBounds floatBounds) {
+	ParentFloatingBoundsSource(int blockShiftRight, int expectedWidth,
+	                           int newX, int newY, FloatingBounds floatBounds) {
 		super();
 		this.blockShiftRight = blockShiftRight;
 		this.expectedBlockWidth = expectedWidth;

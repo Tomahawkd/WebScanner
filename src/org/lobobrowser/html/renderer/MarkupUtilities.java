@@ -33,30 +33,13 @@ import java.awt.*;
  * @author J. H. S.
  */
 class MarkupUtilities {
-	//private static final Logger logger = Logger.getLogger(MarkupUtilities.class);
 
-//	public static final int MODE_ABOVE_OR_AT = 0;
-//	public static final int MODE_BELOW_OR_AT = 1;
-//	public static final int MODE_LEFT_OR_AT = 0;
-//	public static final int MODE_RIGHT_OR_AT = 1;
-
-	/**
-	 *
-	 */
 	private MarkupUtilities() {
 		super();
 	}
 
-	public static BoundableRenderable findRenderable(Renderable[] renderables, Point point, boolean vertical) {
-		return findRenderable(renderables, point, 0, renderables.length, vertical);
-	}
-
-	public static BoundableRenderable findRenderable(Renderable[] renderables, int x, int y, boolean vertical) {
+	static BoundableRenderable findRenderable(Renderable[] renderables, int x, int y, boolean vertical) {
 		return findRenderable(renderables, x, y, 0, renderables.length, vertical);
-	}
-
-	private static BoundableRenderable findRenderable(Renderable[] renderables, Point point, int firstIndex, int length, boolean vertical) {
-		return findRenderable(renderables, point.x, point.y, firstIndex, length, vertical);
 	}
 
 	private static BoundableRenderable findRenderable(Renderable[] renderables, int x, int y, int firstIndex, int length, boolean vertical) {
@@ -89,21 +72,21 @@ class MarkupUtilities {
 			}
 			if (vertical) {
 				if (y < rbounds.y) {
-					return findRenderable(renderables, x, y, firstIndex, middleIndex - firstIndex, vertical);
+					return findRenderable(renderables, x, y, firstIndex, middleIndex - firstIndex, true);
 				} else {
-					return findRenderable(renderables, x, y, middleIndex + 1, length - (middleIndex - firstIndex + 1), vertical);
+					return findRenderable(renderables, x, y, middleIndex + 1, length - (middleIndex - firstIndex + 1), true);
 				}
 			} else {
 				if (x < rbounds.x) {
-					return findRenderable(renderables, x, y, firstIndex, middleIndex - firstIndex, vertical);
+					return findRenderable(renderables, x, y, firstIndex, middleIndex - firstIndex, false);
 				} else {
-					return findRenderable(renderables, x, y, middleIndex + 1, length - (middleIndex - firstIndex + 1), vertical);
+					return findRenderable(renderables, x, y, middleIndex + 1, length - (middleIndex - firstIndex + 1), false);
 				}
 			}
 		}
 	}
 
-	public static Range findRenderables(Renderable[] renderables, Rectangle clipArea, boolean vertical) {
+	static Range findRenderables(Renderable[] renderables, Rectangle clipArea, boolean vertical) {
 		return findRenderables(renderables, clipArea, 0, renderables.length, vertical);
 	}
 
@@ -160,12 +143,12 @@ class MarkupUtilities {
 			if (vertical) {
 				if (rbounds.y + rbounds.height < clipArea.y) {
 					int newLen = length - (middleIndex - index + 1);
-					return newLen == 0 ? -1 : findFirstIndex(renderables, clipArea, middleIndex + 1, newLen, vertical);
+					return newLen == 0 ? -1 : findFirstIndex(renderables, clipArea, middleIndex + 1, newLen, true);
 				} else {
 					int newLen = middleIndex - index;
-					int resultIdx = newLen == 0 ? -1 : findFirstIndex(renderables, clipArea, index, newLen, vertical);
+					int resultIdx = newLen == 0 ? -1 : findFirstIndex(renderables, clipArea, index, newLen, true);
 					if (resultIdx == -1) {
-						if (intersects(clipArea, rbounds, vertical)) {
+						if (intersects(clipArea, rbounds, true)) {
 							return middleIndex;
 						}
 					}
@@ -173,11 +156,11 @@ class MarkupUtilities {
 				}
 			} else {
 				if (rbounds.x + rbounds.width < clipArea.x) {
-					return findFirstIndex(renderables, clipArea, middleIndex + 1, length - (middleIndex - index), vertical);
+					return findFirstIndex(renderables, clipArea, middleIndex + 1, length - (middleIndex - index), false);
 				} else {
-					int resultIdx = findFirstIndex(renderables, clipArea, index, middleIndex - index, vertical);
+					int resultIdx = findFirstIndex(renderables, clipArea, index, middleIndex - index, false);
 					if (resultIdx == -1) {
-						if (intersects(clipArea, rbounds, vertical)) {
+						if (intersects(clipArea, rbounds, false)) {
 							return middleIndex;
 						}
 					}
@@ -217,12 +200,12 @@ class MarkupUtilities {
 			}
 			if (vertical) {
 				if (rbounds.y > clipArea.y + clipArea.height) {
-					return findLastIndex(renderables, clipArea, index, middleIndex - index, vertical);
+					return findLastIndex(renderables, clipArea, index, middleIndex - index, true);
 				} else {
 					int newLen = length - (middleIndex - index + 1);
-					int resultIdx = newLen == 0 ? -1 : findLastIndex(renderables, clipArea, middleIndex + 1, newLen, vertical);
+					int resultIdx = newLen == 0 ? -1 : findLastIndex(renderables, clipArea, middleIndex + 1, newLen, true);
 					if (resultIdx == -1) {
-						if (intersects(clipArea, rbounds, vertical)) {
+						if (intersects(clipArea, rbounds, true)) {
 							return middleIndex;
 						}
 					}
@@ -230,11 +213,11 @@ class MarkupUtilities {
 				}
 			} else {
 				if (rbounds.x > clipArea.x + clipArea.width) {
-					return findLastIndex(renderables, clipArea, index, middleIndex - index, vertical);
+					return findLastIndex(renderables, clipArea, index, middleIndex - index, false);
 				} else {
-					int resultIdx = findLastIndex(renderables, clipArea, middleIndex + 1, length - (middleIndex - index + 1), vertical);
+					int resultIdx = findLastIndex(renderables, clipArea, middleIndex + 1, length - (middleIndex - index + 1), false);
 					if (resultIdx == -1) {
-						if (intersects(clipArea, rbounds, vertical)) {
+						if (intersects(clipArea, rbounds, false)) {
 							return middleIndex;
 						}
 					}
