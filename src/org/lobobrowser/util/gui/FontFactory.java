@@ -184,25 +184,18 @@ public class FontFactory {
 
 		public boolean equals(Object other) {
 			if (other == this) {
-				// Quick check.
 				return true;
 			}
-			FontKey ors;
-			try {
-				ors = (FontKey) other;
-			} catch (ClassCastException cce) {
-				// Not expected
-				return false;
-			}
-			// Note that we use String.intern() for all string fields,
-			// so we can do instance comparisons.
-			return this.fontSize == ors.fontSize &&
-					this.fontFamily == ors.fontFamily &&
-					this.fontStyle == ors.fontStyle &&
-					this.fontWeight == ors.fontWeight &&
-					this.fontVariant == ors.fontVariant &&
-					this.superscript == ors.superscript &&
-					Objects.equals(this.locales, ors.locales);
+			if (other instanceof FontKey) {
+				FontKey ors = (FontKey) other;
+				return this.fontSize == ors.fontSize &&
+						this.fontFamily == ors.fontFamily &&
+						this.fontStyle == ors.fontStyle &&
+						this.fontWeight == ors.fontWeight &&
+						this.fontVariant == ors.fontVariant &&
+						this.superscript == ors.superscript &&
+						Objects.equals(this.locales, ors.locales);
+			} else return false;
 		}
 
 		private int cachedHash = -1;
