@@ -31,13 +31,13 @@ import java.util.LinkedList;
  * @author J. H. S.
  */
 public class EventDispatch {
-	private Collection listeners;
+	private Collection<GenericEventListener> listeners;
 
 	public EventDispatch() {
 	}
 
-	public Collection createListenerCollection() {
-		return new LinkedList();
+	private Collection<GenericEventListener> createListenerCollection() {
+		return new LinkedList<>();
 	}
 
 	public final void addListener(GenericEventListener listener) {
@@ -49,25 +49,16 @@ public class EventDispatch {
 		}
 	}
 
-	public final void removeListener(GenericEventListener listener) {
-		synchronized (this) {
-			if (this.listeners != null) {
-				this.listeners.remove(listener);
-			}
-		}
-	}
-
 	public final void fireEvent(EventObject event) {
 		GenericEventListener[] larray = null;
 		synchronized (this) {
 			if (this.listeners != null) {
-				larray = (GenericEventListener[]) this.listeners.toArray(GenericEventListener.EMPTY_ARRAY);
+				larray = this.listeners.toArray(GenericEventListener.EMPTY_ARRAY);
 			}
 		}
 		if (larray != null) {
-			for (int i = 0; i < larray.length; i++) {
-				// Call holding no locks
-				larray[i].processEvent(event);
+			for (GenericEventListener aLarray : larray) {
+				aLarray.processEvent(event);
 			}
 		}
 	}

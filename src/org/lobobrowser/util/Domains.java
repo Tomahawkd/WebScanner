@@ -25,17 +25,15 @@ package org.lobobrowser.util;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * @author J. H. S.
  */
 public class Domains {
-	private static final Collection gTLDs;
+	private static final Collection<String> gTLDs;
 
 	static {
-		gTLDs = new HashSet();
+		gTLDs = new HashSet<>();
 		gTLDs.add(".com");
 		gTLDs.add(".edu");
 		gTLDs.add(".gov");
@@ -50,7 +48,6 @@ public class Domains {
 		gTLDs.add(".aero");
 		gTLDs.add(".coop");
 		gTLDs.add(".museum");
-		//TODO: New gTLDs?
 	}
 
 	/**
@@ -91,12 +88,10 @@ public class Domains {
 
 	/**
 	 * @param host A host name in lower case.
-	 * @return
+	 * @return boolean
 	 */
-	public static boolean endsWithGTLD(String host) {
-		Iterator i = gTLDs.iterator();
-		while (i.hasNext()) {
-			String ending = (String) i.next();
+	private static boolean endsWithGTLD(String host) {
+		for (String ending : gTLDs) {
 			if (host.endsWith(ending)) {
 				return true;
 			}
@@ -104,7 +99,7 @@ public class Domains {
 		return false;
 	}
 
-	public static boolean isLikelyHostName(String name) {
+	static boolean isLikelyHostName(String name) {
 		String nameTL = name.toLowerCase();
 		if (nameTL.startsWith("www.")) {
 			return true;
@@ -116,22 +111,7 @@ public class Domains {
 		if (lastDotIdx == -1) {
 			return false;
 		}
-		// Check for country code.
 		return lastDotIdx == nameTL.length() - 3;
 	}
 
-	public static Collection getPossibleDomains(String hostName) {
-		Collection domains = new LinkedList();
-		domains.add(hostName);
-		int dotIdx = hostName.indexOf('.', 1);
-		if (dotIdx == -1) {
-			return domains;
-		}
-		String testDomain = hostName.substring(dotIdx);
-		if (!Domains.isValidCookieDomain(testDomain, hostName)) {
-			return domains;
-		}
-		domains.addAll(Domains.getPossibleDomains(testDomain.substring(1)));
-		return domains;
-	}
 }

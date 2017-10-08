@@ -32,10 +32,10 @@ public class NameValuePair implements java.io.Serializable {
 	public final String value;
 
 	/**
-	 * @param name
-	 * @param value
+	 * @param name name
+	 * @param value value
 	 */
-	public NameValuePair(final String name, final String value) {
+	NameValuePair(final String name, final String value) {
 		super();
 		this.name = name;
 		this.value = value;

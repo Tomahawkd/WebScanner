@@ -24,7 +24,7 @@
 package org.lobobrowser.util;
 
 public interface ObjectFilter {
-	public Object decode(Object source);
+	Object decode(Object source);
 
-	public Object encode(Object source);
+	Object encode(Object source);
 }

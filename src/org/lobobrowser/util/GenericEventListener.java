@@ -30,7 +30,7 @@ import java.util.EventObject;
  * @author J. H. S.
  */
 public interface GenericEventListener extends EventListener {
-	public static final GenericEventListener[] EMPTY_ARRAY = new GenericEventListener[0];
+	GenericEventListener[] EMPTY_ARRAY = new GenericEventListener[0];
 
-	public void processEvent(EventObject event);
+	void processEvent(EventObject event);
 }

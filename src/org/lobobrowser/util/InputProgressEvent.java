@@ -28,18 +28,12 @@ import java.util.EventObject;
 /**
  * @author J. H. S.
  */
-public class InputProgressEvent extends EventObject {
-	private final int progress;
+class InputProgressEvent extends EventObject {
 
 	/**
-	 * @param arg0
+	 * @param arg0 arg
 	 */
-	public InputProgressEvent(Object arg0, int progress) {
+	InputProgressEvent(Object arg0) {
 		super(arg0);
-		this.progress = progress;
-	}
-
-	public int getProgress() {
-		return this.progress;
 	}
 }
