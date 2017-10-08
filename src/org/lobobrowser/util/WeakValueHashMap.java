@@ -64,7 +64,7 @@ public class WeakValueHashMap implements Map {
 		return this.putImpl(key, value);
 	}
 
-	private final Object putImpl(Object key, Object value) {
+	private Object putImpl(Object key, Object value) {
 		if (value == null) {
 			throw new IllegalArgumentException("null values not accepted");
 		}
@@ -81,9 +81,8 @@ public class WeakValueHashMap implements Map {
 
 	public void putAll(Map t) {
 		this.checkQueue();
-		Iterator i = t.entrySet().iterator();
-		while (i.hasNext()) {
-			Map.Entry entry = (Map.Entry) i.next();
+		for (Object o : t.entrySet()) {
+			Entry entry = (Entry) o;
 			this.putImpl(entry.getKey(), entry.getValue());
 		}
 	}
@@ -97,7 +96,7 @@ public class WeakValueHashMap implements Map {
 		return this.map.keySet();
 	}
 
-	private final void checkQueue() {
+	private void checkQueue() {
 		ReferenceQueue queue = this.queue;
 		LocalWeakReference ref;
 		while ((ref = (LocalWeakReference) queue.poll()) != null) {
@@ -133,7 +132,7 @@ public class WeakValueHashMap implements Map {
 	private static class LocalWeakReference extends WeakReference {
 		private final Object key;
 
-		public LocalWeakReference(Object key, Object target, ReferenceQueue queue) {
+		LocalWeakReference(Object key, Object target, ReferenceQueue queue) {
 			super(target, queue);
 			this.key = key;
 		}
