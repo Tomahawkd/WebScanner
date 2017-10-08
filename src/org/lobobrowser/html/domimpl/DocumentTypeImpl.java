@@ -33,7 +33,7 @@ public class DocumentTypeImpl extends NodeImpl implements DocumentType {
 	private final String publicId;
 	private final String systemId;
 
-	public DocumentTypeImpl(String qname, String publicId, String systemId) {
+	DocumentTypeImpl(String qname, String publicId, String systemId) {
 		super();
 		this.qualifiedName = qname;
 		this.publicId = publicId;
@@ -65,12 +65,10 @@ public class DocumentTypeImpl extends NodeImpl implements DocumentType {
 	}
 
 	public NamedNodeMap getEntities() {
-		//TODO: DOCTYPE declared entities
 		return null;
 	}
 
 	public NamedNodeMap getNotations() {
-		//TODO: DOCTYPE notations
 		return null;
 	}
 
@@ -83,7 +81,6 @@ public class DocumentTypeImpl extends NodeImpl implements DocumentType {
 	}
 
 	public String getInternalSubset() {
-		//TODO: DOCTYPE internal subset
 		return null;
 	}
 

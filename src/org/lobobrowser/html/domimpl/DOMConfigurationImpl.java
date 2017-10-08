@@ -31,9 +31,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DOMConfigurationImpl implements DOMConfiguration {
-	private final Map parameters = new HashMap();
+	private final Map<String, Object> parameters = new HashMap<>();
 
-	public DOMConfigurationImpl() {
+	DOMConfigurationImpl() {
 		super();
 	}
 
@@ -50,7 +50,6 @@ public class DOMConfigurationImpl implements DOMConfiguration {
 	}
 
 	public boolean canSetParameter(String name, Object value) {
-		//TODO
 		return true;
 	}
 

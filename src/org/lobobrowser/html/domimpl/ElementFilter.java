@@ -29,9 +29,9 @@ public final class ElementFilter implements NodeFilter {
 	private final String elementName;
 
 	/**
-	 * @param name
+	 * @param name name
 	 */
-	public ElementFilter(String name) {
+	ElementFilter(String name) {
 		super();
 		elementName = name;
 	}

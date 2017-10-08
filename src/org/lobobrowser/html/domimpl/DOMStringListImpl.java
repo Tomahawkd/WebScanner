@@ -30,17 +30,17 @@ import java.util.Collection;
 import java.util.List;
 
 public class DOMStringListImpl implements DOMStringList {
-	private final List sourceList;
+	private final List<String> sourceList;
 
-	public DOMStringListImpl(Collection sourceList) {
-		List list = new ArrayList();
+	DOMStringListImpl(Collection<String> sourceList) {
+		List<String> list = new ArrayList<>();
 		list.addAll(sourceList);
 		this.sourceList = list;
 	}
 
 	public String item(int index) {
 		try {
-			return (String) this.sourceList.get(index);
+			return this.sourceList.get(index);
 		} catch (IndexOutOfBoundsException iob) {
 			return null;
 		}
