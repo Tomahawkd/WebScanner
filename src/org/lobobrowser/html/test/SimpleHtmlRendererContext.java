@@ -348,7 +348,7 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 				panel.scrollToElement(ref);
 			}
 			try {
-				rin.getString("ISO-8859-1");
+				rin.getString();
 			} catch (BufferExceededException ignored) {
 			}
 		}

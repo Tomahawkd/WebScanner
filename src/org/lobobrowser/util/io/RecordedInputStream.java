@@ -40,7 +40,6 @@ public class RecordedInputStream extends InputStream {
 	private final InputStream delegate;
 	private final ByteArrayOutputStream store = new ByteArrayOutputStream();
 	private final int maxBufferSize;
-	private boolean hasReachedEOF = false;
 	private boolean hasReachedMaxBufferSize = false;
 	private int markPosition = -1;
 	private int readPosition = -1;
@@ -72,8 +71,6 @@ public class RecordedInputStream extends InputStream {
 						this.hasReachedMaxBufferSize = true;
 					}
 				}
-			} else {
-				this.hasReachedEOF = true;
 			}
 			return b;
 		}
@@ -138,36 +135,14 @@ public class RecordedInputStream extends InputStream {
 						this.hasReachedMaxBufferSize = true;
 					}
 				}
-			} else {
-				this.hasReachedEOF = true;
 			}
 			return numRead;
 		}
 	}
 
-	public void consumeToEOF() throws IOException {
-		byte[] buffer = new byte[8192];
-		while (this.read(buffer) != -1) {
-			;
-		}
-	}
-
-	public byte[] getBytesRead() throws BufferExceededException {
+	public void getString() throws java.io.UnsupportedEncodingException, BufferExceededException {
 		if (this.hasReachedMaxBufferSize) {
 			throw new BufferExceededException();
 		}
-		return this.store.toByteArray();
-	}
-
-	public String getString(String encoding) throws java.io.UnsupportedEncodingException, BufferExceededException {
-		if (this.hasReachedMaxBufferSize) {
-			throw new BufferExceededException();
-		}
-		byte[] bytes = this.store.toByteArray();
-		return new String(bytes, encoding);
-	}
-
-	public boolean hasReachedEOF() {
-		return this.hasReachedEOF;
 	}
 }

@@ -21,19 +21,7 @@
 package org.lobobrowser.util.io;
 
 public class BufferExceededException extends Exception {
-	public BufferExceededException() {
+	BufferExceededException() {
 		super();
-	}
-
-	public BufferExceededException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public BufferExceededException(String message) {
-		super(message);
-	}
-
-	public BufferExceededException(Throwable cause) {
-		super(cause);
 	}
 }
