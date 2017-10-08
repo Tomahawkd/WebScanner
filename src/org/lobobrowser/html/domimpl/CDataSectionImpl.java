@@ -28,11 +28,7 @@ import org.w3c.dom.Node;
 
 public class CDataSectionImpl extends TextImpl implements CDATASection {
 
-	public CDataSectionImpl() {
-		super();
-	}
-
-	public CDataSectionImpl(String text) {
+	CDataSectionImpl(String text) {
 		super(text);
 	}
 

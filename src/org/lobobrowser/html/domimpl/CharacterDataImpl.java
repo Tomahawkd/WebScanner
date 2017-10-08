@@ -31,16 +31,12 @@ public abstract class CharacterDataImpl extends NodeImpl implements
 		CharacterData {
 	protected volatile String text;
 
-	public CharacterDataImpl() {
+	CharacterDataImpl() {
 		super();
 	}
 
-	public CharacterDataImpl(String text) {
+	CharacterDataImpl(String text) {
 		this.text = text;
-	}
-
-	public String getClassName() {
-		return "HTMLCharacterData";
 	}
 
 	public String getTextContent() throws DOMException {
@@ -73,8 +69,8 @@ public abstract class CharacterDataImpl extends NodeImpl implements
 
 	public void deleteData(int offset, int count)
 			throws DOMException {
-		StringBuffer buffer = new StringBuffer(this.text);
-		StringBuffer result = buffer.delete(offset, offset + count);
+		StringBuilder buffer = new StringBuilder(this.text);
+		StringBuilder result = buffer.delete(offset, offset + count);
 		this.text = result.toString();
 		if (!this.notificationsSuspended) {
 			this.informInvalid();
@@ -91,8 +87,8 @@ public abstract class CharacterDataImpl extends NodeImpl implements
 
 	public void insertData(int offset, String arg)
 			throws DOMException {
-		StringBuffer buffer = new StringBuffer(this.text);
-		StringBuffer result = buffer.insert(offset, arg);
+		StringBuilder buffer = new StringBuilder(this.text);
+		StringBuilder result = buffer.insert(offset, arg);
 		this.text = result.toString();
 		if (!this.notificationsSuspended) {
 			this.informInvalid();
@@ -101,8 +97,8 @@ public abstract class CharacterDataImpl extends NodeImpl implements
 
 	public void replaceData(int offset, int count, String arg)
 			throws DOMException {
-		StringBuffer buffer = new StringBuffer(this.text);
-		StringBuffer result = buffer.replace(offset, offset + count, arg);
+		StringBuilder buffer = new StringBuilder(this.text);
+		StringBuilder result = buffer.replace(offset, offset + count, arg);
 		this.text = result.toString();
 		if (!this.notificationsSuspended) {
 			this.informInvalid();

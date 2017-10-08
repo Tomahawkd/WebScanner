@@ -33,10 +33,10 @@ public class AttrImpl extends NodeImpl implements Attr {
 	private boolean isId;
 
 	/**
-	 * @param name
-	 * @param value
+	 * @param name name
+	 * @param value value
 	 */
-	public AttrImpl(String name, String value, boolean specified, Element owner, boolean isId) {
+	AttrImpl(String name, String value, boolean specified, Element owner, boolean isId) {
 		super();
 		this.name = name;
 		this.value = value;
@@ -46,9 +46,9 @@ public class AttrImpl extends NodeImpl implements Attr {
 	}
 
 	/**
-	 * @param name
+	 * @param name name
 	 */
-	public AttrImpl(String name) {
+	AttrImpl(String name) {
 		super();
 		this.name = name;
 		this.value = "";

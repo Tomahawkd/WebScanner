@@ -30,9 +30,9 @@ public class ChildHTMLCollection implements HTMLCollection {
 	private final NodeImpl rootNode;
 
 	/**
-	 * @param node
+	 * @param node node
 	 */
-	public ChildHTMLCollection(NodeImpl node) {
+	ChildHTMLCollection(NodeImpl node) {
 		super();
 		rootNode = node;
 	}
@@ -51,7 +51,7 @@ public class ChildHTMLCollection implements HTMLCollection {
 			return null;
 		}
 		//TODO: This might get elements that are not descendents.
-		Node node = (Node) doc.getElementById(name);
+		Node node = doc.getElementById(name);
 		if (node != null && node.getParentNode() == this.rootNode) {
 			return node;
 		}
