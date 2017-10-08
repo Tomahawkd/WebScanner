@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+<body>
+<h1>Issue name</h1>
+X-Forwarded-For dependent response
+<h1>Typical severity</h1>
+
+Information
+
+<h1>Issue description</h1>
+
+<p>Application responses may depend systematically on the presence or absence of an X-Forwarded-For header in requests. This behavior does not necessarily constitute a security vulnerability, and you should investigate the nature of and reason for the differential responses to determine whether a vulnerability is present.</p>
+<p>Some applications enforce access controls based on the remote IP address of the connecting client. For example, an application might expose administrative functionality only to clients connecting from the local IP address of the server. In some configurations, the presence of an X-Forwarded-For header misleads the application about the client's IP address, allowing an attacker to masquerade as a trusted user. You should review the purpose of the relevant functionality to determine whether this might be the case. </p>
+
+<h1>Issue remediation</h1>
+
+<p>The X-Forwarded-For header is not a robust foundation on which to build any security measures, such as access controls. Any such measures should be replaced with more secure alternatives that are not vulnerable to spoofing.</p>
+<p>If the platform application server returns incorrect information about the client's IP address due to the presence of an X-Forwarded-For header, then the server may need to be reconfigured, or an alternative method of identifying clients should be used. </p>
+
+<h1>References</h1>
+
+
+
+</body>
+</html>
