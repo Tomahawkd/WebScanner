@@ -54,7 +54,6 @@ import com.steadystate.css.parser.LexicalUnitImpl;
  * @version $Release$
  */
 public class CSSValueImpl implements CSSPrimitiveValue, CSSValueList, Serializable {
-	private static final Logger logger = Logger.getLogger(CSSValueImpl.class.getName());
     private Object _value = null;
 
     /**
@@ -172,9 +171,6 @@ public class CSSValueImpl implements CSSPrimitiveValue, CSSValueList, Serializab
                 			sb.append(" ");
                 		}
             			sb.append(this.toString(itemValue));
-            		}
-            		else if(itemValue != null) {
-            			logger.warning("toString(): Unknown item value type: " + itemValue.getClass().getName());
             		}
             	}
             	else {
