@@ -32,12 +32,12 @@ import java.util.StringTokenizer;
  * @author J. H. S.
  */
 public class ColorFactory {
-	public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+	private static final Color TRANSPARENT = new Color(0, 0, 0, 0);
 	private static ColorFactory instance;
-	private final Map colorMap = new HashMap(256);
+	private final Map<String, Color> colorMap = new HashMap<>(256);
 
 	private ColorFactory() {
-		Map colorMap = this.colorMap;
+		Map<String, Color> colorMap = this.colorMap;
 		synchronized (this) {
 			colorMap.put("transparent", TRANSPARENT);
 			//http://www.w3schools.com/css/css_colornames.asp
@@ -191,7 +191,7 @@ public class ColorFactory {
 		}
 	}
 
-	public static final ColorFactory getInstance() {
+	public static ColorFactory getInstance() {
 		if (instance == null) {
 			synchronized (ColorFactory.class) {
 				if (instance == null) {
@@ -220,7 +220,7 @@ public class ColorFactory {
 	public Color getColor(String colorSpec) {
 		String normalSpec = colorSpec.toLowerCase();
 		synchronized (this) {
-			Color color = (Color) colorMap.get(normalSpec);
+			Color color = colorMap.get(normalSpec);
 			if (color == null) {
 				if (normalSpec.startsWith(RGB_START)) {
 					// CssParser produces this format.					
@@ -254,9 +254,6 @@ public class ColorFactory {
 					}
 					color = new Color(r, g, b);
 				} else if (normalSpec.startsWith("#")) {
-					//TODO: OPTIMIZE: It would be more efficient to
-					//create new Color(hex), but CssParser doesn't
-					//give us values formatted with "#" either way.
 					int len = normalSpec.length();
 					int[] rgba = new int[4];
 					rgba[3] = 255;
