@@ -26,15 +26,9 @@ import java.util.EventObject;
 /**
  * Event associated with {@link SelectionChangeListener}.
  */
-public class SelectionChangeEvent extends EventObject {
-	private final boolean hasSelection;
+class SelectionChangeEvent extends EventObject {
 
-	public SelectionChangeEvent(Object source, boolean hasSelection) {
+	SelectionChangeEvent(Object source) {
 		super(source);
-		this.hasSelection = hasSelection;
-	}
-
-	public boolean isSelectionAvailable() {
-		return this.hasSelection;
 	}
 }

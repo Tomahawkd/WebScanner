@@ -36,5 +36,5 @@ public interface SelectionChangeListener extends EventListener {
 	 *
 	 * @param event A {@link SelectionChangeEvent} instance.
 	 */
-	public void selectionChanged(SelectionChangeEvent event);
+	void selectionChanged(SelectionChangeEvent event);
 }

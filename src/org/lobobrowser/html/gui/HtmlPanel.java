@@ -362,7 +362,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 		if (block != null) {
 			block.setSelectionEnd(rpoint);
 			block.repaint();
-			this.selectionDispatch.fireEvent(new SelectionChangeEvent(this, block.isSelectionAvailable()));
+			this.selectionDispatch.fireEvent(new SelectionChangeEvent(this));
 		}
 	}
 
@@ -380,7 +380,7 @@ public class HtmlPanel extends JComponent implements FrameContext {
 			block.setSelectionEnd(rpoint);
 			block.repaint();
 		}
-		this.selectionDispatch.fireEvent(new SelectionChangeEvent(this, false));
+		this.selectionDispatch.fireEvent(new SelectionChangeEvent(this));
 	}
 
 	/**
