@@ -50,7 +50,7 @@ public interface HtmlRendererContext {
 	 * @param url    The destination URL.
 	 * @param target Same as the target attribute in the HTML anchor tag, i.e. _top, _blank, etc.
 	 */
-	public void navigate(URL url, String target);
+	void navigate(URL url, String target);
 
 	/**
 	 * Performs a link click. Implementations should
@@ -60,13 +60,13 @@ public interface HtmlRendererContext {
 	 * @param url      The destination URL.
 	 * @param target   Same as the target attribute in the HTML anchor tag, i.e. _top, _blank, etc.
 	 */
-	public void linkClicked(org.w3c.dom.html2.HTMLElement linkNode, URL url, String target);
+	void linkClicked(org.w3c.dom.html2.HTMLElement linkNode, URL url, String target);
 
 	/**
 	 * Gets a collection of frames from the document
 	 * currently in the context.
 	 */
-	public HTMLCollection getFrames();
+	HTMLCollection getFrames();
 
 	/**
 	 * Submits a HTML form. Note that when the the method is "GET", parameters
@@ -78,17 +78,17 @@ public interface HtmlRendererContext {
 	 * @param enctype    The encoding type.
 	 * @param formInputs An array of {@link org.lobobrowser.html.FormInput} instances.
 	 */
-	public void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs);
+	void submitForm(String method, URL action, String target, String enctype, FormInput[] formInputs);
 
 	/**
 	 * Creates a {@link org.lobobrowser.html.BrowserFrame} instance.
 	 */
-	public BrowserFrame createBrowserFrame();
+	BrowserFrame createBrowserFrame();
 
 	/**
 	 * Gets the user agent context.
 	 */
-	public UserAgentContext getUserAgentContext();
+	UserAgentContext getUserAgentContext();
 
 	/**
 	 * Gets a <code>HtmlObject</code> instance that implements
@@ -101,7 +101,7 @@ public interface HtmlRendererContext {
 	 * This is particularly true of OBJECT tags, where inner HTML of
 	 * the tag must be rendered if the OBJECT content cannot be handled.
 	 */
-	public HtmlObject getHtmlObject(org.w3c.dom.html2.HTMLElement element);
+	HtmlObject getHtmlObject(org.w3c.dom.html2.HTMLElement element);
 
 	/**
 	 * This method is called when a visual element is right-clicked.
@@ -111,7 +111,7 @@ public interface HtmlRendererContext {
 	 * @return The method should return true to continue propagating the event,
 	 * or false to stop propagating it.
 	 */
-	public boolean onContextMenu(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
+	boolean onContextMenu(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
 
 	/**
 	 * This method is called when there's a mouse click on an element.
@@ -121,7 +121,7 @@ public interface HtmlRendererContext {
 	 * @return The method should return true to continue propagating the event,
 	 * or false to stop propagating it.
 	 */
-	public boolean onMouseClick(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
+	boolean onMouseClick(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
 
 	/**
 	 * This method is called when there's a mouse double-click on an element.
@@ -131,7 +131,7 @@ public interface HtmlRendererContext {
 	 * @return The method should return true to continue propagating the event,
 	 * or false to stop propagating it.
 	 */
-	public boolean onDoubleClick(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
+	boolean onDoubleClick(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
 
 	/**
 	 * This method is called when the mouse first hovers over an element.
@@ -139,7 +139,7 @@ public interface HtmlRendererContext {
 	 * @param element The element that the mouse has just entered.
 	 * @param event   The mouse event.
 	 */
-	public void onMouseOver(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
+	void onMouseOver(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
 
 	/**
 	 * This method is called when the mouse no longer hovers a given element.
@@ -147,13 +147,13 @@ public interface HtmlRendererContext {
 	 * @param element The element that the mouse has just exited.
 	 * @param event   The mouse event.
 	 */
-	public void onMouseOut(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
+	void onMouseOut(org.w3c.dom.html2.HTMLElement element, java.awt.event.MouseEvent event);
 
 	/**
 	 * This method should return true if and only if image loading
 	 * needs to be enabled.
 	 */
-	public boolean isImageLoadingEnabled();
+	boolean isImageLoadingEnabled();
 
 	//------ Methods useful for Window implementation:
 
@@ -162,36 +162,28 @@ public interface HtmlRendererContext {
 	 *
 	 * @param message Message shown by the dialog.
 	 */
-	public void alert(String message);
+	void alert(String message);
 
 	/**
 	 * Goes to the previous page in the browser's history.
 	 */
-	public void back();
+	void back();
 
 	/**
 	 * Relinquishes focus.
 	 */
-	public void blur();
+	void blur();
 
 	/**
 	 * Closes the browser window, provided this
 	 * is allowed for the current context.
 	 */
-	public void close();
-
-	/**
-	 * Opens a confirmation dialog.
-	 *
-	 * @param message The message shown by the confirmation dialog.
-	 * @return True if the user selects YES.
-	 */
-	public boolean confirm(String message);
+	void close();
 
 	/**
 	 * Requests focus for the current window.
 	 */
-	public void focus();
+	void focus();
 
 	/**
 	 * Opens a separate browser window and renders a URL.
@@ -199,11 +191,11 @@ public interface HtmlRendererContext {
 	 * @param absoluteUrl    The URL to be rendered.
 	 * @param windowName     The name of the new window.
 	 * @param windowFeatures The features of the new window (same as in Javascript open method).
-	 * @param replace
+	 * @param replace replace
 	 * @return A new {@link org.lobobrowser.html.HtmlRendererContext} instance.
 	 * @deprecated Use {@link #open(URL, String, String, boolean)} instead.
 	 */
-	public HtmlRendererContext open(String absoluteUrl, String windowName, String windowFeatures, boolean replace);
+	HtmlRendererContext open(String absoluteUrl, String windowName, String windowFeatures, boolean replace);
 
 	/**
 	 * Opens a separate browser window and renders a URL.
@@ -211,146 +203,46 @@ public interface HtmlRendererContext {
 	 * @param url            The URL to be rendered.
 	 * @param windowName     The name of the new window.
 	 * @param windowFeatures The features of the new window (same as in Javascript open method).
-	 * @param replace
+	 * @param replace replace
 	 * @return A new {@link org.lobobrowser.html.HtmlRendererContext} instance.
 	 */
-	public HtmlRendererContext open(java.net.URL url, String windowName, String windowFeatures, boolean replace);
-
-	/**
-	 * Shows a prompt dialog.
-	 *
-	 * @param message      The message shown by the dialog.
-	 * @param inputDefault The default input value.
-	 * @return The user's input value.
-	 */
-	public String prompt(String message, String inputDefault);
-
-	/**
-	 * Scrolls the client area.
-	 *
-	 * @param x Document's x coordinate.
-	 * @param y Document's y coordinate.
-	 */
-	public void scroll(int x, int y);
-
-	/**
-	 * Scrolls the client area.
-	 *
-	 * @param x Horizontal pixels to scroll.
-	 * @param y Vertical pixels to scroll.
-	 */
-	public void scrollBy(int x, int y);
-
-	/**
-	 * Resizes the window.
-	 *
-	 * @param width  The new width.
-	 * @param height The new height.
-	 */
-	public void resizeTo(int width, int height);
-
-	/**
-	 * Resizes the window.
-	 *
-	 * @param byWidth  The number of pixels to resize the width by.
-	 * @param byHeight The number of pixels to resize the height by.
-	 */
-	public void resizeBy(int byWidth, int byHeight);
-
-	/**
-	 * Gets a value indicating if the window is closed.
-	 */
-	public boolean isClosed();
-
-	public String getDefaultStatus();
-
-	public void setDefaultStatus(String value);
+	HtmlRendererContext open(java.net.URL url, String windowName, String windowFeatures, boolean replace);
 
 	/**
 	 * Gets the window name.
 	 */
-	public String getName();
+	String getName();
 
 	/**
 	 * Gets the parent of the frame/window in the current context.
 	 */
-	public HtmlRendererContext getParent();
-
-	/**
-	 * Gets the opener of the frame/window in the current context.
-	 */
-	public HtmlRendererContext getOpener();
-
-	/**
-	 * Sets the context that opened the current frame/window.
-	 *
-	 * @param opener A {@link org.lobobrowser.html.HtmlRendererContext}.
-	 */
-	public void setOpener(HtmlRendererContext opener);
+	HtmlRendererContext getParent();
 
 	/**
 	 * Gets the window status text.
 	 */
-	public String getStatus();
+	String getStatus();
 
 	/**
 	 * Sets the window status text.
 	 *
 	 * @param message A string.
 	 */
-	public void setStatus(String message);
+	void setStatus(String message);
 
 	/**
 	 * Gets the top-most browser frame/window.
 	 */
-	public HtmlRendererContext getTop();
+	HtmlRendererContext getTop();
 
 	/**
 	 * It should return true if the link provided has been visited.
 	 */
-	public boolean isVisitedLink(HTMLLinkElement link);
-
-	/**
-	 * Reloads the current document.
-	 */
-	public void reload();
-
-	/**
-	 * Gets the number of pages in the history list.
-	 */
-	public int getHistoryLength();
-
-	/**
-	 * Gets the current URL in history.
-	 */
-	public String getCurrentURL();
-
-	/**
-	 * Gets the next URL in the history.
-	 */
-	public String getNextURL();
-
-	/**
-	 * Gets the previous URL in the history.
-	 */
-	public String getPreviousURL();
+	boolean isVisitedLink(HTMLLinkElement link);
 
 	/**
 	 * Goes forward one page.
 	 */
-	public void forward();
+	void forward();
 
-	/**
-	 * Navigates the history according to the given offset.
-	 *
-	 * @param offset A positive or negative number. -1 is
-	 *               equivalent to {@link #back()}. +1 is
-	 *               equivalent to {@link #forward()}.
-	 */
-	public void moveInHistory(int offset);
-
-	/**
-	 * Navigates to a URL in the history list.
-	 */
-	public void goToHistoryURL(String url);
 }

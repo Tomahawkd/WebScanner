@@ -101,7 +101,7 @@ public class FormInput {
 	 *
 	 * @see #isFile()
 	 */
-	public java.io.File getFileValue() {
+	private java.io.File getFileValue() {
 		return this.fileValue;
 	}
 

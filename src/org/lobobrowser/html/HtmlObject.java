@@ -7,13 +7,7 @@ import java.awt.*;
  * OBJECT, EMBED or APPLET functionality.
  */
 public interface HtmlObject {
-	public Component getComponent();
-
-	public void suspend();
-
-	public void resume();
-
-	public void destroy();
+	Component getComponent();
 
 	/**
 	 * Called as the object is layed out, either
@@ -23,5 +17,5 @@ public interface HtmlObject {
 	 * children or attributes and possibly change
 	 * its preferred size if appropriate.
 	 */
-	public void reset(int availableWidth, int availableHeight);
+	void reset(int availableWidth, int availableHeight);
 }

@@ -108,22 +108,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	}
 
 	/**
-	 * Implements reload as navigation to current URL.
-	 * Override to implement a more robust reloading
-	 * mechanism.
-	 */
-	public void reload() {
-		HTMLDocumentImpl document = (HTMLDocumentImpl) this.htmlPanel.getRootNode();
-		if (document != null) {
-			try {
-				URL url = new URL(document.getDocumentURI());
-				this.navigate(url, null);
-			} catch (java.net.MalformedURLException ignored) {
-			}
-		}
-	}
-
-	/**
 	 * Implements the link click handler by invoking {@link #navigate(URL, String)}.
 	 */
 	public void linkClicked(HTMLElement linkNode, URL url, String target) {
@@ -421,14 +405,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	}
 
 	/**
-	 * Opens a simple confirmation window.
-	 */
-	public boolean confirm(String message) {
-		int retValue = JOptionPane.showConfirmDialog(htmlPanel, message, "Confirm", JOptionPane.YES_NO_OPTION);
-		return retValue == JOptionPane.YES_OPTION;
-	}
-
-	/**
 	 * It should request focus for the current browser window. This implementation does nothing
 	 * and should be overridden.
 	 */
@@ -463,47 +439,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	}
 
 	/**
-	 * Shows a simple prompt dialog.
-	 */
-	public String prompt(String message, String inputDefault) {
-		return JOptionPane.showInputDialog(htmlPanel, message);
-	}
-
-	/**
-	 * Changes the origin of the HTML block's scrollable area
-	 * according to the position given.
-	 * <p>
-	 * This method may be called outside of the GUI thread.
-	 * The operation is scheduled immediately in that thread as needed.
-	 *
-	 * @param x The new x coordinate for the origin.
-	 * @param y The new y coordinate for the origin.
-	 */
-	public void scroll(int x, int y) {
-		this.htmlPanel.scroll(x, y);
-	}
-
-	public void scrollBy(int x, int y) {
-		this.htmlPanel.scrollBy(x, y);
-	}
-
-	/**
-	 * Should return true if and only if the current browser window is closed.
-	 * This implementation returns false and should be overridden.
-	 */
-	public boolean isClosed() {
-		return false;
-	}
-
-	/**
-	 * Should return true if and only if the current browser window is closed.
-	 * This implementation returns false and should be overridden.
-	 */
-	public String getDefaultStatus() {
-		return "";
-	}
-
-	/**
 	 * It should return the name of the browser window, if this
 	 * renderer context is for the top frame in the window. This
 	 * implementation returns a blank string, so it should be overridden.
@@ -517,14 +452,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	}
 
 	private volatile HtmlRendererContext opener;
-
-	public HtmlRendererContext getOpener() {
-		return this.opener;
-	}
-
-	public void setOpener(HtmlRendererContext opener) {
-		this.opener = opener;
-	}
 
 	public String getStatus() {
 		return "";
@@ -551,9 +478,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 */
 	public HtmlObject getHtmlObject(HTMLElement element) {
 		return null;
-	}
-
-	public void setDefaultStatus(String message) {
 	}
 
 	private UserAgentContext bcontext = null;
@@ -625,20 +549,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 		return (java.awt.Window) current;
 	}
 
-	public void resizeBy(int byWidth, int byHeight) {
-		java.awt.Window window = getWindow(this.htmlPanel);
-		if (window != null) {
-			window.setSize(window.getWidth() + byWidth, window.getHeight() + byHeight);
-		}
-	}
-
-	public void resizeTo(int width, int height) {
-		java.awt.Window window = getWindow(this.htmlPanel);
-		if (window != null) {
-			window.setSize(width, height);
-		}
-	}
-
 	/**
 	 * It should navigate back one page. This implementation does nothing
 	 * and should be overridden.
@@ -649,30 +559,4 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	public void forward() {
 	}
 
-	public String getCurrentURL() {
-		Object node = this.htmlPanel.getRootNode();
-		if (node instanceof HTMLDocumentImpl) {
-			HTMLDocumentImpl doc = (HTMLDocumentImpl) node;
-			return doc.getDocumentURI();
-		}
-		return null;
-	}
-
-	public int getHistoryLength() {
-		return 0;
-	}
-
-	public String getNextURL() {
-		return null;
-	}
-
-	public String getPreviousURL() {
-		return null;
-	}
-
-	public void goToHistoryURL(String url) {
-	}
-
-	public void moveInHistory(int offset) {
-	}
 }
