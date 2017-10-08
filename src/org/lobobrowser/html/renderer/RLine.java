@@ -35,7 +35,7 @@ import java.util.Iterator;
  * @author J. H. S.
  */
 class RLine extends BaseRCollection {
-	private final ArrayList renderables = new ArrayList(8);
+	private final ArrayList<Renderable> renderables = new ArrayList<>(8);
 	//private final RenderState startRenderState;
 	private int baseLineOffset;
 	private int desiredMaxWidth;
@@ -295,12 +295,6 @@ class RLine extends BaseRCollection {
 		this.width = this.xoffset = x + width;
 	}
 
-	/**
-	 * @param relement
-	 * @param x
-	 * @param elementHeight The required new line height.
-	 * @param valign
-	 */
 	private final void setElementY(RElement relement, int elementHeight, int valign) {
 		// At this point height should be more than what's needed.
 		int yoffset;
@@ -372,75 +366,6 @@ class RLine extends BaseRCollection {
 		this.width = this.xoffset = newX;
 	}
 
-//	/**
-//	 * Positions line elements vertically.
-//	 */
-//	public final void positionVertically() {		
-//		ArrayList renderables = this.renderables;
-//
-//		// Find word maximum metrics.
-//		int maxDescent = 0;
-//		int maxAscentPlusLeading = 0;
-//		int maxWordHeight = 0;
-//		for(Iterator i = renderables.iterator(); i.hasNext(); ) {
-//			Renderable r = (Renderable) i.next();
-//			if(r instanceof RWord) {
-//				RWord rword = (RWord) r;
-//				int descent = rword.descent;
-//				if(descent > maxDescent) {
-//					maxDescent = descent;
-//				}
-//				int ascentPlusLeading = rword.ascentPlusLeading;
-//				if(ascentPlusLeading > maxAscentPlusLeading) {
-//					maxAscentPlusLeading = ascentPlusLeading;
-//				}
-//				if(rword.height > maxWordHeight) {
-//					maxWordHeight = rword.height;
-//				}
-//			}
-//		}
-//
-//		// Determine proper baseline
-//		int lineHeight = this.height;
-//		int baseLine = lineHeight - maxDescent;
-//		for(Iterator i = renderables.iterator(); i.hasNext(); ) {
-//			Renderable r = (Renderable) i.next();
-//			if(r instanceof RElement) {
-//				RElement relement = (RElement) r;
-//				switch(relement.getVAlign()) {
-//				case RElement.VALIGN_ABSBOTTOM:
-//					//TODO
-//					break;
-//				case RElement.VALIGN_ABSMIDDLE:
-//					int midWord = baseLine + maxDescent - maxWordHeight / 2; 
-//					int halfElementHeight = relement.getHeight() / 2;
-//					if(midWord + halfElementHeight > lineHeight) {
-//						// Change baseLine
-//						midWord = lineHeight - halfElementHeight;
-//						baseLine = midWord + maxWordHeight / 2 - maxDescent;
-//					}
-//					else if(midWord - halfElementHeight < 0) {
-//						midWord = halfElementHeight;
-//						baseLine = midWord + maxWordHeight / 2 - maxDescent;
-//					}
-//					else {
-//						relement.setY(midWord - halfElementHeight);
-//					}
-//					break;
-//				}
-//			}
-//		}
-//				
-//	}
-
-	/**
-	 * Rearrange line elements based on a new line height and
-	 * alignment provided. All line elements are expected to
-	 * have bounds preset.
-	 *
-	 * @param newHeight
-	 * @param alignmentY
-	 */
 	private void adjustHeight(int newHeight, int elementHeight, int valign) {
 		// Set new line height
 		//int oldHeight = this.height;
@@ -634,7 +559,7 @@ class RLine extends BaseRCollection {
 	/* (non-Javadoc)
 	 * @see org.xamjwg.html.renderer.RCollection#getRenderables()
 	 */
-	public Iterator getRenderables() {
+	public Iterator<Renderable> getRenderables() {
 		return this.renderables.iterator();
 	}
 

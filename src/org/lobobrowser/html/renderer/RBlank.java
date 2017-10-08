@@ -30,11 +30,10 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 
 final class RBlank extends BaseBoundableRenderable {
-	//TODO: Is there a need for RBlank's at all?
-	public final int ascentPlusLeading;
+	final int ascentPlusLeading;
 	private final FontMetrics fontMetrics;
 
-	public RBlank(ModelNode me, FontMetrics fm, RenderableContainer container, int ascentPlusLeading, int width, int height) {
+	RBlank(ModelNode me, FontMetrics fm, RenderableContainer container, int ascentPlusLeading, int width, int height) {
 		super(container, me);
 		this.fontMetrics = fm;
 		this.ascentPlusLeading = ascentPlusLeading;
@@ -48,47 +47,27 @@ final class RBlank extends BaseBoundableRenderable {
 
 	public boolean onMouseClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseClick(me, event);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseClick(me, event);
 	}
 
 	public boolean onDoubleClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onDoubleClick(me, event);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onDoubleClick(me, event);
 	}
 
 	public boolean onMousePressed(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseDown(me);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseDown(me);
 	}
 
 	public boolean onMouseReleased(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseUp(me);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseUp(me);
 	}
 
 	public boolean onMouseDisarmed(java.awt.event.MouseEvent event) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseDisarmed(me);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseDisarmed(me);
 	}
 
 	/* (non-Javadoc)
@@ -120,9 +99,6 @@ final class RBlank extends BaseBoundableRenderable {
 			if ((td & RenderState.MASK_TEXTDECORATION_OVERLINE) != 0) {
 				int lineOffset = this.fontMetrics.getLeading();
 				g.drawLine(0, lineOffset, this.width, lineOffset);
-			}
-			if ((td & RenderState.MASK_TEXTDECORATION_BLINK) != 0) {
-				//TODO
 			}
 		}
 		Color over = rs.getOverlayColor();
@@ -180,10 +156,6 @@ final class RBlank extends BaseBoundableRenderable {
 
 	public boolean onRightClick(MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onContextMenu(me, event);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onContextMenu(me, event);
 	}
 }

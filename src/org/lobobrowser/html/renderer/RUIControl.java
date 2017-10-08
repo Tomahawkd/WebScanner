@@ -292,7 +292,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 		}
 	}
 
-	public Iterator getRenderables() {
+	public Iterator<Renderable> getRenderables() {
 		// No children for GUI controls
 		return null;
 	}

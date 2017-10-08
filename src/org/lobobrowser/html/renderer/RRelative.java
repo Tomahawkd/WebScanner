@@ -58,25 +58,6 @@ public class RRelative extends BaseRCollection {
 		}
 	}
 
-	//	public void adjust() {
-//		RElement child = this.child;
-//		if(child instanceof RBlock) {
-//			((RBlock) child).adjust();
-//		}
-//	}
-//
-//	public FloatingBounds getExportableFloatingBounds() {
-//		RElement child = this.child;
-//		if(!(child instanceof RBlock)) {
-//			return null;
-//		}
-//		FloatingBounds blockBounds = ((RBlock) child).getExportableFloatingBounds();
-//		if(blockBounds == null) {
-//			return null;
-//		}
-//		return new ShiftedFloatingBounds(blockBounds, this.xoffset, -this.xoffset, this.yoffset);
-//	}
-//	
 	public RElement getElement() {
 		return this.child;
 	}
@@ -89,7 +70,7 @@ public class RRelative extends BaseRCollection {
 		return yoffset;
 	}
 
-	public Iterator getRenderables() {
+	public Iterator<Renderable> getRenderables() {
 		return CollectionUtilities.singletonIterator(this.child);
 	}
 

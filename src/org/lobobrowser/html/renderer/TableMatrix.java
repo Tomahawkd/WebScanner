@@ -39,7 +39,7 @@ class TableMatrix {
 	//private static final NodeFilter ROWS_FILTER = new RowsFilter();
 	private static final NodeFilter COLUMNS_FILTER = new ColumnsFilter();
 	private final ArrayList ROWS = new ArrayList();
-	private final ArrayList ALL_CELLS = new ArrayList();
+	private final ArrayList<Renderable> ALL_CELLS = new ArrayList<>();
 	private final ArrayList ROW_ELEMENTS = new ArrayList();
 	private final HTMLElementImpl tableElement;
 	private final UserAgentContext parserContext;
@@ -479,12 +479,6 @@ class TableMatrix {
 	 * size. Columns are layed out again if necessary to determine
 	 * if they can really be shrunk.
 	 * </ol>
-	 *
-	 * @param renderState
-	 * @param border
-	 * @param cellSpacingX
-	 * @param cellSpacingY
-	 * @param availWidth
 	 */
 	private void determineColumnSizes(int hasBorder, int cellSpacingX, int cellSpacingY, int availWidth) {
 		HtmlLength tableWidthLength = this.tableWidthLength;
@@ -1542,7 +1536,7 @@ class TableMatrix {
 		return true;
 	}
 
-	public Iterator getRenderables() {
+	public Iterator<Renderable> getRenderables() {
 		return this.ALL_CELLS.iterator();
 	}
 

@@ -275,17 +275,16 @@ class RTable extends BaseElementRenderable {
 	/* (non-Javadoc)
 	 * @see org.xamjwg.html.renderer.RCollection#getRenderables()
 	 */
-	public Iterator getRenderables() {
+	public Iterator<Renderable> getRenderables() {
 		Collection prs = this.positionedRenderables;
 		if (prs != null) {
-			Collection c = new java.util.LinkedList();
-			Iterator i = prs.iterator();
-			while (i.hasNext()) {
-				PositionedRenderable pr = (PositionedRenderable) i.next();
+			Collection<Renderable> c = new java.util.LinkedList<>();
+			for (Object pr1 : prs) {
+				PositionedRenderable pr = (PositionedRenderable) pr1;
 				BoundableRenderable r = pr.renderable;
 				c.add(r);
 			}
-			Iterator i2 = this.tableMatrix.getRenderables();
+			Iterator<Renderable> i2 = this.tableMatrix.getRenderables();
 			while (i2.hasNext()) {
 				c.add(i2.next());
 			}

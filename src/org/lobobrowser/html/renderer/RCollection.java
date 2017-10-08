@@ -30,16 +30,16 @@ public interface RCollection extends BoundableRenderable {
 	/**
 	 * Gets the collection of {@link Renderable} children.
 	 */
-	public Iterator getRenderables();
+	Iterator<Renderable> getRenderables();
 
-	public void updateWidgetBounds(int guiX, int guiY);
+	void updateWidgetBounds(int guiX, int guiY);
 
 	/**
 	 * Invalidates layout in all descendents.
 	 */
-	public void invalidateLayoutDeep();
+	void invalidateLayoutDeep();
 
-	public void focus();
+	void focus();
 
-	public void blur();
+	void blur();
 }
