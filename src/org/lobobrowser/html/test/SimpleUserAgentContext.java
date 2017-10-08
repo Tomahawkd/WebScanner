@@ -14,11 +14,11 @@ import java.util.*;
  * Its setters can be called to modify certain user agent defaults.
  */
 public class SimpleUserAgentContext implements UserAgentContext {
-	private static final Set mediaNames = new HashSet();
+	private static final Set<String> mediaNames = new HashSet<>();
 
 	static {
 		// Media names claimed by this context.
-		Set mn = mediaNames;
+		Set<String> mn = mediaNames;
 		mn.add("screen");
 		mn.add("tv");
 		mn.add("tty");
@@ -152,14 +152,14 @@ public class SimpleUserAgentContext implements UserAgentContext {
 		}
 		Map results;
 		try {
-			results = handler.get(url.toURI(), new HashMap());
+			results = handler.get(url.toURI(), new HashMap<>());
 		} catch (Exception err) {
 			return "";
 		}
 		if (results == null) {
 			return "";
 		}
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		Iterator i = results.entrySet().iterator();
 		boolean firstTime = true;
 		while (i.hasNext()) {
@@ -167,9 +167,8 @@ public class SimpleUserAgentContext implements UserAgentContext {
 			String key = (String) entry.getKey();
 			if ("Cookie".equalsIgnoreCase(key) || "Cookie2".equalsIgnoreCase(key)) {
 				List list = (List) entry.getValue();
-				Iterator li = list.iterator();
-				while (li.hasNext()) {
-					String value = (String) li.next();
+				for (Object aList : list) {
+					String value = (String) aList;
 					if (firstTime) {
 						firstTime = false;
 					} else {
@@ -191,7 +190,7 @@ public class SimpleUserAgentContext implements UserAgentContext {
 		if (handler == null) {
 			return;
 		}
-		Map headers = new HashMap(2);
+		Map<String, List<String>> headers = new HashMap<>(2);
 		headers.put("Set-Cookie", Collections.singletonList(cookieSpec));
 		try {
 			handler.put(url.toURI(), headers);
