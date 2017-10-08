@@ -67,89 +67,40 @@ public class SimpleUserAgentContext implements UserAgentContext {
 		this.proxy = proxy;
 	}
 
-	private String appCodeName = "Cobra";
-
 	/**
 	 * Returns the application "code name." This implementation
 	 * returns the value of a local field.
 	 *
-	 * @see #setAppCodeName(String)
 	 */
 	public String getAppCodeName() {
-		return this.appCodeName;
+		return "Cobra";
 	}
-
-	/**
-	 * Sets the application code name normally returned by
-	 * {@link #getAppCodeName()}.
-	 *
-	 * @param appCodeName An application "code name."
-	 */
-	public void setAppCodeName(String appCodeName) {
-		this.appCodeName = appCodeName;
-	}
-
-	private String appMinorVersion = "0";
 
 	/**
 	 * Gets the "minor version" of the application. This implementation
 	 * returns the value of a local field.
 	 *
-	 * @see #setAppMinorVersion(String)
 	 */
 	public String getAppMinorVersion() {
-		return this.appMinorVersion;
+		return "0";
 	}
-
-	/**
-	 * Sets the value normally returned by {@link #getAppMinorVersion()}.
-	 *
-	 * @param appMinorVersion The application's "minor version."
-	 */
-	public void setAppMinorVersion(String appMinorVersion) {
-		this.appMinorVersion = appMinorVersion;
-	}
-
-	private String appName = "Cobra";
 
 	/**
 	 * Gets the application name. This implementation returns
 	 * the value of a local field.
 	 *
-	 * @see #setAppName(String)
 	 */
 	public String getAppName() {
-		return this.appName;
+		return "Cobra";
 	}
-
-	/**
-	 * Sets the value normally returned by {@link #getAppName()}.
-	 *
-	 * @param appName The application name.
-	 */
-	public void setAppName(String appName) {
-		this.appName = appName;
-	}
-
-	private String appVersion = "1";
 
 	/**
 	 * Gets the major application version. This implementation
 	 * returns the value of a local field.
 	 *
-	 * @see #setAppVersion(String)
 	 */
 	public String getAppVersion() {
-		return this.appVersion;
-	}
-
-	/**
-	 * Sets the value normally returned by {@link #getAppVersion()}.
-	 *
-	 * @param appVersion The application version.
-	 */
-	public void setAppVersion(String appVersion) {
-		this.appVersion = appVersion;
+		return "1";
 	}
 
 	/**
@@ -169,25 +120,13 @@ public class SimpleUserAgentContext implements UserAgentContext {
 		return System.getProperty("os.name");
 	}
 
-	private String userAgent = "Mozilla/4.0 (compatible; MSIE 6.0;) Cobra/Simple";
-
 	/**
 	 * Gets the User-Agent string. This implementation returns
 	 * the value of a local field.
 	 *
-	 * @see #setUserAgent(String)
 	 */
 	public String getUserAgent() {
-		return this.userAgent;
-	}
-
-	/**
-	 * Sets the value normally returned by {@link #getUserAgent()}.
-	 *
-	 * @param userAgent A User-Agent string.
-	 */
-	public void setUserAgent(String userAgent) {
-		this.userAgent = userAgent;
+		return "Mozilla/4.0 (compatible; MSIE 6.0;) Cobra/Simple";
 	}
 
 	/**
@@ -268,66 +207,31 @@ public class SimpleUserAgentContext implements UserAgentContext {
 		return null;
 	}
 
-	private int scriptingOptimizationLevel = -1;
-
 	/**
 	 * Gets the Rhino optimization level. This implementation returns
 	 * the value of a local field defaulting to <code>-1</code>.
 	 *
-	 * @see #setScriptingOptimizationLevel(int)
 	 */
 	public int getScriptingOptimizationLevel() {
-		return this.scriptingOptimizationLevel;
+		return -1;
 	}
-
-	/**
-	 * Sets the value normally returned by {@link #getScriptingOptimizationLevel()}.
-	 *
-	 * @param level A Rhino optimization level.
-	 */
-	public void setScriptingOptimizationLevel(int level) {
-		this.scriptingOptimizationLevel = level;
-	}
-
-	private String vendor = "The Lobo Project";
 
 	public String getVendor() {
-		return this.vendor;
+		return "The Lobo Project";
 	}
-
-	public void setVendor(String vendor) {
-		this.vendor = vendor;
-	}
-
-	private String product = "Cobra";
 
 	public String getProduct() {
-		return this.product;
+		return "Cobra";
 	}
-
-	public void setProduct(String product) {
-		this.product = product;
-	}
-
-	private boolean externalCSSEnabled = true;
 
 	/**
 	 * Determines whether external CSS loading should be enabled.
 	 * This implementation returns the value of a local field
 	 * defaulting to <code>true</code>.
 	 *
-	 * @see #setExternalCSSEnabled(boolean)
 	 */
 	public boolean isExternalCSSEnabled() {
-		return this.externalCSSEnabled;
+		return true;
 	}
 
-	/**
-	 * Sets the value normally returned by {@link #isExternalCSSEnabled()}.
-	 *
-	 * @param enabled A boolean value.
-	 */
-	public void setExternalCSSEnabled(boolean enabled) {
-		this.externalCSSEnabled = enabled;
-	}
 }

@@ -43,10 +43,8 @@ public class SimpleBrowserFrame extends HtmlPanel implements BrowserFrame {
 	 * The {@link HtmlRendererContext} associated with the browser frame.
 	 */
 	private final HtmlRendererContext rcontext;
-	private final HtmlRendererContext parentRcontext;
 
-	public SimpleBrowserFrame(HtmlRendererContext parentRcontext) {
-		this.parentRcontext = parentRcontext;
+	SimpleBrowserFrame(HtmlRendererContext parentRcontext) {
 		this.rcontext = this.createHtmlRendererContext(parentRcontext);
 	}
 
@@ -56,7 +54,7 @@ public class SimpleBrowserFrame extends HtmlPanel implements BrowserFrame {
 	 *
 	 * @param parentRcontext The parent context.
 	 */
-	protected HtmlRendererContext createHtmlRendererContext(HtmlRendererContext parentRcontext) {
+	private HtmlRendererContext createHtmlRendererContext(HtmlRendererContext parentRcontext) {
 		return new SimpleHtmlRendererContext(this, parentRcontext);
 	}
 
@@ -76,12 +74,7 @@ public class SimpleBrowserFrame extends HtmlPanel implements BrowserFrame {
 		return (Document) this.getRootNode();
 	}
 
-	public HtmlRendererContext getParentHtmlRendererContext() {
-		return this.parentRcontext;
-	}
-
 	public void setDefaultMarginInsets(Insets insets) {
-		// Current implementation is the frame HtmlPanel.
 		super.setDefaultMarginInsets(insets);
 	}
 
