@@ -122,11 +122,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 		return docUrl == null ? null : docUrl.getHost();
 	}
 
-	public URL getDocumentURL() {
-		//TODO: Security considerations?
-		return this.documentURL;
-	}
-
 	/**
 	 * Caller should synchronize on document.
 	 */

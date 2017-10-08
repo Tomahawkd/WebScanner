@@ -32,7 +32,7 @@ import java.util.*;
 public class ElementImpl extends NodeImpl implements Element {
 	private final String name;
 
-	public ElementImpl(String name) {
+	ElementImpl(String name) {
 		super();
 		this.name = name;
 	}
@@ -58,7 +58,7 @@ public class ElementImpl extends NodeImpl implements Element {
 	public boolean hasAttributes() {
 		synchronized (this) {
 			Map attrs = this.attributes;
-			return attrs == null ? false : !attrs.isEmpty();
+			return attrs != null && !attrs.isEmpty();
 		}
 	}
 
@@ -127,7 +127,6 @@ public class ElementImpl extends NodeImpl implements Element {
 	}
 
 	private Attr getAttr(String normalName, String value) {
-		// TODO: "specified" attributes
 		return new AttrImpl(normalName, value, true, this, "id"
 				.equals(normalName));
 	}
@@ -154,7 +153,7 @@ public class ElementImpl extends NodeImpl implements Element {
 				"Namespaces not supported");
 	}
 
-	protected static boolean isTagName(Node node, String name) {
+	private static boolean isTagName(Node node, String name) {
 		return node.getNodeName().equalsIgnoreCase(name);
 	}
 
@@ -164,9 +163,7 @@ public class ElementImpl extends NodeImpl implements Element {
 		synchronized (this.treeLock) {
 			ArrayList nl = this.nodeList;
 			if (nl != null) {
-				Iterator i = nl.iterator();
-				while (i.hasNext()) {
-					Object child = i.next();
+				for (Object child : nl) {
 					if (child instanceof Element) {
 						Element childElement = (Element) child;
 						if (matchesAll || isTagName(childElement, name)) {
@@ -203,8 +200,7 @@ public class ElementImpl extends NodeImpl implements Element {
 		String normalName = this.normalizeAttributeName(name);
 		synchronized (this) {
 			Map attributes = this.attributes;
-			return attributes == null ? false : attributes
-					.containsKey(normalName);
+			return attributes != null && attributes.containsKey(normalName);
 		}
 	}
 
@@ -233,7 +229,6 @@ public class ElementImpl extends NodeImpl implements Element {
 				return null;
 			}
 			String oldValue = (String) attributes.remove(normalName);
-			// TODO: "specified" attributes
 			return oldValue == null ? null : this.getAttr(normalName, oldValue);
 		}
 	}
@@ -275,7 +270,7 @@ public class ElementImpl extends NodeImpl implements Element {
 		}
 	}
 
-	protected final String normalizeAttributeName(String name) {
+	final String normalizeAttributeName(String name) {
 		return name.toLowerCase();
 	}
 
@@ -290,21 +285,6 @@ public class ElementImpl extends NodeImpl implements Element {
 			attribs.put(normalName, value);
 		}
 		this.assignAttributeField(normalName, value);
-	}
-
-	/**
-	 * Fast method to set attributes. It is not thread safe.
-	 * Calling thread should hold a treeLock.
-	 */
-	public void setAttributeImpl(String name, String value) throws DOMException {
-		String normalName = this.normalizeAttributeName(name);
-		Map attribs = this.attributes;
-		if (attribs == null) {
-			attribs = new HashMap(2);
-			this.attributes = attribs;
-		}
-		this.assignAttributeField(normalName, value);
-		attribs.put(normalName, value);
 	}
 
 	public Attr setAttributeNode(Attr newAttr) throws DOMException {
@@ -404,9 +384,9 @@ public class ElementImpl extends NodeImpl implements Element {
 	 * Gets inner text of the element, possibly including text in comments.
 	 * This can be used to get Javascript code out of a SCRIPT element.
 	 *
-	 * @param includeComment
+	 * @param includeComment comment
 	 */
-	protected String getRawInnerText(boolean includeComment) {
+	String getRawInnerText(boolean includeComment) {
 		synchronized (this.treeLock) {
 			ArrayList nl = this.nodeList;
 			if (nl != null) {
@@ -451,7 +431,7 @@ public class ElementImpl extends NodeImpl implements Element {
 	}
 
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(this.getNodeName());
 		sb.append(" [");
 		NamedNodeMap attribs = this.getAttributes();
@@ -467,22 +447,6 @@ public class ElementImpl extends NodeImpl implements Element {
 		}
 		sb.append("]");
 		return sb.toString();
-	}
-
-	public void setInnerText(String newText) {
-		org.w3c.dom.Document document = this.document;
-		if (document == null) {
-			return;
-		}
-		synchronized (this.treeLock) {
-			ArrayList nl = this.nodeList;
-			if (nl != null) {
-				nl.clear();
-			}
-		}
-		// Create node and call appendChild outside of synchronized block.
-		Node textNode = document.createTextNode(newText);
-		this.appendChild(textNode);
 	}
 
 	protected Node createSimilarNode() {
