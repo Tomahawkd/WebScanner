@@ -32,8 +32,8 @@ import java.awt.event.MouseEvent;
  * @author J. H. S.
  */
 abstract class BaseBoundableRenderable extends BaseRenderable implements BoundableRenderable {
-	protected static final Color SELECTION_COLOR = Color.BLUE;
-	protected static final Color SELECTION_XOR = Color.LIGHT_GRAY;
+	static final Color SELECTION_COLOR = Color.BLUE;
+	static final Color SELECTION_XOR = Color.LIGHT_GRAY;
 
 	//protected final Rectangle bounds = new Rectangle();
 	protected final RenderableContainer container;
@@ -44,36 +44,32 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 	/**
 	 * Starts as true because ancestors could be invalidated.
 	 */
-	protected boolean layoutUpTreeCanBeInvalidated = true;
+	boolean layoutUpTreeCanBeInvalidated = true;
 
-	public void markLayoutValid() {
+	void markLayoutValid() {
 		this.layoutUpTreeCanBeInvalidated = true;
 	}
 
-	public BaseBoundableRenderable(RenderableContainer container, ModelNode modelNode) {
+	BaseBoundableRenderable(RenderableContainer container, ModelNode modelNode) {
 		this.container = container;
 		this.modelNode = modelNode;
 	}
 
 	public java.awt.Point getGUIPoint(int clientX, int clientY) {
 		Renderable parent = this.getParent();
-		if (parent instanceof BoundableRenderable) {
+		if (parent != null) {
 			return ((BoundableRenderable) parent).getGUIPoint(clientX + this.x, clientY + this.y);
-		} else if (parent == null) {
-			return this.container.getGUIPoint(clientX + this.x, clientY + this.y);
 		} else {
-			throw new IllegalStateException("parent=" + parent);
+			return this.container.getGUIPoint(clientX + this.x, clientY + this.y);
 		}
 	}
 
 	public Point getRenderablePoint(int guiX, int guiY) {
 		Renderable parent = this.getParent();
-		if (parent instanceof BoundableRenderable) {
+		if (parent != null) {
 			return ((BoundableRenderable) parent).getRenderablePoint(guiX - this.x, guiY - this.y);
-		} else if (parent == null) {
-			return new Point(guiX - this.x, guiY - this.y);
 		} else {
-			throw new IllegalStateException("parent=" + parent);
+			return new Point(guiX - this.x, guiY - this.y);
 		}
 	}
 
@@ -173,7 +169,6 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 			} else {
 				parent.invalidateLayoutUpTree();
 			}
-		} else {
 		}
 	}
 
@@ -181,7 +176,7 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 		return this.layoutUpTreeCanBeInvalidated;
 	}
 
-	private final void relayoutImpl(boolean invalidateLocal, boolean onlyIfValid) {
+	private void relayoutImpl(boolean invalidateLocal, boolean onlyIfValid) {
 		if (onlyIfValid && !this.layoutUpTreeCanBeInvalidated) {
 			return;
 		}
@@ -206,11 +201,7 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 		if (EventQueue.isDispatchThread()) {
 			this.relayoutImpl(true, false);
 		} else {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					relayoutImpl(true, false);
-				}
-			});
+			EventQueue.invokeLater(() -> relayoutImpl(true, false));
 		}
 	}
 
@@ -218,11 +209,7 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 		if (EventQueue.isDispatchThread()) {
 			this.relayoutImpl(true, true);
 		} else {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					relayoutImpl(true, true);
-				}
-			});
+			EventQueue.invokeLater(() -> relayoutImpl(true, true));
 		}
 	}
 
@@ -242,7 +229,7 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 	/**
 	 * Parent for invalidation.
 	 */
-	protected RCollection originalParent;
+	private RCollection originalParent;
 
 	public void setOriginalParent(RCollection origParent) {
 		this.originalParent = origParent;
@@ -265,20 +252,15 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 
 	public void repaint(int x, int y, int width, int height) {
 		Renderable parent = this.parent;
-		if (parent instanceof BoundableRenderable) {
+		if (parent != null) {
 			((BoundableRenderable) parent).repaint(x + this.x, y + this.y, width, height);
-		} else if (parent == null) {
-			// Has to be top RBlock.
+		} else {
 			this.container.repaint(x, y, width, height);
 		}
 	}
 
 	public void repaint() {
 		this.repaint(0, 0, this.width, this.height);
-	}
-
-	public Color getBlockBackgroundColor() {
-		return this.container.getPaintedBackgroundColor();
 	}
 
 	public final void paintTranslated(Graphics g) {
@@ -290,19 +272,6 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 		} finally {
 			g.translate(-x, -y);
 		}
-	}
-
-	protected final java.awt.Point translateDescendentPoint(BoundableRenderable descendent, int x, int y) {
-		while (descendent != this) {
-			if (descendent == null) {
-				throw new IllegalStateException("Not descendent");
-			}
-			x += descendent.getX();
-			y += descendent.getY();
-			// Coordinates are always relative to actual parent?
-			descendent = descendent.getParent();
-		}
-		return new Point(x, y);
 	}
 
 	public void onMouseOut(MouseEvent event, int x, int y, ModelNode limit) {

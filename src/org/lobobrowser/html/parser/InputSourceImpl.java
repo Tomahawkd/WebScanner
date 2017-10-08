@@ -46,20 +46,6 @@ public class InputSourceImpl extends InputSource {
 
 	/**
 	 * Constructs an <code>InputSourceImpl</code>.
-	 * <p>
-	 * It is valid to use this constructor, but it
-	 * is generally recommended that callers use
-	 * one of the constructors that take a reader
-	 * or an input stream instead.
-	 *
-	 * @param uri The URI (or systemID) of the document.
-	 */
-	public InputSourceImpl(String uri) {
-		super(uri);
-	}
-
-	/**
-	 * Constructs an <code>InputSourceImpl</code>.
 	 *
 	 * @param byteStream The input stream where content can be read.
 	 * @deprecated Use constructor with <code>uri</code> parameter.

@@ -29,11 +29,10 @@ import javax.swing.*;
 import java.awt.*;
 
 abstract class BaseControl extends JComponent implements UIControl {
-	protected static final Dimension ZERO_DIMENSION = new Dimension(0, 0);
 	protected final HTMLElementImpl controlElement;
 	protected RUIControl ruicontrol;
 
-	public BaseControl(HTMLElementImpl modelNode) {
+	BaseControl(HTMLElementImpl modelNode) {
 		this.controlElement = modelNode;
 	}
 
@@ -49,23 +48,6 @@ abstract class BaseControl extends JComponent implements UIControl {
 		return RElement.VALIGN_BASELINE;
 	}
 
-	/**
-	 * Method invoked when image changes size.
-	 * It's expected to be called outside the GUI thread.
-	 */
-	protected void invalidateAndRepaint() {
-		RUIControl rc = this.ruicontrol;
-		if (rc == null) {
-			return;
-		}
-		if (rc.isValid()) {
-			rc.relayout();
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.UIControl#getBackgroundColor()
-	 */
 	public Color getBackgroundColor() {
 		return this.getBackground();
 	}

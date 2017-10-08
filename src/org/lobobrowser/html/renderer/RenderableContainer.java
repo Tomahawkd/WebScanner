@@ -49,7 +49,7 @@ public interface RenderableContainer {
 
 	public void addDelayedPair(DelayedPair pair);
 
-	public java.util.Collection getDelayedPairs();
+	public java.util.Collection<DelayedPair> getDelayedPairs();
 
 	public RenderableContainer getParentContainer();
 

@@ -167,10 +167,6 @@ class RUIControl extends BaseElementRenderable implements RElement {
 		this.widget.setBounds(guiX + insets.left, guiY + insets.top, this.width - insets.left - insets.right, this.height - insets.top - insets.bottom);
 	}
 
-	public Color getBlockBackgroundColor() {
-		return this.widget.getBackgroundColor();
-	}
-
 	/* (non-Javadoc)
 	 * @see org.xamjwg.html.renderer.BoundableRenderable#paintSelection(java.awt.Graphics, boolean, org.xamjwg.html.renderer.RenderablePoint, org.xamjwg.html.renderer.RenderablePoint)
 	 */

@@ -657,7 +657,7 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 		if (document == null) {
 			return;
 		}
-		HtmlParser parser = new HtmlParser(document.getUserAgentContext(), document, null, null);
+		HtmlParser parser = new HtmlParser(document.getUserAgentContext(), document);
 		synchronized (this) {
 			ArrayList nl = this.nodeList;
 			if (nl != null) {

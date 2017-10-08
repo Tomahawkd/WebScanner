@@ -592,11 +592,7 @@ class RLine extends BaseRCollection {
 		}
 	}
 
-	public Color getBlockBackgroundColor() {
-		return this.container.getPaintedBackgroundColor();
-	}
-
-//	public final void adjustHorizontalBounds(int newX, int newMaxWidth) throws OverflowException {
+	//	public final void adjustHorizontalBounds(int newX, int newMaxWidth) throws OverflowException {
 //		this.x = newX;
 //		this.desiredMaxWidth = newMaxWidth;
 //		int topX = newX + newMaxWidth;

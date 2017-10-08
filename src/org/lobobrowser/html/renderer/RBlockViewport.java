@@ -249,7 +249,7 @@ public class RBlockViewport extends BaseRCollection {
 		// New floating algorithm.
 		this.layoutPass((NodeImpl) this.modelNode);
 
-		Collection delayedPairs = container.getDelayedPairs();
+		Collection<DelayedPair> delayedPairs = container.getDelayedPairs();
 		if (delayedPairs != null && delayedPairs.size() > 0) {
 			// Add positioned renderables that belong here
 			Iterator i = delayedPairs.iterator();

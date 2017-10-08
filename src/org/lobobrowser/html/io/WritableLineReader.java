@@ -28,16 +28,9 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 
 public class WritableLineReader extends LineNumberReader {
-	private final Reader delegate;
-
-	public WritableLineReader(Reader reader, int bufferSize) {
-		super(reader, bufferSize);
-		this.delegate = reader;
-	}
 
 	public WritableLineReader(Reader reader) {
 		super(reader);
-		this.delegate = reader;
 	}
 
 	/*
@@ -76,10 +69,7 @@ public class WritableLineReader extends LineNumberReader {
 
 	public boolean ready() throws IOException {
 		StringBuffer sb = this.writeBuffer;
-		if (sb != null && sb.length() > 0) {
-			return true;
-		}
-		return super.ready();
+		return sb != null && sb.length() > 0 || super.ready();
 	}
 
 	/* (non-Javadoc)
@@ -93,12 +83,6 @@ public class WritableLineReader extends LineNumberReader {
 
 	private StringBuffer writeBuffer = null;
 
-	/**
-	 * Note: Not implicitly thread safe.
-	 *
-	 * @param text
-	 * @throws IOException
-	 */
 	public void write(String text) throws IOException {
 		// Document overrides this to know that new data is coming.
 		StringBuffer sb = this.writeBuffer;

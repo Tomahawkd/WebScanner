@@ -26,21 +26,17 @@ package org.lobobrowser.html.parser;
 import java.util.Set;
 
 class ElementInfo {
-	public final int endElementType;
-	public final boolean childElementOk;
-	public final Set stopTags;
-	public final boolean noScriptElement;
-	public final boolean decodeEntities;
+	final int endElementType;
+	final boolean childElementOk;
+	final Set stopTags;
+	final boolean noScriptElement;
+	final boolean decodeEntities;
 
-	public static final int END_ELEMENT_FORBIDDEN = 0;
-	public static final int END_ELEMENT_OPTIONAL = 1;
-	public static final int END_ELEMENT_REQUIRED = 2;
+	static final int END_ELEMENT_FORBIDDEN = 0;
+	static final int END_ELEMENT_OPTIONAL = 1;
+	static final int END_ELEMENT_REQUIRED = 2;
 
-	/**
-	 * @param ok
-	 * @param type
-	 */
-	public ElementInfo(boolean ok, int type) {
+	ElementInfo(boolean ok, int type) {
 		this.childElementOk = ok;
 		this.endElementType = type;
 		this.stopTags = null;
@@ -48,11 +44,7 @@ class ElementInfo {
 		this.decodeEntities = true;
 	}
 
-	/**
-	 * @param ok
-	 * @param type
-	 */
-	public ElementInfo(boolean ok, int type, Set stopTags) {
+	ElementInfo(boolean ok, int type, Set stopTags) {
 		this.childElementOk = ok;
 		this.endElementType = type;
 		this.stopTags = stopTags;
@@ -60,7 +52,7 @@ class ElementInfo {
 		this.decodeEntities = true;
 	}
 
-	public ElementInfo(boolean ok, int type, Set stopTags, boolean noScriptElement) {
+	ElementInfo(boolean ok, int type, Set stopTags, boolean noScriptElement) {
 		this.childElementOk = ok;
 		this.endElementType = type;
 		this.stopTags = stopTags;
@@ -68,7 +60,7 @@ class ElementInfo {
 		this.decodeEntities = true;
 	}
 
-	public ElementInfo(boolean ok, int type, boolean decodeEntities) {
+	ElementInfo(boolean ok, int type, boolean decodeEntities) {
 		this.childElementOk = ok;
 		this.endElementType = type;
 		this.stopTags = null;

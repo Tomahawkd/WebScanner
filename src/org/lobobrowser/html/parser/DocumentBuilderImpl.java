@@ -49,8 +49,6 @@ import java.io.Reader;
  * @author J. H. S.
  */
 public class DocumentBuilderImpl extends DocumentBuilder {
-	private EntityResolver resolver;
-	private ErrorHandler errorHandler;
 	private final UserAgentContext bcontext;
 	private final HtmlRendererContext rcontext;
 
@@ -79,18 +77,6 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 	public DocumentBuilderImpl(UserAgentContext ucontext, HtmlRendererContext rcontext) {
 		this.rcontext = rcontext;
 		this.bcontext = ucontext;
-	}
-
-	/**
-	 * Constructs a <code>DocumentBuilderImpl</code>. This constructor
-	 * should be used when rendering is expected.
-	 *
-	 * @param rcontext An instance of {@link org.lobobrowser.html.HtmlRendererContext},
-	 *                 which may be an instance of {@link org.lobobrowser.html.test.SimpleHtmlRendererContext}.
-	 */
-	public DocumentBuilderImpl(HtmlRendererContext rcontext) {
-		this.rcontext = rcontext;
-		this.bcontext = rcontext.getUserAgentContext();
 	}
 
 	/**
@@ -144,8 +130,7 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 				throw new IllegalArgumentException("The InputSource must have either a reader, an input stream or a URI.");
 			}
 		}
-		HTMLDocumentImpl document = new HTMLDocumentImpl(this.bcontext, this.rcontext, wis, uri);
-		return document;
+		return new HTMLDocumentImpl(this.bcontext, this.rcontext, wis, uri);
 	}
 
 	public boolean isNamespaceAware() {
@@ -157,11 +142,9 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 	}
 
 	public void setEntityResolver(EntityResolver er) {
-		this.resolver = er;
 	}
 
 	public void setErrorHandler(ErrorHandler eh) {
-		this.errorHandler = eh;
 	}
 
 	public Document newDocument() {
@@ -177,13 +160,5 @@ public class DocumentBuilderImpl extends DocumentBuilder {
 			}
 			return this.domImplementation;
 		}
-	}
-
-	public ErrorHandler getErrorHandler() {
-		return errorHandler;
-	}
-
-	public EntityResolver getResolver() {
-		return resolver;
 	}
 }

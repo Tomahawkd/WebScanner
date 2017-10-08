@@ -116,11 +116,9 @@ class RTable extends BaseElementRenderable {
 			// Only needs to be done if layout was
 			// forced. Otherwise, they should've
 			// been imported already.
-			Collection pairs = this.delayedPairs;
+			Collection<DelayedPair> pairs = this.delayedPairs;
 			if (pairs != null) {
-				Iterator i = pairs.iterator();
-				while (i.hasNext()) {
-					DelayedPair pair = (DelayedPair) i.next();
+				for (DelayedPair pair : pairs) {
 					if (pair.targetParent == this) {
 						this.importDelayedPair(pair);
 					}

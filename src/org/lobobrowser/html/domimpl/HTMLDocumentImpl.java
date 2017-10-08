@@ -362,7 +362,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 			try {
 				String systemId = this.documentURI;
 				String publicId = systemId;
-				HtmlParser parser = new HtmlParser(this.ucontext, this, publicId, systemId);
+				HtmlParser parser = new HtmlParser(this.ucontext, this);
 				parser.parse(reader);
 			} finally {
 				if (closeReader) {
@@ -425,7 +425,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 		// Assumed that text is not broken up HTML.
 		String systemId = this.documentURI;
 		String publicId = systemId;
-		HtmlParser parser = new HtmlParser(this.ucontext, this, publicId, systemId);
+		HtmlParser parser = new HtmlParser(this.ucontext, this);
 		StringReader strReader = new StringReader(text);
 		try {
 			// This sets up another Javascript scope Window. Does it matter?
