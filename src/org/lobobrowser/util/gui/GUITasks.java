@@ -23,18 +23,6 @@ package org.lobobrowser.util.gui;
 import java.awt.*;
 
 public class GUITasks {
-	public static Frame getTopFrame() {
-		Frame[] frames = Frame.getFrames();
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i].getFocusOwner() != null) {
-				return frames[i];
-			}
-		}
-		if (frames.length > 0) {
-			return frames[0];
-		}
-		return null;
-	}
 
 	public static void drawDashed(Graphics g, int x1, int y1, int x2, int y2, int dashSize, int gapSize) {
 		if (x2 < x1) {
