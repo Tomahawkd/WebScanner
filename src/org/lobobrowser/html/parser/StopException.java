@@ -28,10 +28,7 @@ import org.w3c.dom.Element;
 class StopException extends Exception {
 	private final Element element;
 
-	/**
-	 * @param element
-	 */
-	public StopException(Element element) {
+	StopException(Element element) {
 		super();
 		this.element = element;
 	}
