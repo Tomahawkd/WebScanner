@@ -235,13 +235,6 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 		this.originalParent = origParent;
 	}
 
-	/**
-	 * This is the parent based on the original element hierarchy.
-	 */
-	public RCollection getOriginalParent() {
-		return this.originalParent;
-	}
-
 	public RCollection getOriginalOrCurrentParent() {
 		RCollection origParent = this.originalParent;
 		if (origParent == null) {

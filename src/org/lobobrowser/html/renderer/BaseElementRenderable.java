@@ -245,7 +245,7 @@ abstract class BaseElementRenderable extends BaseRCollection implements RElement
 	/* (non-Javadoc)
 	 * @see org.xamjwg.html.renderer.RenderableContainer#add(java.awt.Component)
 	 */
-	public Component addComponent(Component component) {
+	public void addComponent(Component component) {
 		// Expected to be called in GUI thread.
 		// Adds only in local collection.
 		// Does not remove from parent.
@@ -257,7 +257,6 @@ abstract class BaseElementRenderable extends BaseRCollection implements RElement
 			this.guiComponents = gc;
 		}
 		gc.add(component);
-		return component;
 	}
 
 	public void updateAllWidgetBounds() {

@@ -661,16 +661,14 @@ public class HtmlBlockPanel extends JComponent implements NodeRenderer, Renderab
 		}
 	}
 
-	public Component addComponent(Component component) {
+	public void addComponent(Component component) {
 		Set<Component> c = this.components;
 		if (c == null) {
 			c = new HashSet<>();
 			this.components = c;
 		}
 		if (c.add(component)) {
-			return component;
 		} else {
-			return null;
 		}
 	}
 

@@ -29,7 +29,7 @@ import org.lobobrowser.html.style.RenderState;
 import java.awt.*;
 
 class HrControl extends BaseControl {
-	public HrControl(HTMLElementImpl modelNode) {
+	HrControl(HTMLElementImpl modelNode) {
 		super(modelNode);
 	}
 
@@ -37,15 +37,10 @@ class HrControl extends BaseControl {
 		super.paintComponent(g);
 		Dimension size = this.getSize();
 		int offset = 8;
-		int x = offset;
 		int y = size.height / 2 - 1;
 		int width = size.width - offset * 2;
 		g.setColor(Color.black);
-		g.drawRect(x, y, width, 2);
-	}
-
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
-		return inSelection;
+		g.drawRect(offset, y, width, 2);
 	}
 
 	private int availWidth;

@@ -29,10 +29,8 @@ import java.awt.*;
  * or GUI component whose layout may be invalidated.
  */
 public interface RenderableContainer {
-	//public Insets getInsets();
-	Component addComponent(Component component);
+	void addComponent(Component component);
 
-	//public void remove(Component component);
 	void invalidateLayoutUpTree();
 
 	void repaint(int x, int y, int width, int height);
