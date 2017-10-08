@@ -846,16 +846,6 @@ abstract class BaseElementRenderable extends BaseRCollection implements RElement
 		return marginInsets == null ? 0 : marginInsets.bottom;
 	}
 
-	public int getMarginLeft() {
-		Insets marginInsets = this.marginInsets;
-		return marginInsets == null ? 0 : marginInsets.left;
-	}
-
-	public int getMarginRight() {
-		Insets marginInsets = this.marginInsets;
-		return marginInsets == null ? 0 : marginInsets.right;
-	}
-
 	public int getMarginTop() {
 		Insets marginInsets = this.marginInsets;
 		return marginInsets == null ? 0 : marginInsets.top;

@@ -23,12 +23,12 @@ package org.lobobrowser.html.renderer;
 public class ExportableFloat {
 	public static final ExportableFloat[] EMPTY_ARRAY = new ExportableFloat[0];
 	public final BoundableRenderable element;
-	public final boolean leftFloat;
-	public final int origX;
-	public final int origY;
+	final boolean leftFloat;
+	final int origX;
+	final int origY;
 
-	public ExportableFloat(BoundableRenderable element, boolean leftFloat, int origX,
-	                       int origY) {
+	ExportableFloat(BoundableRenderable element, boolean leftFloat, int origX,
+	                int origY) {
 		super();
 		this.element = element;
 		this.leftFloat = leftFloat;

@@ -24,27 +24,27 @@ interface FloatingBounds {
 	/**
 	 * The offset from the left at the given Y, not counting insets.
 	 */
-	public int getLeft(int y);
+	int getLeft(int y);
 
 	/**
 	 * The offset from the right at the given Y, not counting insets.
 	 */
-	public int getRight(int y);
+	int getRight(int y);
 
 	/**
 	 * The Y at which the float clears starting at the given Y.
 	 */
-	public int getClearY(int y);
+	int getClearY(int y);
 
 	/**
 	 * The Y at which the first float clears. It does
 	 * not recurse to check other floats.
 	 */
-	public int getFirstClearY(int y);
+	int getFirstClearY(int y);
 
-	public int getLeftClearY(int y);
+	int getLeftClearY(int y);
 
-	public int getRightClearY(int y);
+	int getRightClearY(int y);
 
-	public int getMaxY();
+	int getMaxY();
 }

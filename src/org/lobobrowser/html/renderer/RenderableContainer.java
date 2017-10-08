@@ -30,28 +30,28 @@ import java.awt.*;
  */
 public interface RenderableContainer {
 	//public Insets getInsets();
-	public Component addComponent(Component component);
+	Component addComponent(Component component);
 
 	//public void remove(Component component);
-	public void invalidateLayoutUpTree();
+	void invalidateLayoutUpTree();
 
-	public void repaint(int x, int y, int width, int height);
+	void repaint(int x, int y, int width, int height);
 
-	public void relayout();
+	void relayout();
 
-	public void updateAllWidgetBounds();
+	void updateAllWidgetBounds();
 
-	public Color getPaintedBackgroundColor();
+	Color getPaintedBackgroundColor();
 
-	public java.awt.Point getGUIPoint(int x, int y);
+	java.awt.Point getGUIPoint(int x, int y);
 
-	public void focus();
+	void focus();
 
-	public void addDelayedPair(DelayedPair pair);
+	void addDelayedPair(DelayedPair pair);
 
-	public java.util.Collection<DelayedPair> getDelayedPairs();
+	java.util.Collection<DelayedPair> getDelayedPairs();
 
-	public RenderableContainer getParentContainer();
+	RenderableContainer getParentContainer();
 
-	public void clearDelayedPairs();
+	void clearDelayedPairs();
 }

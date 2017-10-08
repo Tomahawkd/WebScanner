@@ -35,30 +35,26 @@ public interface RElement extends RCollection, UINode, BoundableRenderable {
 	 * @param availHeight The available height from the parent's canvas.
 	 * @param sizeOnly    Whether the layout is for sizing determination only.
 	 */
-	public void layout(int availWidth, int availHeight, boolean sizeOnly);
+	void layout(int availWidth, int availHeight, boolean sizeOnly);
 
 	/**
 	 * Vertical alignment for elements rendered in a line.
 	 * Returns one of the constants defined in this class.
 	 */
-	public int getVAlign();
+	int getVAlign();
 
-	public int getMarginTop();
+	int getMarginTop();
 
-	public int getMarginLeft();
+	int getMarginBottom();
 
-	public int getMarginBottom();
+	int getCollapsibleMarginTop();
 
-	public int getMarginRight();
+	int getCollapsibleMarginBottom();
 
-	public int getCollapsibleMarginTop();
-
-	public int getCollapsibleMarginBottom();
-
-	public static final int VALIGN_TOP = 0;
-	public static final int VALIGN_MIDDLE = 1;
-	public static final int VALIGN_BOTTOM = 2;
-	public static final int VALIGN_ABSMIDDLE = 3;
-	public static final int VALIGN_ABSBOTTOM = 4;
-	public static final int VALIGN_BASELINE = 5;
+	int VALIGN_TOP = 0;
+	int VALIGN_MIDDLE = 1;
+	int VALIGN_BOTTOM = 2;
+	int VALIGN_ABSMIDDLE = 3;
+	int VALIGN_ABSBOTTOM = 4;
+	int VALIGN_BASELINE = 5;
 }

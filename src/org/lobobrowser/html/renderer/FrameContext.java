@@ -27,9 +27,9 @@ import org.lobobrowser.html.domimpl.NodeImpl;
  * document is rendered, typically a browser frame of some sort.
  */
 public interface FrameContext {
-	public void resetSelection(RenderableSpot rpoint);
+	void resetSelection(RenderableSpot rpoint);
 
-	public void expandSelection(RenderableSpot rpoint);
+	void expandSelection(RenderableSpot rpoint);
 
-	public void delayedRelayout(NodeImpl node);
+	void delayedRelayout(NodeImpl node);
 }

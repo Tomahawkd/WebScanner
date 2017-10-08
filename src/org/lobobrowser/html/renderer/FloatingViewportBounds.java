@@ -27,14 +27,7 @@ class FloatingViewportBounds implements FloatingBounds {
 	private final int offsetFromBorder;
 	private final int height;
 
-	/**
-	 * @param prevBounds
-	 * @param leftFloat
-	 * @param y
-	 * @param offsetFromBorder Width of floating box, including padding insets.
-	 * @param height
-	 */
-	public FloatingViewportBounds(FloatingBounds prevBounds, boolean leftFloat, int y, int offsetFromBorder, int height) {
+	FloatingViewportBounds(FloatingBounds prevBounds, boolean leftFloat, int y, int offsetFromBorder, int height) {
 		this.prevBounds = prevBounds;
 		this.leftFloat = leftFloat;
 		this.y = y;

@@ -30,101 +30,77 @@ import java.awt.event.MouseEvent;
  * implement this interface.
  */
 public interface BoundableRenderable extends Renderable {
-	public ModelNode getModelNode();
+	ModelNode getModelNode();
 
-	public Rectangle getBounds();
+	Rectangle getBounds();
 
-	public Dimension getSize();
+	Dimension getSize();
 
-	public Point getOrigin();
+	Point getOrigin();
 
-	public Point getOriginRelativeTo(RCollection ancestor);
+	Point getOriginRelativeTo(RCollection ancestor);
 
 	/**
 	 * Gets the parent where the renderable is rendered.
 	 */
-	public RCollection getParent();
+	RCollection getParent();
 
-	public void setOriginalParent(RCollection origParent);
+	void setOriginalParent(RCollection origParent);
 
-	/**
-	 * Gets the parent set with {@link #setOriginalParent(RCollection)}.
-	 * It represents the parent where the renderable would have
-	 * been originally rendered according to the DOM. This will
-	 * be non-null only if {@link #getParent()} is not the parent
-	 * where this renderable would have been originally rendered.
-	 */
-	public RCollection getOriginalParent();
+	RCollection getOriginalOrCurrentParent();
 
-	/**
-	 * Returns {@link #getOriginalParent()} if not null. Otherwise
-	 * it returns {@link #getParent()}.
-	 */
-	public RCollection getOriginalOrCurrentParent();
+	void setBounds(int x, int y, int with, int height);
 
-	public void setBounds(int x, int y, int with, int height);
+	void setOrigin(int x, int y);
 
-	public void setOrigin(int x, int y);
+	void setX(int x);
 
-	public void setX(int x);
+	void setY(int y);
 
-	public void setY(int y);
+	int getX();
 
-	public int getX();
+	int getY();
 
-	public int getY();
+	int getHeight();
 
-	public int getHeight();
+	int getWidth();
 
-	public int getWidth();
+	void setHeight(int height);
 
-	public void setHeight(int height);
+	void setWidth(int width);
 
-	public void setWidth(int width);
+	RenderableSpot getLowestRenderableSpot(int x, int y);
 
-	public RenderableSpot getLowestRenderableSpot(int x, int y);
+	Point getRenderablePoint(int guiX, int guiY);
 
-	public Point getRenderablePoint(int guiX, int guiY);
-
-	public void repaint();
+	void repaint();
 
 	/**
 	 * Returns false if the event is consumed. True to propagate further.
 	 */
-	public boolean onMousePressed(MouseEvent event, int x, int y);
+	boolean onMousePressed(MouseEvent event, int x, int y);
 
-	public boolean onMouseReleased(MouseEvent event, int x, int y);
+	boolean onMouseReleased(MouseEvent event, int x, int y);
 
-	public boolean onMouseDisarmed(MouseEvent event);
+	boolean onMouseDisarmed(MouseEvent event);
 
-	public boolean onMouseClick(MouseEvent event, int x, int y);
+	boolean onMouseClick(MouseEvent event, int x, int y);
 
-	public boolean onDoubleClick(MouseEvent event, int x, int y);
+	boolean onDoubleClick(MouseEvent event, int x, int y);
 
-	public boolean onRightClick(MouseEvent event, int x, int y);
+	boolean onRightClick(MouseEvent event, int x, int y);
 
-	public void onMouseMoved(MouseEvent event, int x, int y, boolean triggerEvent, ModelNode limit);
+	void onMouseMoved(MouseEvent event, int x, int y, boolean triggerEvent, ModelNode limit);
 
-	public void onMouseOut(MouseEvent event, int x, int y, ModelNode limit);
+	void onMouseOut(MouseEvent event, int x, int y, ModelNode limit);
 
 	/**
 	 * Returns true if the renderable is fully contained by its modelNode, but
 	 * said modelNode does not fully contain an ancestor renderable.
 	 */
-	public boolean isContainedByNode();
+	boolean isContainedByNode();
 
-	/**
-	 * Asks the Renderable to paint the selection between two
-	 * points. Nothing will be done if the points are outside
-	 * the Renderable.
-	 *
-	 * @param g
-	 * @param inSelection
-	 * @param startPoint
-	 * @param endPoint
-	 * @return True iff it's in selection when finished painting.
-	 */
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint);
+	boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint);
 
 	/**
 	 * Paints by either creating a new clipped graphics context corresponding
@@ -132,23 +108,17 @@ public interface BoundableRenderable extends Renderable {
 	 *
 	 * @param g Parent's Graphics context.
 	 */
-	public void paintTranslated(Graphics g);
+	void paintTranslated(Graphics g);
 
-	public boolean extractSelectionText(StringBuffer buffer, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint);
+	boolean extractSelectionText(StringBuffer buffer, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint);
 
-	public void repaint(int x, int y, int width, int height);
+	void repaint(int x, int y, int width, int height);
 
-	public void relayout();
+	void setParent(RCollection parent);
 
-	public void setParent(RCollection parent);
+	java.awt.Point getGUIPoint(int clientX, int clientY);
 
-	public java.awt.Point getGUIPoint(int clientX, int clientY);
+	int getZIndex();
 
-	public int getOrdinal();
-
-	public void setOrdinal(int ordinal);
-
-	public int getZIndex();
-
-	public void invalidateLayoutUpTree();
+	void invalidateLayoutUpTree();
 }

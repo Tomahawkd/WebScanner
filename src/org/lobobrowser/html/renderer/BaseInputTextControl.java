@@ -23,7 +23,6 @@
  */
 package org.lobobrowser.html.renderer;
 
-import org.lobobrowser.html.domimpl.ElementImpl;
 import org.lobobrowser.html.domimpl.HTMLBaseInputElement;
 import org.lobobrowser.util.gui.WrapperLayout;
 
@@ -36,7 +35,7 @@ abstract class BaseInputTextControl extends BaseInputControl {
 	private static final float DEFAULT_FONT_SIZE = 14.0f;
 	protected final JTextComponent widget;
 
-	public BaseInputTextControl(final HTMLBaseInputElement modelNode) {
+	BaseInputTextControl(final HTMLBaseInputElement modelNode) {
 		super(modelNode);
 		this.setLayout(WrapperLayout.getInstance());
 		JTextComponent widget = this.createTextField();
@@ -44,11 +43,7 @@ abstract class BaseInputTextControl extends BaseInputControl {
 		widget.setFont(font.deriveFont(DEFAULT_FONT_SIZE));
 		widget.setDocument(new LimitedDocument());
 
-		//Note: Value attribute cannot be set in reset() method.
-		//Otherwise, layout revalidation causes typed values to
-		//be lost (including revalidation due to hover.)
-		ElementImpl element = this.controlElement;
-		String value = element.getAttribute("value");
+		String value = this.controlElement.getAttribute("value");
 		widget.setText(value);
 
 		this.widget = widget;

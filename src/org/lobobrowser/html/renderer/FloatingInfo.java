@@ -20,11 +20,11 @@
 */
 package org.lobobrowser.html.renderer;
 
-public class FloatingInfo {
-	public final int shiftX, shiftY;
-	public final ExportableFloat[] floats;
+class FloatingInfo {
+	final int shiftX, shiftY;
+	final ExportableFloat[] floats;
 
-	public FloatingInfo(int shiftX, int shiftY, ExportableFloat[] floats) {
+	FloatingInfo(int shiftX, int shiftY, ExportableFloat[] floats) {
 		super();
 		this.shiftX = shiftX;
 		this.shiftY = shiftY;

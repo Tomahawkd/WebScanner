@@ -21,12 +21,12 @@
 package org.lobobrowser.html.renderer;
 
 public class DelayedPair {
-	public final RenderableContainer targetParent;
+	final RenderableContainer targetParent;
 	public final BoundableRenderable child;
 	public final int x;
 	public final int y;
 
-	public DelayedPair(final RenderableContainer parent, final BoundableRenderable child, int x, int y) {
+	DelayedPair(final RenderableContainer parent, final BoundableRenderable child, int x, int y) {
 		super();
 		this.targetParent = parent;
 		this.child = child;

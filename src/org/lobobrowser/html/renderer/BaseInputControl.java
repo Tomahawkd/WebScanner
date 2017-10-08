@@ -231,10 +231,6 @@ abstract class BaseInputControl extends BaseControl implements InputContext {
 		return 0;
 	}
 
-	public void setMultiple(boolean value) {
-		// For selects
-	}
-
 	public void setSelectedIndex(int value) {
 		// For selects
 	}

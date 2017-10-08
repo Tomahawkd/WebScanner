@@ -29,10 +29,10 @@ import org.lobobrowser.html.style.HtmlValues;
 import org.lobobrowser.html.style.ListStyle;
 
 class BaseRListElement extends RBlock {
-	protected static final String DEFAULT_COUNTER_NAME = "$cobra.counter";
-	protected ListStyle listStyle = null;
+	static final String DEFAULT_COUNTER_NAME = "$cobra.counter";
+	ListStyle listStyle = null;
 
-	public BaseRListElement(NodeImpl modelNode, int listNesting, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer parentContainer) {
+	BaseRListElement(NodeImpl modelNode, int listNesting, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer parentContainer) {
 		super(modelNode, listNesting, pcontext, rcontext, frameContext, parentContainer);
 	}
 

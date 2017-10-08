@@ -21,5 +21,5 @@
 package org.lobobrowser.html.renderer;
 
 interface FloatingBoundsSource {
-	public FloatingBounds getChildBlockFloatingBounds(int apparentBlockWidth);
+	FloatingBounds getChildBlockFloatingBounds(int apparentBlockWidth);
 }
