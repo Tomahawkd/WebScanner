@@ -34,15 +34,15 @@ import java.util.*;
  */
 public class FontFactory {
 	private static final FontFactory instance = new FontFactory();
-	private final Set fontFamilies = new HashSet(40);
-	private final Map fontMap = new HashMap(50);
+	private final Set<String> fontFamilies = new HashSet<>(40);
+	private final Map<FontKey, Font> fontMap = new HashMap<>(50);
 
 	/**
 	 *
 	 */
 	private FontFactory() {
 		String[] ffns = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-		Set fontFamilies = this.fontFamilies;
+		Set<String> fontFamilies = this.fontFamilies;
 		synchronized (this) {
 			for (String ffn : ffns) {
 				fontFamilies.add(ffn.toLowerCase());
@@ -54,12 +54,12 @@ public class FontFactory {
 		return instance;
 	}
 
-	private final Map registeredFonts = new HashMap(0);
+	private final Map<String, Font> registeredFonts = new HashMap<>(0);
 
 	public Font getFont(String fontFamily, String fontStyle, String fontVariant, String fontWeight, float fontSize, Set locales, Integer superscript) {
 		FontKey key = new FontKey(fontFamily, fontStyle, fontVariant, fontWeight, fontSize, locales, superscript);
 		synchronized (this) {
-			Font font = (Font) this.fontMap.get(key);
+			Font font = this.fontMap.get(key);
 			if (font == null) {
 				font = this.createFont(key);
 				this.fontMap.put(key, font);
@@ -84,7 +84,7 @@ public class FontFactory {
 		if (fontSuperScript.equals(newSuperscript)) {
 			return baseFont;
 		} else {
-			Map additionalAttributes = new HashMap();
+			Map<TextAttribute, Integer> additionalAttributes = new HashMap<>();
 			additionalAttributes.put(TextAttribute.SUPERSCRIPT, newSuperscript);
 			return baseFont.deriveFont(additionalAttributes);
 		}
@@ -94,7 +94,7 @@ public class FontFactory {
 		String fontNames = key.fontFamily;
 		String matchingFace = null;
 		Set fontFamilies = this.fontFamilies;
-		Map registeredFonts = this.registeredFonts;
+		Map<String, Font> registeredFonts = this.registeredFonts;
 		Font baseFont = null;
 		if (fontNames != null) {
 			StringTokenizer tok = new StringTokenizer(fontNames, ",");
@@ -102,7 +102,7 @@ public class FontFactory {
 				String face = tok.nextToken().trim();
 				String faceTL = face.toLowerCase();
 				if (registeredFonts.containsKey(faceTL)) {
-					baseFont = (Font) registeredFonts.get(faceTL);
+					baseFont = registeredFonts.get(faceTL);
 					break;
 				} else if (fontFamilies.contains(faceTL)) {
 					matchingFace = faceTL;
