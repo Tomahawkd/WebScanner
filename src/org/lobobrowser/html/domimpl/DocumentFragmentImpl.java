@@ -28,7 +28,7 @@ import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Node;
 
 public class DocumentFragmentImpl extends NodeImpl implements DocumentFragment {
-	public DocumentFragmentImpl() {
+	DocumentFragmentImpl() {
 		super();
 	}
 

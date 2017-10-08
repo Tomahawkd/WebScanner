@@ -36,15 +36,15 @@ public class DescendentHTMLCollection implements HTMLCollection {
 	private final Object treeLock;
 	private final boolean nestIntoMatchingNodes;
 
-	public DescendentHTMLCollection(NodeImpl node, NodeFilter filter, Object treeLock) {
+	DescendentHTMLCollection(NodeImpl node, NodeFilter filter, Object treeLock) {
 		this(node, filter, treeLock, true);
 	}
 
 	/**
-	 * @param node
-	 * @param filter
+	 * @param node node
+	 * @param filter filter
 	 */
-	public DescendentHTMLCollection(NodeImpl node, NodeFilter filter, Object treeLock, boolean nestMatchingNodes) {
+	DescendentHTMLCollection(NodeImpl node, NodeFilter filter, Object treeLock, boolean nestMatchingNodes) {
 		rootNode = node;
 		nodeFilter = filter;
 		this.treeLock = treeLock;
@@ -53,7 +53,7 @@ public class DescendentHTMLCollection implements HTMLCollection {
 		document.addDocumentNotificationListener(new LocalNotificationListener(document, this));
 	}
 
-	private Map itemsByName = null;
+	private Map<String, ElementImpl> itemsByName = null;
 	private List itemsByIndex = null;
 
 	private void ensurePopulatedImpl() {
@@ -61,7 +61,7 @@ public class DescendentHTMLCollection implements HTMLCollection {
 			ArrayList descendents = this.rootNode.getDescendents(this.nodeFilter, this.nestIntoMatchingNodes);
 			this.itemsByIndex = descendents == null ? Collections.EMPTY_LIST : descendents;
 			int size = descendents == null ? 0 : descendents.size();
-			Map itemsByName = new HashMap(size * 3 / 2);
+			Map<String, ElementImpl> itemsByName = new HashMap<>(size * 3 / 2);
 			this.itemsByName = itemsByName;
 			for (int i = 0; i < size; i++) {
 				Object descNode = descendents.get(i);
@@ -114,7 +114,7 @@ public class DescendentHTMLCollection implements HTMLCollection {
 	public Node namedItem(String name) {
 		synchronized (this.treeLock) {
 			this.ensurePopulatedImpl();
-			return (Node) this.itemsByName.get(name);
+			return this.itemsByName.get(name);
 		}
 	}
 
@@ -125,85 +125,20 @@ public class DescendentHTMLCollection implements HTMLCollection {
 		}
 	}
 
-//	private final class NodeCounter implements NodeVisitor {
-//		private int count = 0;
-//		
-//		public final void visit(Node node) {
-//			if(nodeFilter.accept(node)) {
-//				this.count++;
-//				throw new SkipVisitorException();
-//			}
-//		}
-//		
-//		public int getCount() {
-//			return this.count;
-//		}
-//	}	
-//
-//	private final class NodeScanner implements NodeVisitor {
-//		private int count = 0;
-//		private Node foundNode = null;
-//		private final int targetIndex;
-//		
-//		public NodeScanner(int idx) {
-//			this.targetIndex = idx;
-//		}
-//		
-//		public final void visit(Node node) {
-//			if(nodeFilter.accept(node)) {
-//				if(this.count == this.targetIndex) {
-//					this.foundNode = node;
-//					throw new StopVisitorException();
-//				}
-//				this.count++;
-//				throw new SkipVisitorException();
-//			}
-//		}
-//		
-//		public Node getNode() {
-//			return this.foundNode;
-//		}
-//	}	
-//
-//	private final class NodeScanner2 implements NodeVisitor {
-//		private int count = 0;
-//		private int foundIndex = -1;
-//		private final Node targetNode;
-//		
-//		public NodeScanner2(Node node) {
-//			this.targetNode = node;
-//		}
-//		
-//		public final void visit(Node node) {
-//			if(nodeFilter.accept(node)) {
-//				if(node == this.targetNode) {
-//					this.foundIndex = this.count;
-//					throw new StopVisitorException();
-//				}
-//				this.count++;
-//				throw new SkipVisitorException();
-//			}
-//		}
-//		
-//		public int getIndex() {
-//			return this.foundIndex;
-//		}
-//	}	
-
 	private static class LocalNotificationListener extends DocumentNotificationAdapter {
 		// Needs to be a static class with a weak reference to
 		// the collection object.
 		private final HTMLDocumentImpl document;
-		private final WeakReference collectionRef;
+		private final WeakReference<DescendentHTMLCollection> collectionRef;
 
-		public LocalNotificationListener(final HTMLDocumentImpl document, final DescendentHTMLCollection collection) {
+		LocalNotificationListener(final HTMLDocumentImpl document, final DescendentHTMLCollection collection) {
 			super();
 			this.document = document;
-			this.collectionRef = new WeakReference(collection);
+			this.collectionRef = new WeakReference<>(collection);
 		}
 
 		public void structureInvalidated(NodeImpl node) {
-			DescendentHTMLCollection collection = (DescendentHTMLCollection) this.collectionRef.get();
+			DescendentHTMLCollection collection = this.collectionRef.get();
 			if (collection == null) {
 				// Gone!
 				this.document.removeDocumentNotificationListener(this);

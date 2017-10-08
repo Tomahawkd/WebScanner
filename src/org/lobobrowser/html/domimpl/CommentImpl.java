@@ -28,7 +28,7 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
 public class CommentImpl extends CharacterDataImpl implements Comment {
-	public CommentImpl(String text) {
+	CommentImpl(String text) {
 		super(text);
 	}
 

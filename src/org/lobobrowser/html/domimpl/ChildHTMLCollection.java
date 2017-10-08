@@ -50,7 +50,6 @@ public class ChildHTMLCollection implements HTMLCollection {
 		if (doc == null) {
 			return null;
 		}
-		//TODO: This might get elements that are not descendents.
 		Node node = doc.getElementById(name);
 		if (node != null && node.getParentNode() == this.rootNode) {
 			return node;

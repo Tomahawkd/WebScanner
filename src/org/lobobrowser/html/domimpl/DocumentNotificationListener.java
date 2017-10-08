@@ -8,9 +8,9 @@ public interface DocumentNotificationListener {
 	 * Called if a property related to the node's
 	 * size has changed.
 	 *
-	 * @param node
+	 * @param node node
 	 */
-	public void sizeInvalidated(NodeImpl node);
+	void sizeInvalidated(NodeImpl node);
 
 	/**
 	 * Called if something such as a color or
@@ -18,17 +18,17 @@ public interface DocumentNotificationListener {
 	 * something which does not affect the
 	 * rendered size.
 	 *
-	 * @param node
+	 * @param node node
 	 */
-	public void lookInvalidated(NodeImpl node);
+	void lookInvalidated(NodeImpl node);
 
 	/**
 	 * Changed if the position of the node in a
 	 * parent has changed.
 	 *
-	 * @param node
+	 * @param node node
 	 */
-	public void positionInvalidated(NodeImpl node);
+	void positionInvalidated(NodeImpl node);
 
 	/**
 	 * This is called when the node has changed, but
@@ -36,32 +36,32 @@ public interface DocumentNotificationListener {
 	 * change. Typically, a node attribute has changed,
 	 * but the set of child nodes has not changed.
 	 *
-	 * @param node
+	 * @param node node
 	 */
-	public void invalidated(NodeImpl node);
+	void invalidated(NodeImpl node);
 
 	/**
 	 * Called when the node (with all its contents) is first
 	 * created by the parser.
 	 *
-	 * @param node
+	 * @param node node
 	 */
-	public void nodeLoaded(NodeImpl node);
+	void nodeLoaded(NodeImpl node);
 
 	/**
 	 * The children of the node might have changed.
 	 *
-	 * @param node
+	 * @param node node
 	 */
-	public void structureInvalidated(NodeImpl node);
+	void structureInvalidated(NodeImpl node);
 
 	/**
 	 * Called when a external script (a SCRIPT tag with a src attribute)
 	 * is about to start loading.
 	 *
-	 * @param node
+	 * @param node node
 	 */
-	public void externalScriptLoading(NodeImpl node);
+	void externalScriptLoading(NodeImpl node);
 
 
 	/**
@@ -69,5 +69,5 @@ public interface DocumentNotificationListener {
 	 * is potentially invalid, e.g. when a new
 	 * style sheet has been added.
 	 */
-	public void allInvalidated();
+	void allInvalidated();
 }
