@@ -1078,8 +1078,8 @@ public class RBlock extends BaseElementRenderable implements
 				return false;
 			}
 		}
-		if (!HtmlController.getInstance().onMouseClick(this.modelNode, event,
-				x, y)) {
+		if (!HtmlController.getInstance().onMouseClick(this.modelNode, event
+		)) {
 			return false;
 		}
 		if (this.backgroundColor != null) {
@@ -1144,8 +1144,8 @@ public class RBlock extends BaseElementRenderable implements
 		} else {
 			this.armedRenderable = null;
 		}
-		if (!HtmlController.getInstance().onMouseDown(this.modelNode, event, x,
-				y)) {
+		if (!HtmlController.getInstance().onMouseDown(this.modelNode
+		)) {
 			return false;
 		}
 		if (this.backgroundColor != null) {
@@ -1178,7 +1178,7 @@ public class RBlock extends BaseElementRenderable implements
 			}
 		}
 		if (!HtmlController.getInstance()
-				.onMouseUp(this.modelNode, event, x, y)) {
+				.onMouseUp(this.modelNode)) {
 			return false;
 		}
 		if (this.backgroundColor != null) {

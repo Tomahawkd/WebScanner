@@ -36,14 +36,9 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 	//private JButton button;
 	private boolean mouseBeingPressed;
 
-	public InputImageControl(final HTMLBaseInputElement modelNode) {
+	InputImageControl(final HTMLBaseInputElement modelNode) {
 		super(modelNode);
 		this.setLayout(WrapperLayout.getInstance());
-//		JButton button = new LocalButton();
-//		this.button = button;
-//		button.setMargin(RBlockViewport.ZERO_INSETS);
-//		button.setBorder(null);
-//		this.add(button);
 		modelNode.addImageListener(this);
 		this.addMouseListener(new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
@@ -51,15 +46,10 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 				repaint();
 			}
 
-//			public void mouseExited(MouseEvent e) {
-//				mouseBeingPressed = false;
-//				repaint();
-//			}
-
 			public void mouseReleased(MouseEvent e) {
 				mouseBeingPressed = false;
 				repaint();
-				HtmlController.getInstance().onPressed(modelNode, e, e.getX(), e.getY());
+				HtmlController.getInstance().onPressed(modelNode, e.getX(), e.getY());
 			}
 		});
 	}
@@ -119,19 +109,15 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 					insets.left, insets.top,
 					size.width - insets.left - insets.right,
 					size.height - insets.top - insets.bottom, this);
-		} else {
-			//TODO: alt
 		}
 		if (this.mouseBeingPressed) {
 			Color over = new Color(255, 100, 100, 64);
-			if (over != null) {
-				Color oldColor = g.getColor();
-				try {
-					g.setColor(over);
-					g.fillRect(0, 0, size.width, size.height);
-				} finally {
-					g.setColor(oldColor);
-				}
+			Color oldColor = g.getColor();
+			try {
+				g.setColor(over);
+				g.fillRect(0, 0, size.width, size.height);
+			} finally {
+				g.setColor(oldColor);
 			}
 		}
 	}
@@ -141,7 +127,7 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 		return ps == null ? new Dimension(0, 0) : ps;
 	}
 
-	public Dimension createPreferredSize(int dw, int dh) {
+	private Dimension createPreferredSize(int dw, int dh) {
 		Image img = this.image;
 		if (dw == -1) {
 			dw = img == null ? -1 : img.getWidth(this);
@@ -158,7 +144,7 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 		return new Dimension(dw, dh);
 	}
 
-	private final boolean checkPreferredSizeChange() {
+	private boolean checkPreferredSizeChange() {
 		Dimension newPs = this.createPreferredSize(this.declaredWidth, this.declaredHeight);
 		Dimension ps = this.preferredSize;
 		if (ps == null) {
@@ -177,13 +163,11 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 	 */
 	public boolean imageUpdate(Image img, int infoflags, int x, int y, final int w, final int h) {
 		if ((infoflags & ImageObserver.ALLBITS) != 0 || (infoflags & ImageObserver.FRAMEBITS) != 0) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					if (!checkPreferredSizeChange()) {
-						repaint();
-					} else {
-						ruicontrol.preferredSizeInvalidated();
-					}
+			EventQueue.invokeLater(() -> {
+				if (!checkPreferredSizeChange()) {
+					repaint();
+				} else {
+					ruicontrol.preferredSizeInvalidated();
 				}
 			});
 		}
@@ -193,14 +177,12 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 	/* (non-Javadoc)
 	 * @see java.awt.Component#imageUpdate(java.awt.Image, int, int, int, int, int)
 	 */
-	public void imageUpdate(Image img, final int w, final int h) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				if (!checkPreferredSizeChange()) {
-					repaint();
-				} else {
-					ruicontrol.preferredSizeInvalidated();
-				}
+	private void imageUpdate() {
+		EventQueue.invokeLater(() -> {
+			if (!checkPreferredSizeChange()) {
+				repaint();
+			} else {
+				ruicontrol.preferredSizeInvalidated();
 			}
 		});
 	}
@@ -212,27 +194,15 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 	public void imageLoaded(ImageEvent event) {
 		// Implementation of ImageListener. Invoked in a request thread most likely.
 		Image image = event.image;
-//		ImageIcon imageIcon = new ImageIcon(image);
-//		this.button.setIcon(imageIcon);
 		this.image = image;
 		int width = image.getWidth(this);
 		int height = image.getHeight(this);
 		if (width != -1 && height != -1) {
-			this.imageUpdate(image, width, height);
+			this.imageUpdate();
 		}
 	}
 
 	public void resetInput() {
-		// NOP
 	}
 
-//	private static class LocalButton extends JButton {
-//		public void revalidate() {
-//			// ignore
-//		}
-//		
-//		public void repaint() {
-//			// ignore
-//		}
-//	}
 }

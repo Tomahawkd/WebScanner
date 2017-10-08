@@ -99,7 +99,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 	public boolean onMouseClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onMouseClick(me, event, x, y);
+			return HtmlController.getInstance().onMouseClick(me, event);
 		} else {
 			return true;
 		}
@@ -108,7 +108,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 	public boolean onDoubleClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onDoubleClick(me, event, x, y);
+			return HtmlController.getInstance().onDoubleClick(me, event);
 		} else {
 			return true;
 		}
@@ -117,7 +117,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 	public boolean onMousePressed(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onMouseDown(me, event, x, y);
+			return HtmlController.getInstance().onMouseDown(me);
 		} else {
 			return true;
 		}
@@ -126,7 +126,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 	public boolean onMouseReleased(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onMouseUp(me, event, x, y);
+			return HtmlController.getInstance().onMouseUp(me);
 		} else {
 			return true;
 		}
@@ -135,7 +135,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 	public boolean onMouseDisarmed(java.awt.event.MouseEvent event) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onMouseDisarmed(me, event);
+			return HtmlController.getInstance().onMouseDisarmed(me);
 		} else {
 			return true;
 		}

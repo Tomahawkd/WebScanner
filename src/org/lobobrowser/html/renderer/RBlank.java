@@ -49,7 +49,7 @@ final class RBlank extends BaseBoundableRenderable {
 	public boolean onMouseClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onMouseClick(me, event, x, y);
+			return HtmlController.getInstance().onMouseClick(me, event);
 		} else {
 			return true;
 		}
@@ -58,7 +58,7 @@ final class RBlank extends BaseBoundableRenderable {
 	public boolean onDoubleClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onDoubleClick(me, event, x, y);
+			return HtmlController.getInstance().onDoubleClick(me, event);
 		} else {
 			return true;
 		}
@@ -67,7 +67,7 @@ final class RBlank extends BaseBoundableRenderable {
 	public boolean onMousePressed(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onMouseDown(me, event, x, y);
+			return HtmlController.getInstance().onMouseDown(me);
 		} else {
 			return true;
 		}
@@ -76,7 +76,7 @@ final class RBlank extends BaseBoundableRenderable {
 	public boolean onMouseReleased(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onMouseUp(me, event, x, y);
+			return HtmlController.getInstance().onMouseUp(me);
 		} else {
 			return true;
 		}
@@ -85,7 +85,7 @@ final class RBlank extends BaseBoundableRenderable {
 	public boolean onMouseDisarmed(java.awt.event.MouseEvent event) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onMouseDisarmed(me, event);
+			return HtmlController.getInstance().onMouseDisarmed(me);
 		} else {
 			return true;
 		}
@@ -181,7 +181,7 @@ final class RBlank extends BaseBoundableRenderable {
 	public boolean onRightClick(MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
 		if (me != null) {
-			return HtmlController.getInstance().onContextMenu(me, event, x, y);
+			return HtmlController.getInstance().onContextMenu(me, event);
 		} else {
 			return true;
 		}

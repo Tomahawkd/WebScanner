@@ -22,7 +22,7 @@ class InputSelectControl extends BaseInputControl {
 
 	private boolean inSelectionEvent;
 
-	public InputSelectControl(final HTMLBaseInputElement modelNode) {
+	InputSelectControl(final HTMLBaseInputElement modelNode) {
 		super(modelNode);
 		this.setLayout(WrapperLayout.getInstance());
 		final JComboBox comboBox = new JComboBox();
@@ -43,7 +43,6 @@ class InputSelectControl extends BaseInputControl {
 								} finally {
 									inSelectionEvent = false;
 								}
-								HtmlController.getInstance().onChange(modelNode);
 							}
 							break;
 						case ItemEvent.DESELECTED:
@@ -79,9 +78,6 @@ class InputSelectControl extends BaseInputControl {
 						}
 					} finally {
 						inSelectionEvent = false;
-					}
-					if (changed) {
-						HtmlController.getInstance().onChange(modelNode);
 					}
 				}
 			}

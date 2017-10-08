@@ -28,24 +28,18 @@ import org.lobobrowser.html.domimpl.HTMLInputElementImpl;
 import org.lobobrowser.util.gui.WrapperLayout;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 class InputButtonControl extends BaseInputControl {
 	private final JButton widget;
 
-	public InputButtonControl(final HTMLBaseInputElement modelNode) {
+	InputButtonControl(final HTMLBaseInputElement modelNode) {
 		super(modelNode);
 		this.setLayout(WrapperLayout.getInstance());
 		JButton widget = new JButton();
 		widget.setContentAreaFilled(false);
 		this.widget = widget;
 		this.add(widget);
-		widget.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				HtmlController.getInstance().onPressed(InputButtonControl.this.controlElement, null, 0, 0);
-			}
-		});
+		widget.addActionListener(event -> HtmlController.getInstance().onPressed(InputButtonControl.this.controlElement, 0, 0));
 	}
 
 	public void reset(int availWidth, int availHeight) {

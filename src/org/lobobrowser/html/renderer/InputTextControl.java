@@ -36,7 +36,7 @@ class InputTextControl extends BaseInputTextControl {
 		JTextField w = (JTextField) this.widget;
 		w.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent event) {
-				HtmlController.getInstance().onEnterPressed(modelNode, null);
+				HtmlController.getInstance().onEnterPressed(modelNode);
 			}
 		});
 	}

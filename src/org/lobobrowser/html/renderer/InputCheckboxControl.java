@@ -31,7 +31,7 @@ import javax.swing.*;
 class InputCheckboxControl extends BaseInputControl {
 	private final JCheckBox widget;
 
-	public InputCheckboxControl(HTMLBaseInputElement modelNode) {
+	InputCheckboxControl(HTMLBaseInputElement modelNode) {
 		super(modelNode);
 		this.setLayout(WrapperLayout.getInstance());
 		JCheckBox checkBox = new JCheckBox();

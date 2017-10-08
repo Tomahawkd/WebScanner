@@ -265,7 +265,7 @@ abstract class BaseRCollection extends BaseBoundableRenderable implements RColle
 	public boolean onRightClick(MouseEvent event, int x, int y) {
 		BoundableRenderable br = this.getRenderable(x, y);
 		if (br == null) {
-			return HtmlController.getInstance().onContextMenu(this.modelNode, event, x, y);
+			return HtmlController.getInstance().onContextMenu(this.modelNode, event);
 		} else {
 			return br.onRightClick(event, x - br.getX(), y - br.getY());
 		}

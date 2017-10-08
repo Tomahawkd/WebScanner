@@ -4,7 +4,6 @@ import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.domimpl.*;
 
-import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 
 class HtmlController {
@@ -14,25 +13,16 @@ class HtmlController {
 		return instance;
 	}
 
-	/**
-	 * @return True to propagate further and false if the event was consumed.
-	 */
-	public boolean onEnterPressed(ModelNode node, InputEvent event) {
+	void onEnterPressed(ModelNode node) {
 		if (node instanceof HTMLInputElementImpl) {
 			HTMLInputElementImpl hie = (HTMLInputElementImpl) node;
 			if (hie.isSubmittableWithEnterKey()) {
 				hie.submitForm(null);
-				return false;
 			}
 		}
-		// No propagation
-		return false;
 	}
 
-	/**
-	 * @return True to propagate further and false if the event was consumed.
-	 */
-	public boolean onMouseClick(ModelNode node, MouseEvent event, int x, int y) {
+	public boolean onMouseClick(ModelNode node, MouseEvent event) {
 		if (node instanceof HTMLAbstractUIElement) {
 			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
 			HtmlRendererContext rcontext = uiElement.getHtmlRendererContext();
@@ -65,19 +55,14 @@ class HtmlController {
 				button.submitForm(formInputs);
 			} else if ("reset".equals(type)) {
 				button.resetForm();
-			} else {
-				// NOP for "button"!
 			}
 			return false;
 		}
 		ModelNode parent = node.getParentModelNode();
-		if (parent == null) {
-			return true;
-		}
-		return this.onMouseClick(parent, event, x, y);
+		return parent == null || this.onMouseClick(parent, event);
 	}
 
-	public boolean onContextMenu(ModelNode node, MouseEvent event, int x, int y) {
+	boolean onContextMenu(ModelNode node, MouseEvent event) {
 		if (node instanceof HTMLAbstractUIElement) {
 			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
 			HtmlRendererContext rcontext = uiElement.getHtmlRendererContext();
@@ -90,13 +75,10 @@ class HtmlController {
 			}
 		}
 		ModelNode parent = node.getParentModelNode();
-		if (parent == null) {
-			return true;
-		}
-		return this.onContextMenu(parent, event, x, y);
+		return parent == null || this.onContextMenu(parent, event);
 	}
 
-	public void onMouseOver(ModelNode node, MouseEvent event, int x, int y, ModelNode limit) {
+	void onMouseOver(ModelNode node, MouseEvent event, ModelNode limit) {
 		while (node != null) {
 			if (node == limit) {
 				break;
@@ -113,7 +95,7 @@ class HtmlController {
 		}
 	}
 
-	public void onMouseOut(ModelNode node, MouseEvent event, int x, int y, ModelNode limit) {
+	void onMouseOut(ModelNode node, MouseEvent event, ModelNode limit) {
 		while (node != null) {
 			if (node == limit) {
 				break;
@@ -133,7 +115,7 @@ class HtmlController {
 	/**
 	 * @return True to propagate further, false if consumed.
 	 */
-	public boolean onDoubleClick(ModelNode node, MouseEvent event, int x, int y) {
+	public boolean onDoubleClick(ModelNode node, MouseEvent event) {
 		if (node instanceof HTMLAbstractUIElement) {
 			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
 			HtmlRendererContext rcontext = uiElement.getHtmlRendererContext();
@@ -144,64 +126,46 @@ class HtmlController {
 			}
 		}
 		ModelNode parent = node.getParentModelNode();
-		if (parent == null) {
-			return true;
-		}
-		return this.onDoubleClick(parent, event, x, y);
+		return parent == null || this.onDoubleClick(parent, event);
 	}
 
 	/**
 	 * @return True to propagate further, false if consumed.
 	 */
-	public boolean onMouseDisarmed(ModelNode node, MouseEvent event) {
+	public boolean onMouseDisarmed(ModelNode node) {
 		if (node instanceof HTMLLinkElementImpl) {
 			((HTMLLinkElementImpl) node).getCurrentStyle().setOverlayColor(null);
 			return false;
 		}
 		ModelNode parent = node.getParentModelNode();
-		if (parent == null) {
-			return true;
-		}
-		return this.onMouseDisarmed(parent, event);
+		return parent == null || this.onMouseDisarmed(parent);
 	}
 
 	/**
 	 * @return True to propagate further, false if consumed.
 	 */
-	public boolean onMouseDown(ModelNode node, MouseEvent event, int x, int y) {
+	boolean onMouseDown(ModelNode node) {
 		if (node instanceof HTMLLinkElementImpl) {
 			((HTMLLinkElementImpl) node).getCurrentStyle().setOverlayColor("#9090FF80");
 			return false;
 		}
 		ModelNode parent = node.getParentModelNode();
-		if (parent == null) {
-			return true;
-		}
-		return this.onMouseDown(parent, event, x, y);
+		return parent == null || this.onMouseDown(parent);
 	}
 
 	/**
 	 * @return True to propagate further, false if consumed.
 	 */
-	public boolean onMouseUp(ModelNode node, MouseEvent event, int x, int y) {
+	boolean onMouseUp(ModelNode node) {
 		if (node instanceof HTMLLinkElementImpl) {
 			((HTMLLinkElementImpl) node).getCurrentStyle().setOverlayColor(null);
 			return false;
 		}
 		ModelNode parent = node.getParentModelNode();
-		if (parent == null) {
-			return true;
-		}
-		return this.onMouseUp(parent, event, x, y);
+		return parent == null || this.onMouseUp(parent);
 	}
 
-	/**
-	 * @param node The node generating the event.
-	 * @param x    For images only, x coordinate of mouse click.
-	 * @param y    For images only, y coordinate of mouse click.
-	 * @return True to propagate further, false if consumed.
-	 */
-	public boolean onPressed(ModelNode node, InputEvent event, int x, int y) {
+	void onPressed(ModelNode node, int x, int y) {
 		if (node instanceof HTMLInputElementImpl) {
 			HTMLInputElementImpl hie = (HTMLInputElementImpl) node;
 			if (hie.isSubmitInput()) {
@@ -225,11 +189,6 @@ class HtmlController {
 				hie.resetForm();
 			}
 		}
-		// No propagate
-		return false;
 	}
 
-	public boolean onChange(ModelNode node) {
-		return false;
-	}
 }

@@ -29,7 +29,7 @@ import javax.swing.*;
 import javax.swing.text.JTextComponent;
 
 class InputPasswordControl extends InputTextControl {
-	public InputPasswordControl(final HTMLBaseInputElement modelNode) {
+	InputPasswordControl(final HTMLBaseInputElement modelNode) {
 		super(modelNode);
 	}
 

@@ -32,7 +32,7 @@ import javax.swing.*;
 class InputRadioControl extends BaseInputControl {
 	private final JRadioButton widget;
 
-	public InputRadioControl(HTMLBaseInputElement modelNode) {
+	InputRadioControl(HTMLBaseInputElement modelNode) {
 		super(modelNode);
 		this.setLayout(WrapperLayout.getInstance());
 		JRadioButton radio = new JRadioButton();

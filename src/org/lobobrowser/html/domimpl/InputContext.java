@@ -24,65 +24,65 @@
 package org.lobobrowser.html.domimpl;
 
 public interface InputContext {
-	public boolean getChecked();
+	boolean getChecked();
 
-	public void setChecked(boolean checked);
+	void setChecked(boolean checked);
 
-	public boolean getDisabled();
+	boolean getDisabled();
 
-	public void setDisabled(boolean disabled);
+	void setDisabled(boolean disabled);
 
-	public int getMaxLength();
+	int getMaxLength();
 
-	public void setMaxLength(int maxLength);
+	void setMaxLength(int maxLength);
 
-	public String getName();
+	String getName();
 
-	public void setName(String name);
+	void setName(String name);
 
-	public boolean getReadOnly();
+	boolean getReadOnly();
 
-	public void setReadOnly(boolean readOnly);
+	void setReadOnly(boolean readOnly);
 
-	public int getControlSize();
+	int getControlSize();
 
-	public void setControlSize(int size);
+	void setControlSize(int size);
 
-	public int getTabIndex();
+	int getTabIndex();
 
-	public void setTabIndex(int tabIndex);
+	void setTabIndex(int tabIndex);
 
-	public String getValue();
+	String getValue();
 
-	public String[] getValues();
+	String[] getValues();
 
-	public void setValue(String value);
+	void setValue(String value);
 
-	public void blur();
+	void blur();
 
-	public void focus();
+	void focus();
 
-	public void select();
+	void select();
 
-	public void click();
+	void click();
 
-	public int getRows();
+	int getRows();
 
-	public int getCols();
+	int getCols();
 
-	public void setRows(int rows);
+	void setRows(int rows);
 
-	public void setCols(int cols);
+	void setCols(int cols);
 
-	public int getSelectedIndex();
+	int getSelectedIndex();
 
-	public void setSelectedIndex(int value);
+	void setSelectedIndex(int value);
 
-	public int getVisibleSize();
+	int getVisibleSize();
 
-	public void setVisibleSize(int value);
+	void setVisibleSize(int value);
 
-	public java.io.File getFileValue();
+	java.io.File getFileValue();
 
-	public void resetInput();
+	void resetInput();
 }

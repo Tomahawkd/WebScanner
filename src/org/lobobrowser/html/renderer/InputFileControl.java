@@ -30,7 +30,7 @@ public class InputFileControl extends BaseInputControl {
 	private final JTextField textField = new JTextField();
 	private final JButton browseButton = new JButton();
 
-	public InputFileControl(HTMLBaseInputElement modelNode) {
+	InputFileControl(HTMLBaseInputElement modelNode) {
 		super(modelNode);
 		this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 		JButton browseButton = this.browseButton;
@@ -55,7 +55,6 @@ public class InputFileControl extends BaseInputControl {
 	}
 
 	public void setValue(String value) {
-		// nop - security
 	}
 
 	private File fileValue;

@@ -34,12 +34,9 @@ import java.awt.image.ImageObserver;
 
 class ImgControl extends BaseControl implements ImageListener {
 	private volatile Image image;
-	//private final UserAgentContext browserContext;
-	private String lastSrc;
 
-	public ImgControl(HTMLImageElementImpl modelNode) {
+	ImgControl(HTMLImageElementImpl modelNode) {
 		super(modelNode);
-		//this.browserContext = pcontext;
 		modelNode.addImageListener(this);
 	}
 
@@ -55,8 +52,6 @@ class ImgControl extends BaseControl implements ImageListener {
 					insets.left, insets.top,
 					size.width - insets.left - insets.right,
 					size.height - insets.top - insets.bottom, this);
-		} else {
-			//TODO: alt
 		}
 	}
 
@@ -107,7 +102,7 @@ class ImgControl extends BaseControl implements ImageListener {
 		return ps == null ? new Dimension(0, 0) : ps;
 	}
 
-	public Dimension createPreferredSize(int dw, int dh) {
+	private Dimension createPreferredSize(int dw, int dh) {
 		Image img = this.image;
 		if (dw == -1) {
 			if (dh != -1) {
@@ -128,27 +123,20 @@ class ImgControl extends BaseControl implements ImageListener {
 			}
 		}
 		if (dh == -1) {
-			if (dw != -1) {
-				int iw = img == null ? -1 : img.getWidth(this);
-				int ih = img == null ? -1 : img.getHeight(this);
-				if (iw == 0) {
-					dh = ih == -1 ? 0 : ih;
-				} else if (iw == -1 || ih == -1) {
-					dh = 0;
-				} else {
-					dh = dw * ih / iw;
-				}
+			int iw = img == null ? -1 : img.getWidth(this);
+			int ih = img == null ? -1 : img.getHeight(this);
+			if (iw == 0) {
+				dh = ih == -1 ? 0 : ih;
+			} else if (iw == -1 || ih == -1) {
+				dh = 0;
 			} else {
-				dh = img == null ? -1 : img.getHeight(this);
-				if (dh == -1) {
-					dh = 0;
-				}
+				dh = dw * ih / iw;
 			}
 		}
 		return new Dimension(dw, dh);
 	}
 
-	private final boolean checkPreferredSizeChange() {
+	private boolean checkPreferredSizeChange() {
 		Dimension newPs = this.createPreferredSize(this.declaredWidth, this.declaredHeight);
 		Dimension ps = this.preferredSize;
 		if (ps == null) {
@@ -167,13 +155,11 @@ class ImgControl extends BaseControl implements ImageListener {
 	 */
 	public boolean imageUpdate(Image img, int infoflags, int x, int y, final int w, final int h) {
 		if ((infoflags & ImageObserver.ALLBITS) != 0 || (infoflags & ImageObserver.FRAMEBITS) != 0) {
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					if (!checkPreferredSizeChange()) {
-						repaint();
-					} else {
-						ruicontrol.preferredSizeInvalidated();
-					}
+			EventQueue.invokeLater(() -> {
+				if (!checkPreferredSizeChange()) {
+					repaint();
+				} else {
+					ruicontrol.preferredSizeInvalidated();
 				}
 			});
 		}
@@ -183,20 +169,14 @@ class ImgControl extends BaseControl implements ImageListener {
 	/* (non-Javadoc)
 	 * @see java.awt.Component#imageUpdate(java.awt.Image, int, int, int, int, int)
 	 */
-	public void imageUpdate(Image img, final int w, final int h) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				if (!checkPreferredSizeChange()) {
-					repaint();
-				} else {
-					ruicontrol.preferredSizeInvalidated();
-				}
+	private void imageUpdate() {
+		EventQueue.invokeLater(() -> {
+			if (!checkPreferredSizeChange()) {
+				repaint();
+			} else {
+				ruicontrol.preferredSizeInvalidated();
 			}
 		});
-	}
-
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
-		return inSelection;
 	}
 
 	public void imageLoaded(ImageEvent event) {
@@ -206,11 +186,11 @@ class ImgControl extends BaseControl implements ImageListener {
 		int width = image.getWidth(this);
 		int height = image.getHeight(this);
 		if (width != -1 && height != -1) {
-			this.imageUpdate(image, width, height);
+			this.imageUpdate();
 		}
 	}
 
 	public String toString() {
-		return "ImgControl[src=" + this.lastSrc + "]";
+		return "ImgControl[]";
 	}
 }
