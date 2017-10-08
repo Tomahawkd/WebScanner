@@ -16,7 +16,7 @@ class BrowserFrameUIControl implements UIControl {
 	private final BrowserFrame browserFrame;
 	private RUIControl ruiControl;
 
-	public BrowserFrameUIControl(HTMLElement element, BrowserFrame browserFrame) {
+	BrowserFrameUIControl(HTMLElement element, BrowserFrame browserFrame) {
 		this.component = browserFrame.getComponent();
 		this.browserFrame = browserFrame;
 		this.element = element;
@@ -24,10 +24,6 @@ class BrowserFrameUIControl implements UIControl {
 
 	public int getVAlign() {
 		return RElement.VALIGN_BASELINE;
-	}
-
-	public float getAlignmentY() {
-		return 0;
 	}
 
 	public Color getBackgroundColor() {
@@ -53,9 +49,7 @@ class BrowserFrameUIControl implements UIControl {
 			String marginwidth = element.getAttribute("marginwidth");
 			String marginheight = element.getAttribute("marginheight");
 			if (marginwidth != null && marginwidth.length() != 0) {
-				if (insets == null) {
-					insets = new HtmlInsets();
-				}
+				insets = new HtmlInsets();
 				marginwidth = marginwidth.trim();
 				if (marginwidth.endsWith("%")) {
 					int value;
@@ -138,12 +132,6 @@ class BrowserFrameUIControl implements UIControl {
 	public void paint(Graphics g) {
 		// We actually have to paint it.
 		this.component.paint(g);
-	}
-
-	public boolean paintSelection(Graphics g, boolean inSelection,
-	                              RenderableSpot startPoint, RenderableSpot endPoint) {
-		// Selection does not cross in here?
-		return false;
 	}
 
 	public void setBounds(int x, int y, int width, int height) {
