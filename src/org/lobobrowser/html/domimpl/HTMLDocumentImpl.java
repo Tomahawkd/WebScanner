@@ -27,9 +27,6 @@ import org.lobobrowser.html.HttpRequest;
 import org.lobobrowser.html.ReadyStateChangeListener;
 import org.lobobrowser.html.UserAgentContext;
 import org.lobobrowser.html.io.WritableLineReader;
-import org.lobobrowser.html.js.Executor;
-import org.lobobrowser.html.js.Location;
-import org.lobobrowser.html.js.Window;
 import org.lobobrowser.html.parser.HtmlParser;
 import org.lobobrowser.html.style.RenderState;
 import org.lobobrowser.html.style.StyleSheetAggregator;
@@ -67,7 +64,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 	private final ElementFactory factory;
 	private final HtmlRendererContext rcontext;
 	private final UserAgentContext ucontext;
-	private final Window window;
 	private final Map elementsById = new WeakValueHashMap();
 	private String documentURI;
 	private java.net.URL documentURL;
@@ -104,19 +100,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 			logger.warning("HTMLDocumentImpl(): Document URI [" + documentURI + "] is malformed.");
 		}
 		this.document = this;
-		// Get Window object
-		Window window;
-		if (rcontext != null) {
-			window = Window.getWindow(rcontext);
-		} else {
-			// Plain parsers may use Javascript too.
-			window = new Window(null, ucontext);
-		}
-		// Window must be retained or it will be garbage collected.
-		this.window = window;
-		window.setDocument(this);
-		// Set up Javascript scope
-		this.setUserData(Executor.SCOPE_KEY, window.getWindowScope(), null);
 	}
 
 	private Set locales;
@@ -186,10 +169,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 
 	public void setDefaultTarget(String value) {
 		this.defaultTarget = value;
-	}
-
-	public AbstractView getDefaultView() {
-		return this.window;
 	}
 
 	public String getTextContent() throws DOMException {
@@ -782,14 +761,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 		}
 	}
 
-	public final Location getLocation() {
-		return this.window.getLocation();
-	}
-
-	public void setLocation(String location) {
-		this.getLocation().setHref(location);
-	}
-
 	public String getURL() {
 		return this.documentURI;
 	}
@@ -803,6 +774,11 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 	}
 
 	private final Collection styleSheets = new CSSStyleSheetList();
+
+	@Override
+	public AbstractView getDefaultView() {
+		return null;
+	}
 
 	public class CSSStyleSheetList extends ArrayList {
 		public int getLength() {
@@ -1207,17 +1183,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 
 	public void setOnloadHandler(Function onloadHandler) {
 		this.onloadHandler = onloadHandler;
-	}
-
-	public Object setUserData(String key, Object data, UserDataHandler handler) {
-		Function onloadHandler = this.onloadHandler;
-		if (onloadHandler != null) {
-			if (org.lobobrowser.html.parser.HtmlParser.MODIFYING_KEY.equals(key) && data == Boolean.FALSE) {
-				//TODO: onload event object?
-				Executor.executeFunction(this, onloadHandler, null);
-			}
-		}
-		return super.setUserData(key, data, handler);
 	}
 
 	protected Node createSimilarNode() {

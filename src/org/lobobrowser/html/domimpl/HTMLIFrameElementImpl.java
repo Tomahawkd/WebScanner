@@ -1,7 +1,6 @@
 package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.BrowserFrame;
-import org.lobobrowser.html.js.Window;
 import org.lobobrowser.html.style.IFrameRenderState;
 import org.lobobrowser.html.style.RenderState;
 import org.w3c.dom.Document;
@@ -45,15 +44,6 @@ public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
 			return null;
 		}
 		return frame.getContentDocument();
-	}
-
-	public Window getContentWindow() {
-		BrowserFrame frame = this.browserFrame;
-		if (frame == null) {
-			// Not loaded yet
-			return null;
-		}
-		return Window.getWindow(frame.getHtmlRendererContext());
 	}
 
 	public String getFrameBorder() {

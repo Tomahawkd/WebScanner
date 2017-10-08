@@ -23,7 +23,6 @@
  */
 package org.lobobrowser.html.domimpl;
 
-import org.lobobrowser.js.AbstractScriptableDelegate;
 import org.w3c.dom.*;
 
 import java.util.ArrayList;
@@ -31,7 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-public class NamedNodeMapImpl extends AbstractScriptableDelegate implements NamedNodeMap {
+public class NamedNodeMapImpl implements NamedNodeMap {
 	//Note: class must be public for reflection to work.
 	private final Map attributes = new HashMap();
 	private final ArrayList attributeList = new ArrayList();

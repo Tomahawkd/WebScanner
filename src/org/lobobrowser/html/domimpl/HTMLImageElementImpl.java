@@ -23,7 +23,6 @@
  */
 package org.lobobrowser.html.domimpl;
 
-import org.lobobrowser.html.js.Executor;
 import org.lobobrowser.html.style.ImageRenderState;
 import org.lobobrowser.html.style.RenderState;
 import org.mozilla.javascript.Function;
@@ -230,11 +229,6 @@ public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
 		for (int i = 0; i < llength; i++) {
 			// Inform listener, holding no lock.
 			listenerArray[i].imageLoaded(event);
-		}
-		Function onload = this.getOnload();
-		if (onload != null) {
-			//TODO: onload event object?
-			Executor.executeFunction(HTMLImageElementImpl.this, onload, null);
 		}
 	}
 

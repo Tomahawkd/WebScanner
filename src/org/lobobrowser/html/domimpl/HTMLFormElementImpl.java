@@ -25,8 +25,6 @@ package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
-import org.lobobrowser.html.js.Executor;
-import org.mozilla.javascript.Function;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLCollection;
@@ -155,16 +153,6 @@ public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
 		this.submit(null);
 	}
 
-	private Function onsubmit;
-
-	public void setOnsubmit(Function value) {
-		this.onsubmit = value;
-	}
-
-	public Function getOnsubmit() {
-		return this.getEventFunction(this.onsubmit, "onsubmit");
-	}
-
 	/**
 	 * This method should be called when form submission is
 	 * done by a submit button.
@@ -173,13 +161,6 @@ public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
 	 *                        need to be submitted, e.g. the submit button parameter.
 	 */
 	public final void submit(final FormInput[] extraFormInputs) {
-		Function onsubmit = this.getOnsubmit();
-		if (onsubmit != null) {
-			//TODO: onsubmit event object?
-			if (!Executor.executeFunction(this, onsubmit, null)) {
-				return;
-			}
-		}
 		HtmlRendererContext context = this.getHtmlRendererContext();
 		if (context != null) {
 			final ArrayList formInputs = new ArrayList();

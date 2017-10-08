@@ -23,7 +23,6 @@
  */
 package org.lobobrowser.html.style;
 
-import org.lobobrowser.js.AbstractScriptableDelegate;
 import org.lobobrowser.util.Urls;
 import org.lobobrowser.util.gui.ColorFactory;
 import org.w3c.dom.DOMException;
@@ -39,7 +38,7 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class AbstractCSS2Properties extends AbstractScriptableDelegate implements CSS2Properties {
+public abstract class AbstractCSS2Properties implements CSS2Properties {
 	private static final Logger logger = Logger.getLogger(AbstractCSS2Properties.class.getName());
 
 	public static final String FLOAT = "float";

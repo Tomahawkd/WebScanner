@@ -25,7 +25,6 @@ package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.HttpRequest;
 import org.lobobrowser.html.UserAgentContext;
-import org.lobobrowser.html.js.Executor;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.Scriptable;

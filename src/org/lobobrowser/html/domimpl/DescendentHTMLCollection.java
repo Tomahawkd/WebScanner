@@ -23,7 +23,6 @@
  */
 package org.lobobrowser.html.domimpl;
 
-import org.lobobrowser.js.AbstractScriptableDelegate;
 import org.lobobrowser.util.Nodes;
 import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLCollection;
@@ -31,7 +30,7 @@ import org.w3c.dom.html2.HTMLCollection;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-public class DescendentHTMLCollection extends AbstractScriptableDelegate implements HTMLCollection {
+public class DescendentHTMLCollection implements HTMLCollection {
 	private final NodeImpl rootNode;
 	private final NodeFilter nodeFilter;
 	private final Object treeLock;

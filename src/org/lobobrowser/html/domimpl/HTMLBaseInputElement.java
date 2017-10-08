@@ -24,7 +24,6 @@
 package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.FormInput;
-import org.lobobrowser.html.js.Executor;
 import org.mozilla.javascript.Function;
 import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLFormElement;
@@ -234,16 +233,6 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 		}
 	}
 
-	private Function onload;
-
-	public Function getOnload() {
-		return this.getEventFunction(this.onload, "onload");
-	}
-
-	public void setOnload(Function onload) {
-		this.onload = onload;
-	}
-
 	private java.awt.Image image = null;
 	private String imageSrc;
 
@@ -320,11 +309,6 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 		for (int i = 0; i < llength; i++) {
 			// Inform listener, holding no lock.
 			listenerArray[i].imageLoaded(event);
-		}
-		Function onload = this.getOnload();
-		if (onload != null) {
-			//TODO: onload event object?
-			Executor.executeFunction(HTMLBaseInputElement.this, onload, null);
 		}
 	}
 

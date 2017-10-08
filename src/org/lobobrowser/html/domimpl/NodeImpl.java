@@ -27,7 +27,6 @@ import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.UserAgentContext;
 import org.lobobrowser.html.style.RenderState;
 import org.lobobrowser.html.style.StyleSheetRenderState;
-import org.lobobrowser.js.AbstractScriptableDelegate;
 import org.lobobrowser.util.Objects;
 import org.lobobrowser.util.Strings;
 import org.w3c.dom.*;
@@ -38,7 +37,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public abstract class NodeImpl extends AbstractScriptableDelegate implements Node, ModelNode {
+public abstract class NodeImpl implements Node, ModelNode {
 	private static final NodeImpl[] EMPTY_ARRAY = new NodeImpl[0];
 	private static final RenderState INVALID_RENDER_STATE = new StyleSheetRenderState(null);
 	protected static final Logger logger = Logger.getLogger(NodeImpl.class.getName());

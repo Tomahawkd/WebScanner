@@ -3,17 +3,11 @@ package org.lobobrowser.html.renderer;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
 import org.lobobrowser.html.domimpl.*;
-import org.lobobrowser.html.js.Event;
-import org.lobobrowser.html.js.Executor;
-import org.mozilla.javascript.Function;
 
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 class HtmlController {
-	private static final Logger logger = Logger.getLogger(HtmlController.class.getName());
 	private static final HtmlController instance = new HtmlController();
 
 	static HtmlController getInstance() {
@@ -39,18 +33,8 @@ class HtmlController {
 	 * @return True to propagate further and false if the event was consumed.
 	 */
 	public boolean onMouseClick(ModelNode node, MouseEvent event, int x, int y) {
-		if (logger.isLoggable(Level.INFO)) {
-			logger.info("onMouseClick(): node=" + node + ",class=" + node.getClass().getName());
-		}
 		if (node instanceof HTMLAbstractUIElement) {
 			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
-			Function f = uiElement.getOnclick();
-			if (f != null) {
-				Event jsEvent = new Event("click", uiElement, event, x, y);
-				if (!Executor.executeFunction(uiElement, f, jsEvent)) {
-					return false;
-				}
-			}
 			HtmlRendererContext rcontext = uiElement.getHtmlRendererContext();
 			if (rcontext != null) {
 				if (!rcontext.onMouseClick(uiElement, event)) {
@@ -94,18 +78,8 @@ class HtmlController {
 	}
 
 	public boolean onContextMenu(ModelNode node, MouseEvent event, int x, int y) {
-		if (logger.isLoggable(Level.INFO)) {
-			logger.info("onContextMenu(): node=" + node + ",class=" + node.getClass().getName());
-		}
 		if (node instanceof HTMLAbstractUIElement) {
 			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
-			Function f = uiElement.getOncontextmenu();
-			if (f != null) {
-				Event jsEvent = new Event("contextmenu", uiElement, event, x, y);
-				if (!Executor.executeFunction(uiElement, f, jsEvent)) {
-					return false;
-				}
-			}
 			HtmlRendererContext rcontext = uiElement.getHtmlRendererContext();
 			if (rcontext != null) {
 				// Needs to be done after Javascript, so the script
@@ -130,11 +104,6 @@ class HtmlController {
 			if (node instanceof HTMLAbstractUIElement) {
 				HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
 				uiElement.setMouseOver(true);
-				Function f = uiElement.getOnmouseover();
-				if (f != null) {
-					Event jsEvent = new Event("mouseover", uiElement, event, x, y);
-					Executor.executeFunction(uiElement, f, jsEvent);
-				}
 				HtmlRendererContext rcontext = uiElement.getHtmlRendererContext();
 				if (rcontext != null) {
 					rcontext.onMouseOver(uiElement, event);
@@ -152,11 +121,6 @@ class HtmlController {
 			if (node instanceof HTMLAbstractUIElement) {
 				HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
 				uiElement.setMouseOver(false);
-				Function f = uiElement.getOnmouseout();
-				if (f != null) {
-					Event jsEvent = new Event("mouseout", uiElement, event, x, y);
-					Executor.executeFunction(uiElement, f, jsEvent);
-				}
 				HtmlRendererContext rcontext = uiElement.getHtmlRendererContext();
 				if (rcontext != null) {
 					rcontext.onMouseOut(uiElement, event);
@@ -170,18 +134,8 @@ class HtmlController {
 	 * @return True to propagate further, false if consumed.
 	 */
 	public boolean onDoubleClick(ModelNode node, MouseEvent event, int x, int y) {
-		if (logger.isLoggable(Level.INFO)) {
-			logger.info("onDoubleClick(): node=" + node + ",class=" + node.getClass().getName());
-		}
 		if (node instanceof HTMLAbstractUIElement) {
 			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
-			Function f = uiElement.getOndblclick();
-			if (f != null) {
-				Event jsEvent = new Event("dblclick", uiElement, event, x, y);
-				if (!Executor.executeFunction(uiElement, f, jsEvent)) {
-					return false;
-				}
-			}
 			HtmlRendererContext rcontext = uiElement.getHtmlRendererContext();
 			if (rcontext != null) {
 				if (!rcontext.onDoubleClick(uiElement, event)) {
@@ -215,20 +169,8 @@ class HtmlController {
 	 * @return True to propagate further, false if consumed.
 	 */
 	public boolean onMouseDown(ModelNode node, MouseEvent event, int x, int y) {
-		boolean pass = true;
-		if (node instanceof HTMLAbstractUIElement) {
-			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
-			Function f = uiElement.getOnmousedown();
-			if (f != null) {
-				Event jsEvent = new Event("mousedown", uiElement, event, x, y);
-				pass = Executor.executeFunction(uiElement, f, jsEvent);
-			}
-		}
 		if (node instanceof HTMLLinkElementImpl) {
 			((HTMLLinkElementImpl) node).getCurrentStyle().setOverlayColor("#9090FF80");
-			return false;
-		}
-		if (!pass) {
 			return false;
 		}
 		ModelNode parent = node.getParentModelNode();
@@ -242,20 +184,8 @@ class HtmlController {
 	 * @return True to propagate further, false if consumed.
 	 */
 	public boolean onMouseUp(ModelNode node, MouseEvent event, int x, int y) {
-		boolean pass = true;
-		if (node instanceof HTMLAbstractUIElement) {
-			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
-			Function f = uiElement.getOnmouseup();
-			if (f != null) {
-				Event jsEvent = new Event("mouseup", uiElement, event, x, y);
-				pass = Executor.executeFunction(uiElement, f, jsEvent);
-			}
-		}
 		if (node instanceof HTMLLinkElementImpl) {
 			((HTMLLinkElementImpl) node).getCurrentStyle().setOverlayColor(null);
-			return false;
-		}
-		if (!pass) {
 			return false;
 		}
 		ModelNode parent = node.getParentModelNode();
@@ -272,16 +202,6 @@ class HtmlController {
 	 * @return True to propagate further, false if consumed.
 	 */
 	public boolean onPressed(ModelNode node, InputEvent event, int x, int y) {
-		if (node instanceof HTMLAbstractUIElement) {
-			HTMLAbstractUIElement uiElement = (HTMLAbstractUIElement) node;
-			Function f = uiElement.getOnclick();
-			if (f != null) {
-				Event jsEvent = new Event("click", uiElement, event, x, y);
-				if (!Executor.executeFunction(uiElement, f, jsEvent)) {
-					return false;
-				}
-			}
-		}
 		if (node instanceof HTMLInputElementImpl) {
 			HTMLInputElementImpl hie = (HTMLInputElementImpl) node;
 			if (hie.isSubmitInput()) {
@@ -310,17 +230,6 @@ class HtmlController {
 	}
 
 	public boolean onChange(ModelNode node) {
-		if (node instanceof HTMLSelectElementImpl) {
-			HTMLSelectElementImpl uiElement = (HTMLSelectElementImpl) node;
-			Function f = uiElement.getOnchange();
-			if (f != null) {
-				Event jsEvent = new Event("change", uiElement);
-				if (!Executor.executeFunction(uiElement, f, jsEvent)) {
-					return false;
-				}
-			}
-		}
-		// No propagate
 		return false;
 	}
 }
