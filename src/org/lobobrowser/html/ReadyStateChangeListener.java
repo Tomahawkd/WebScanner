@@ -37,5 +37,5 @@ public interface ReadyStateChangeListener extends EventListener {
 	/**
 	 * This method is called when the ReadyState changes.
 	 */
-	public void readyStateChanged();
+	void readyStateChanged();
 }

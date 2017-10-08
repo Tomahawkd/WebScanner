@@ -29,11 +29,8 @@ import org.lobobrowser.html.UserAgentContext;
 import org.lobobrowser.util.EventDispatch;
 import org.lobobrowser.util.Urls;
 import org.lobobrowser.util.io.IORoutines;
-import org.w3c.dom.Document;
 
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.awt.*;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -41,7 +38,6 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.Map;
 
 /**
  * The <code>SimpleHttpRequest</code> class implements
@@ -112,23 +108,6 @@ public class SimpleHttpRequest implements HttpRequest {
 		}
 	}
 
-	public synchronized Document getResponseXML() {
-		byte[] bytes = this.responseBytes;
-		if (bytes == null) {
-			return null;
-		}
-		java.io.InputStream in = new ByteArrayInputStream(bytes);
-		try {
-			return DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(in);
-		} catch (Exception err) {
-			return null;
-		}
-	}
-
-	public synchronized byte[] getResponseBytes() {
-		return this.responseBytes;
-	}
-
 	/* (non-Javadoc)
 	 * @see org.xamjwg.html.HttpRequest#getResponseImage()
 	 */
@@ -142,10 +121,6 @@ public class SimpleHttpRequest implements HttpRequest {
 
 	public synchronized int getStatus() {
 		return this.status;
-	}
-
-	public synchronized String getStatusText() {
-		return this.statusText;
 	}
 
 	public void abort() {
@@ -162,15 +137,6 @@ public class SimpleHttpRequest implements HttpRequest {
 				ioe.printStackTrace();
 			}
 		}
-	}
-
-	public synchronized String getAllResponseHeaders() {
-		return this.responseHeaders;
-	}
-
-	public synchronized String getResponseHeader(String headerName) {
-		Map headers = this.responseHeadersMap;
-		return headers == null ? null : (String) headers.get(headerName);
 	}
 
 	public void open(String method, String url) throws IOException {

@@ -3,7 +3,6 @@ package org.lobobrowser.html.test;
 import org.lobobrowser.html.HttpRequest;
 import org.lobobrowser.html.UserAgentContext;
 
-import java.security.Policy;
 import java.util.*;
 
 /**
@@ -68,51 +67,6 @@ public class SimpleUserAgentContext implements UserAgentContext {
 	}
 
 	/**
-	 * Returns the application "code name." This implementation
-	 * returns the value of a local field.
-	 *
-	 */
-	public String getAppCodeName() {
-		return "Cobra";
-	}
-
-	/**
-	 * Gets the "minor version" of the application. This implementation
-	 * returns the value of a local field.
-	 *
-	 */
-	public String getAppMinorVersion() {
-		return "0";
-	}
-
-	/**
-	 * Gets the application name. This implementation returns
-	 * the value of a local field.
-	 *
-	 */
-	public String getAppName() {
-		return "Cobra";
-	}
-
-	/**
-	 * Gets the major application version. This implementation
-	 * returns the value of a local field.
-	 *
-	 */
-	public String getAppVersion() {
-		return "1";
-	}
-
-	/**
-	 * Get the browser language. This implementation returns
-	 * the language of the default locale. It may be overridden
-	 * to provide a different value.
-	 */
-	public String getBrowserLanguage() {
-		return Locale.getDefault().getLanguage();
-	}
-
-	/**
 	 * Returns the value of Java property <code>os.name</code>.
 	 * It may be overridden to provide a different value.
 	 */
@@ -127,17 +81,6 @@ public class SimpleUserAgentContext implements UserAgentContext {
 	 */
 	public String getUserAgent() {
 		return "Mozilla/4.0 (compatible; MSIE 6.0;) Cobra/Simple";
-	}
-
-	/**
-	 * This implementation returns true if and only if
-	 * <code>java.net.CookieHandler.getDefault()</code>
-	 * is returning a non-null value. The method may
-	 * be overridden to provide an alternative means
-	 * of determining cookie enabling state.
-	 */
-	public boolean isCookieEnabled() {
-		return java.net.CookieHandler.getDefault() != null;
 	}
 
 	/**
@@ -196,31 +139,6 @@ public class SimpleUserAgentContext implements UserAgentContext {
 			handler.put(url.toURI(), headers);
 		} catch (Exception ignored) {
 		}
-	}
-
-	/**
-	 * Returns <code>null</code>. This method must be overridden
-	 * if JavaScript code is untrusted.
-	 */
-	public Policy getSecurityPolicy() {
-		return null;
-	}
-
-	/**
-	 * Gets the Rhino optimization level. This implementation returns
-	 * the value of a local field defaulting to <code>-1</code>.
-	 *
-	 */
-	public int getScriptingOptimizationLevel() {
-		return -1;
-	}
-
-	public String getVendor() {
-		return "The Lobo Project";
-	}
-
-	public String getProduct() {
-		return "Cobra";
 	}
 
 	/**
