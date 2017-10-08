@@ -23,7 +23,7 @@ package org.lobobrowser.html.domimpl;
 import org.w3c.dom.UserDataHandler;
 
 public class HTMLBaseElementImpl extends HTMLElementImpl {
-	public HTMLBaseElementImpl(String name) {
+	HTMLBaseElementImpl(String name) {
 		super(name, true);
 	}
 
@@ -34,7 +34,7 @@ public class HTMLBaseElementImpl extends HTMLElementImpl {
 		return super.setUserData(key, data, handler);
 	}
 
-	private final void processBaseTag() {
+	private void processBaseTag() {
 		HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;
 		if (doc != null) {
 			doc.setBaseURI(this.getAttribute("href"));

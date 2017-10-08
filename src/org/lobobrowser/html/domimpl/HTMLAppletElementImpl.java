@@ -4,7 +4,7 @@ import org.w3c.dom.html.HTMLAppletElement;
 
 public class HTMLAppletElementImpl extends HTMLAbstractUIElement implements
 		HTMLAppletElement {
-	public HTMLAppletElementImpl(String name) {
+	HTMLAppletElementImpl(String name) {
 		super(name);
 	}
 

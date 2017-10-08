@@ -25,7 +25,7 @@ import org.w3c.dom.html2.HTMLBaseFontElement;
 
 public class HTMLBaseFontElementImpl extends HTMLAbstractUIElement implements
 		HTMLBaseFontElement {
-	public HTMLBaseFontElementImpl(String name) {
+	HTMLBaseFontElementImpl(String name) {
 		super(name);
 	}
 
@@ -47,7 +47,9 @@ public class HTMLBaseFontElementImpl extends HTMLAbstractUIElement implements
 
 	public int getSize() {
 		try {
-			return Integer.parseInt(this.getAttribute("size"));
+			String attr = this.getAttribute("size");
+			if (attr != null) return Integer.parseInt(attr);
+			else return 0;
 		} catch (Exception thrown) {
 			return 0;
 		}
@@ -61,7 +63,6 @@ public class HTMLBaseFontElementImpl extends HTMLAbstractUIElement implements
 		String size = this.getAttribute("size");
 		if (size != null) {
 			int fontNumber = HtmlValues.getFontNumberOldStyle(size, prevRenderState);
-			float fontSize = HtmlValues.getFontSize(fontNumber);
 			prevRenderState = new BaseFontRenderState(prevRenderState, fontNumber);
 		}
 		return super.createRenderState(prevRenderState);

@@ -30,7 +30,7 @@ public class HTMLAbstractUIElement extends HTMLElementImpl {
 
 	private Map functionByAttribute = null;
 
-	protected Function getEventFunction(Function varValue, String attributeName) {
+	Function getEventFunction(Function varValue, String attributeName) {
 		if (varValue != null) {
 			return varValue;
 		}

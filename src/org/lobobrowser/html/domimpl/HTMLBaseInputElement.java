@@ -34,8 +34,8 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 		super(name);
 	}
 
-	protected InputContext inputContext;
-	protected String deferredValue;
+	InputContext inputContext;
+	private String deferredValue;
 
 	public void setInputContext(InputContext ic) {
 		String dv = null;
@@ -114,7 +114,7 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 
 	public boolean getDisabled() {
 		InputContext ic = this.inputContext;
-		return ic == null ? false : ic.getDisabled();
+		return ic != null && ic.getDisabled();
 	}
 
 	public void setDisabled(boolean disabled) {
@@ -125,7 +125,6 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 	}
 
 	public String getName() {
-		//TODO: Should this return valid of "id"?
 		return this.getAttribute("name");
 	}
 
@@ -135,7 +134,7 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 
 	public boolean getReadOnly() {
 		InputContext ic = this.inputContext;
-		return ic == null ? false : ic.getReadOnly();
+		return ic != null && ic.getReadOnly();
 	}
 
 	public void setReadOnly(boolean readOnly) {
@@ -173,7 +172,7 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 		}
 	}
 
-	protected java.io.File getFileValue() {
+	java.io.File getFileValue() {
 		InputContext ic = this.inputContext;
 		if (ic != null) {
 			return ic.getFileValue();
@@ -183,7 +182,7 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 	}
 
 	public void setValue(String value) {
-		InputContext ic = null;
+		InputContext ic;
 		synchronized (this) {
 			ic = this.inputContext;
 			if (ic == null) {
@@ -254,35 +253,23 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 		}
 	}
 
-	private final ArrayList imageListeners = new ArrayList(1);
+	private final ArrayList<ImageListener> imageListeners = new ArrayList<>(1);
 
 	/**
 	 * Adds a listener of image loading events.
 	 * The listener gets called right away if there's already
 	 * an image.
 	 *
-	 * @param listener
+	 * @param listener listener
 	 */
 	public void addImageListener(ImageListener listener) {
-		ArrayList l = this.imageListeners;
 		java.awt.Image currentImage;
-		synchronized (l) {
+		synchronized (this.imageListeners) {
 			currentImage = this.image;
-			l.add(listener);
+			this.imageListeners.add(listener);
 		}
 		if (currentImage != null) {
-			// Call listener right away if there's already an
-			// image; holding no locks.
 			listener.imageLoaded(new ImageEvent(this, currentImage));
-			// Should not call onload handler here. That's taken
-			// care of otherwise.
-		}
-	}
-
-	public void removeImageListener(ImageListener listener) {
-		ArrayList l = this.imageListeners;
-		synchronized (l) {
-			l.remove(l);
 		}
 	}
 
@@ -294,27 +281,23 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 	}
 
 	private void dispatchEvent(String expectedImgSrc, ImageEvent event) {
-		ArrayList l = this.imageListeners;
 		ImageListener[] listenerArray;
-		synchronized (l) {
+		synchronized (this.imageListeners) {
 			if (!expectedImgSrc.equals(this.imageSrc)) {
 				return;
 			}
 			this.image = event.image;
-			// Get array of listeners while holding lock.
-			listenerArray = (ImageListener[]) l.toArray(ImageListener.EMPTY_ARRAY);
+			listenerArray = this.imageListeners.toArray(ImageListener.EMPTY_ARRAY);
 		}
-		int llength = listenerArray.length;
-		for (int i = 0; i < llength; i++) {
-			// Inform listener, holding no lock.
-			listenerArray[i].imageLoaded(event);
+		for (ImageListener aListenerArray : listenerArray) {
+			aListenerArray.imageLoaded(event);
 		}
 	}
 
 	private class LocalImageListener implements ImageListener {
 		private final String expectedImgSrc;
 
-		public LocalImageListener(String imgSrc) {
+		LocalImageListener(String imgSrc) {
 			this.expectedImgSrc = imgSrc;
 		}
 
