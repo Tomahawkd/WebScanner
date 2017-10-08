@@ -44,44 +44,17 @@ public class FontFactory {
 		String[] ffns = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 		Set fontFamilies = this.fontFamilies;
 		synchronized (this) {
-			for (int i = 0; i < ffns.length; i++) {
-				String ffn = ffns[i];
+			for (String ffn : ffns) {
 				fontFamilies.add(ffn.toLowerCase());
 			}
 		}
 	}
 
-	public static final FontFactory getInstance() {
+	public static FontFactory getInstance() {
 		return instance;
 	}
 
 	private final Map registeredFonts = new HashMap(0);
-
-	/**
-	 * Registers a font family. It does not close the stream provided.
-	 * Fonts should be registered before the renderer has a chance to
-	 * cache document font specifications.
-	 *
-	 * @param fontName   The name of a font as it would appear in a font-family specification.
-	 * @param fontFormat Should be {@link Font#TRUETYPE_FONT}.
-	 */
-	public void registerFont(String fontName, int fontFormat, java.io.InputStream fontStream) throws java.awt.FontFormatException, java.io.IOException {
-		Font f = Font.createFont(fontFormat, fontStream);
-		synchronized (this) {
-			this.registeredFonts.put(fontName.toLowerCase(), f);
-		}
-	}
-
-	/**
-	 * Unregisters a font previously registered with {@link #registerFont(String, int, java.io.InputStream)}.
-	 *
-	 * @param fontName The font name to be removed.
-	 */
-	public void unregisterFont(String fontName) {
-		synchronized (this) {
-			this.registeredFonts.remove(fontName.toLowerCase());
-		}
-	}
 
 	public Font getFont(String fontFamily, String fontStyle, String fontVariant, String fontWeight, float fontSize, Set locales, Integer superscript) {
 		FontKey key = new FontKey(fontFamily, fontStyle, fontVariant, fontWeight, fontSize, locales, superscript);
@@ -95,29 +68,7 @@ public class FontFactory {
 		}
 	}
 
-	private String defaultFontName = "SansSerif";
-
-	public String getDefaultFontName() {
-		return defaultFontName;
-	}
-
-	/**
-	 * Sets the default font name to be used when a name is unrecognized
-	 * or when a font is determined not to be capable of diplaying characters
-	 * from a given language.
-	 * This should be the name of a font that can display unicode text
-	 * across all or most languages.
-	 *
-	 * @param defaultFontName The name of a font.
-	 */
-	public void setDefaultFontName(String defaultFontName) {
-		if (defaultFontName == null) {
-			throw new IllegalArgumentException("defaultFontName cannot be null");
-		}
-		this.defaultFontName = defaultFontName;
-	}
-
-	private final Font createFont(FontKey key) {
+	private Font createFont(FontKey key) {
 		Font font = createFont_Impl(key);
 		return superscriptFont(font, key.superscript);
 	}
@@ -128,7 +79,7 @@ public class FontFactory {
 		}
 		Integer fontSuperScript = (Integer) baseFont.getAttributes().get(TextAttribute.SUPERSCRIPT);
 		if (fontSuperScript == null) {
-			fontSuperScript = new Integer(0);
+			fontSuperScript = 0;
 		}
 		if (fontSuperScript.equals(newSuperscript)) {
 			return baseFont;
@@ -139,7 +90,7 @@ public class FontFactory {
 		}
 	}
 
-	private final Font createFont_Impl(FontKey key) {
+	private Font createFont_Impl(FontKey key) {
 		String fontNames = key.fontFamily;
 		String matchingFace = null;
 		Set fontFamilies = this.fontFamilies;
@@ -169,7 +120,7 @@ public class FontFactory {
 		if (baseFont != null) {
 			return baseFont.deriveFont(fontStyle, key.fontSize);
 		} else if (matchingFace != null) {
-			Font font = createFont(matchingFace, fontStyle, (int) Math.round(key.fontSize));
+			Font font = createFont(matchingFace, fontStyle, Math.round(key.fontSize));
 			Set locales = key.locales;
 			if (locales == null) {
 				Locale locale = Locale.getDefault();
@@ -193,7 +144,8 @@ public class FontFactory {
 			// Otherwise, fall through.
 		}
 		// Last resort:
-		return createFont(this.defaultFontName, fontStyle, (int) Math.round(key.fontSize));
+		String defaultFontName = "SansSerif";
+		return createFont(defaultFontName, fontStyle, Math.round(key.fontSize));
 	}
 
 	private Font createFont(String name, int style, int size) {
@@ -202,25 +154,25 @@ public class FontFactory {
 	}
 
 	private static class FontKey {
-		public final String fontFamily;
-		public final String fontStyle;
-		public final String fontVariant;
-		public final String fontWeight;
+		final String fontFamily;
+		final String fontStyle;
+		final String fontVariant;
+		final String fontWeight;
 		public final float fontSize;
-		public final Set locales;
-		public final Integer superscript;
+		final Set locales;
+		final Integer superscript;
 
 
 		/**
-		 * @param fontFamily
-		 * @param fontStyle
-		 * @param fontVariant
-		 * @param fontWeight
-		 * @param fontSize
+		 * @param fontFamily font family
+		 * @param fontStyle font style
+		 * @param fontVariant font variant
+		 * @param fontWeight font weight
+		 * @param fontSize font size
 		 */
-		public FontKey(final String fontFamily, final String fontStyle,
-		               final String fontVariant, final String fontWeight,
-		               final float fontSize, final Set locales, final Integer superscript) {
+		FontKey(final String fontFamily, final String fontStyle,
+		        final String fontVariant, final String fontWeight,
+		        final float fontSize, final Set locales, final Integer superscript) {
 			this.fontFamily = fontFamily == null ? null : fontFamily.intern();
 			this.fontStyle = fontStyle == null ? null : fontStyle.intern();
 			this.fontVariant = fontVariant == null ? null : fontVariant.intern();
@@ -278,7 +230,7 @@ public class FontFactory {
 					fw.hashCode() ^
 					fs.hashCode() ^
 					(int) this.fontSize ^
-					(ss == null ? 0 : ss.intValue());
+					(ss == null ? 0 : ss);
 			this.cachedHash = ch;
 			return ch;
 		}
