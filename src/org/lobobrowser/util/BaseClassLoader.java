@@ -33,17 +33,10 @@ import java.security.SecureClassLoader;
 public abstract class BaseClassLoader extends SecureClassLoader {
 
 	/**
-	 * @param parent
+	 * @param parent parent
 	 */
-	public BaseClassLoader(ClassLoader parent) {
+	BaseClassLoader(ClassLoader parent) {
 		super(parent);
-	}
-
-	/**
-	 *
-	 */
-	public BaseClassLoader() {
-		super();
 	}
 
 	/* (non-Javadoc)

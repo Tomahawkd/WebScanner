@@ -46,7 +46,7 @@ public class ArrayUtilities {
 		private final int top;
 		private int offset;
 
-		public ArrayIterator(Object[] array, int offset, int length) {
+		ArrayIterator(Object[] array, int offset, int length) {
 			this.array = array;
 			this.offset = offset;
 			this.top = offset + length;

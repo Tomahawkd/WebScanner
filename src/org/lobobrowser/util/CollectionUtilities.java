@@ -36,64 +36,10 @@ public class CollectionUtilities {
 		super();
 	}
 
-	public static Enumeration getIteratorEnumeration(final Iterator i) {
-		return new Enumeration() {
-			public boolean hasMoreElements() {
-				return i.hasNext();
-			}
-
-			public Object nextElement() {
-				return i.next();
-			}
-		};
-	}
-
-	public static Iterator iteratorUnion(final Iterator[] iterators) {
-		return new Iterator() {
-			private int iteratorIndex = 0;
-			private Iterator current = iterators.length > 0 ? iterators[0] : null;
-
-			public boolean hasNext() {
-				for (; ; ) {
-					if (current == null) {
-						return false;
-					}
-					if (current.hasNext()) {
-						return true;
-					}
-					iteratorIndex++;
-					current = iteratorIndex >= iterators.length ? null : iterators[iteratorIndex];
-				}
-			}
-
-			public Object next() {
-				for (; ; ) {
-					if (this.current == null) {
-						throw new NoSuchElementException();
-					}
-					try {
-						return this.current.next();
-					} catch (NoSuchElementException nse) {
-						this.iteratorIndex++;
-						this.current = this.iteratorIndex >= iterators.length ? null : iterators[this.iteratorIndex];
-					}
-				}
-			}
-
-			public void remove() {
-				if (this.current == null) {
-					throw new NoSuchElementException();
-				}
-				this.current.remove();
-			}
-		};
-	}
-
-	public static Collection reverse(Collection collection) {
-		LinkedList newCollection = new LinkedList();
-		Iterator i = collection.iterator();
-		while (i.hasNext()) {
-			newCollection.addFirst(i.next());
+	public static Collection<?> reverse(Collection<?> collection) {
+		LinkedList<Object> newCollection = new LinkedList<>();
+		for (Object aCollection : collection) {
+			newCollection.addFirst(aCollection);
 		}
 		return newCollection;
 	}
