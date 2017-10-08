@@ -49,8 +49,6 @@ import java.net.*;
  * of most callback methods. Overridding some of the methods
  * in this class will usually be necessary in a professional application.
  * <p>
- * A simple way to load a URL into the {@link HtmlPanel} of the
- * renderer context is to invoke {@link #navigate(String)}.
  */
 public class SimpleHtmlRendererContext implements HtmlRendererContext {
 
@@ -87,24 +85,11 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * @param contextComponent The component that will render HTML.
 	 * @param parentRcontext   The parent's renderer context.
 	 */
-	public SimpleHtmlRendererContext(HtmlPanel contextComponent, HtmlRendererContext parentRcontext) {
+	SimpleHtmlRendererContext(HtmlPanel contextComponent, HtmlRendererContext parentRcontext) {
 		super();
 		this.htmlPanel = contextComponent;
 		this.parentRcontext = parentRcontext;
 		this.bcontext = parentRcontext == null ? null : parentRcontext.getUserAgentContext();
-	}
-
-	public HtmlPanel getHtmlPanel() {
-		return this.htmlPanel;
-	}
-
-	private volatile String sourceCode;
-
-	/**
-	 * Gets the source code of the current HTML document.
-	 */
-	public String getSourceCode() {
-		return this.sourceCode;
 	}
 
 	/**
@@ -169,18 +154,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	}
 
 	/**
-	 * Convenience method provided to allow loading a document into
-	 * the renderer.
-	 *
-	 * @param fullURL The absolute URL of the document.
-	 * @see #navigate(URL, String)
-	 */
-	public void navigate(String fullURL) throws java.net.MalformedURLException {
-		java.net.URL href = Urls.createURL(null, fullURL);
-		this.navigate(href, "_this");
-	}
-
-	/**
 	 * Implements simple navigation and form submission with incremental
 	 * rendering and target processing, including
 	 * frame lookup. Should be overridden to allow for
@@ -231,24 +204,20 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 			} else if ("_blank".equals(actualTarget)) {
 				this.open(action, "cobra.blank", "", false);
 				return;
-			} else if ("_this".equals(actualTarget)) {
-				// fall through
 			}
 		}
 
 		// Make request asynchronously.
 		if (this.isNavigationAsynchronous()) {
-			new Thread() {
-				public void run() {
-					try {
-						SimpleHtmlRendererContext.this.submitFormSync(method, action, target, enctype, formInputs);
-					} catch (Exception ignored) {
-					}
+			new Thread(() -> {
+				try {
+					SimpleHtmlRendererContext.this.submitFormSync(method, action, target, formInputs);
+				} catch (Exception ignored) {
 				}
-			}.start();
+			}).start();
 		} else {
 			try {
-				SimpleHtmlRendererContext.this.submitFormSync(method, action, target, enctype, formInputs);
+				SimpleHtmlRendererContext.this.submitFormSync(method, action, target, formInputs);
 			} catch (Exception ignored) {
 			}
 		}
@@ -258,14 +227,9 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * Indicates whether navigation (via {@link #submitForm(String, URL, String, String, FormInput[])}) should be asynchronous.
 	 * This overridable implementation returns <code>true</code>.
 	 */
-	protected boolean isNavigationAsynchronous() {
+	private boolean isNavigationAsynchronous() {
 		return true;
 	}
-
-	/**
-	 * The connection currently opened by openSync() if any.
-	 */
-	protected URLConnection currentConnection;
 
 	/**
 	 * Submits a form and/or navigates by making
@@ -275,27 +239,24 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * @param method     The request method.
 	 * @param action     The action URL.
 	 * @param target     The target identifier.
-	 * @param enctype    The encoding type.
 	 * @param formInputs The form inputs.
-	 * @throws IOException
-	 * @throws org.xml.sax.SAXException
+	 * @throws IOException io
+	 * @throws org.xml.sax.SAXException xml
 	 * @see #submitForm(String, URL, String, String, FormInput[])
 	 */
-	protected void submitFormSync(final String method, final java.net.URL action, final String target, String enctype, final FormInput[] formInputs) throws IOException, org.xml.sax.SAXException {
+	private void submitFormSync(final String method, final java.net.URL action, final String target, final FormInput[] formInputs) throws IOException, org.xml.sax.SAXException {
 		final String actualMethod = method.toUpperCase();
 		URL resolvedURL;
 		if ("GET".equals(actualMethod) && formInputs != null) {
 			boolean firstParam = true;
-			//TODO: What about the userInfo part of the URL?
 			URL noRefAction = new URL(action.getProtocol(), action.getHost(), action.getPort(), action.getFile());
-			StringBuffer newUrlBuffer = new StringBuffer(noRefAction.toExternalForm());
+			StringBuilder newUrlBuffer = new StringBuilder(noRefAction.toExternalForm());
 			if (action.getQuery() == null) {
 				newUrlBuffer.append("?");
 			} else {
 				newUrlBuffer.append("&");
 			}
-			for (int i = 0; i < formInputs.length; i++) {
-				FormInput parameter = formInputs[i];
+			for (FormInput parameter : formInputs) {
 				String name = parameter.getName();
 				String encName = URLEncoder.encode(name, "UTF-8");
 				if (parameter.isText()) {
@@ -328,97 +289,84 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 		} else {
 			urlForLoading = resolvedURL;
 		}
-		long time0 = System.currentTimeMillis();
 		// Using potentially different URL for loading.
 		Proxy proxy = SimpleHtmlRendererContext.this.getProxy();
 		boolean isPost = "POST".equals(actualMethod);
 		URLConnection connection = proxy == null || proxy == Proxy.NO_PROXY ? urlForLoading.openConnection() : urlForLoading.openConnection(proxy);
-		this.currentConnection = connection;
-		try {
-			connection.setRequestProperty("User-Agent", getUserAgentContext().getUserAgent());
-			connection.setRequestProperty("Cookie", "");
-			if (connection instanceof HttpURLConnection) {
-				HttpURLConnection hc = (HttpURLConnection) connection;
-				hc.setRequestMethod(actualMethod);
-				hc.setInstanceFollowRedirects(false);
-			}
-			if (isPost) {
-				connection.setDoOutput(true);
-				ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
-				boolean firstParam = true;
-				if (formInputs != null) {
-					for (int i = 0; i < formInputs.length; i++) {
-						FormInput parameter = formInputs[i];
-						String name = parameter.getName();
-						String encName = URLEncoder.encode(name, "UTF-8");
-						if (parameter.isText()) {
-							if (firstParam) {
-								firstParam = false;
-							} else {
-								bufOut.write((byte) '&');
-							}
-							String valueStr = parameter.getTextValue();
-							String encValue = URLEncoder.encode(valueStr, "UTF-8");
-							bufOut.write(encName.getBytes("UTF-8"));
-							bufOut.write((byte) '=');
-							bufOut.write(encValue.getBytes("UTF-8"));
+
+		connection.setRequestProperty("User-Agent", getUserAgentContext().getUserAgent());
+		connection.setRequestProperty("Cookie", "");
+		if (connection instanceof HttpURLConnection) {
+			HttpURLConnection hc = (HttpURLConnection) connection;
+			hc.setRequestMethod(actualMethod);
+			hc.setInstanceFollowRedirects(false);
+		}
+		if (isPost) {
+			connection.setDoOutput(true);
+			ByteArrayOutputStream bufOut = new ByteArrayOutputStream();
+			boolean firstParam = true;
+			if (formInputs != null) {
+				for (FormInput parameter : formInputs) {
+					String name = parameter.getName();
+					String encName = URLEncoder.encode(name, "UTF-8");
+					if (parameter.isText()) {
+						if (firstParam) {
+							firstParam = false;
+						} else {
+							bufOut.write((byte) '&');
 						}
+						String valueStr = parameter.getTextValue();
+						String encValue = URLEncoder.encode(valueStr, "UTF-8");
+						bufOut.write(encName.getBytes("UTF-8"));
+						bufOut.write((byte) '=');
+						bufOut.write(encValue.getBytes("UTF-8"));
 					}
 				}
-				// Do not add a line break to post content. Some servers
-				// can be picky about that (namely, java.net).
-				byte[] postContent = bufOut.toByteArray();
-				if (connection instanceof HttpURLConnection) {
-					((HttpURLConnection) connection).setFixedLengthStreamingMode(postContent.length);
-				}
-				connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-				//connection.setRequestProperty("Content-Length", String.valueOf(postContent.length));
-				OutputStream postOut = connection.getOutputStream();
-				postOut.write(postContent);
-				postOut.flush();
 			}
+			// Do not add a line break to post content. Some servers
+			// can be picky about that (namely, java.net).
+			byte[] postContent = bufOut.toByteArray();
 			if (connection instanceof HttpURLConnection) {
-				HttpURLConnection hc = (HttpURLConnection) connection;
-				int responseCode = hc.getResponseCode();
-				if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP || responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
-					String location = hc.getHeaderField("Location");
-					if (location != null) {
-						URL href;
-						href = Urls.createURL(action, location);
-						SimpleHtmlRendererContext.this.navigate(href, target);
-					}
-					return;
-				}
+				((HttpURLConnection) connection).setFixedLengthStreamingMode(postContent.length);
 			}
-			InputStream in = connection.getInputStream();
+			connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			//connection.setRequestProperty("Content-Length", String.valueOf(postContent.length));
+			OutputStream postOut = connection.getOutputStream();
+			postOut.write(postContent);
+			postOut.flush();
+		}
+		if (connection instanceof HttpURLConnection) {
+			HttpURLConnection hc = (HttpURLConnection) connection;
+			int responseCode = hc.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_MOVED_PERM || responseCode == HttpURLConnection.HTTP_MOVED_TEMP || responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
+				String location = hc.getHeaderField("Location");
+				if (location != null) {
+					URL href;
+					href = Urls.createURL(action, location);
+					SimpleHtmlRendererContext.this.navigate(href, target);
+				}
+				return;
+			}
+		}
+		try (InputStream in = connection.getInputStream()) {
+			RecordedInputStream rin = new RecordedInputStream(in, 1000000);
+			InputStream bin = new BufferedInputStream(rin, 8192);
+			String actualURI = urlForLoading.toExternalForm();
+			// Only create document, don't parse.
+			HTMLDocumentImpl document = this.createDocument(new InputSourceImpl(bin, actualURI, getDocumentCharset(connection)));
+			// Set document in HtmlPanel. Safe to call outside GUI thread.
+			HtmlPanel panel = htmlPanel;
+			panel.setDocument(document, SimpleHtmlRendererContext.this);
+			// Now start loading.
+			document.load();
+			String ref = urlForLoading.getRef();
+			if (ref != null && ref.length() != 0) {
+				panel.scrollToElement(ref);
+			}
 			try {
-				SimpleHtmlRendererContext.this.sourceCode = null;
-				long time1 = System.currentTimeMillis();
-				RecordedInputStream rin = new RecordedInputStream(in, 1000000);
-				InputStream bin = new BufferedInputStream(rin, 8192);
-				String actualURI = urlForLoading.toExternalForm();
-				// Only create document, don't parse.
-				HTMLDocumentImpl document = this.createDocument(new InputSourceImpl(bin, actualURI, getDocumentCharset(connection)));
-				// Set document in HtmlPanel. Safe to call outside GUI thread.
-				HtmlPanel panel = htmlPanel;
-				panel.setDocument(document, SimpleHtmlRendererContext.this);
-				// Now start loading.
-				document.load();
-				long time2 = System.currentTimeMillis();
-				String ref = urlForLoading.getRef();
-				if (ref != null && ref.length() != 0) {
-					panel.scrollToElement(ref);
-				}
-				try {
-					SimpleHtmlRendererContext.this.sourceCode = rin.getString("ISO-8859-1");
-				} catch (BufferExceededException bee) {
-					SimpleHtmlRendererContext.this.sourceCode = "[TOO BIG]";
-				}
-			} finally {
-				in.close();
+				rin.getString("ISO-8859-1");
+			} catch (BufferExceededException ignored) {
 			}
-		} finally {
-			this.currentConnection = null;
 		}
 	}
 
@@ -429,10 +377,10 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 * to create specialized document implmentations.
 	 *
 	 * @param inputSource The document input source.
-	 * @throws IOException
-	 * @throws org.xml.sax.SAXException
+	 * @throws IOException io
+	 * @throws org.xml.sax.SAXException xml
 	 */
-	protected HTMLDocumentImpl createDocument(org.xml.sax.InputSource inputSource) throws IOException, org.xml.sax.SAXException {
+	private HTMLDocumentImpl createDocument(org.xml.sax.InputSource inputSource) throws IOException, org.xml.sax.SAXException {
 		DocumentBuilderImpl builder = new DocumentBuilderImpl(this.getUserAgentContext(), SimpleHtmlRendererContext.this);
 		return (HTMLDocumentImpl) builder.createDocument(inputSource);
 	}
@@ -444,7 +392,7 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 	 *
 	 * @param connection A URL connection.
 	 */
-	protected String getDocumentCharset(URLConnection connection) {
+	private String getDocumentCharset(URLConnection connection) {
 		String encoding = Urls.getCharset(connection);
 		return encoding == null ? "ISO-8859-1" : encoding;
 	}

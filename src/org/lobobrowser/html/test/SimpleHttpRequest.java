@@ -27,7 +27,6 @@ import org.lobobrowser.html.HttpRequest;
 import org.lobobrowser.html.ReadyStateChangeListener;
 import org.lobobrowser.html.UserAgentContext;
 import org.lobobrowser.util.EventDispatch;
-import org.lobobrowser.util.GenericEventListener;
 import org.lobobrowser.util.Urls;
 import org.lobobrowser.util.io.IORoutines;
 import org.w3c.dom.Document;
@@ -42,7 +41,6 @@ import java.net.HttpURLConnection;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.EventObject;
 import java.util.Map;
 
 /**
@@ -64,9 +62,7 @@ public class SimpleHttpRequest implements HttpRequest {
 
 	private boolean isAsync;
 	private java.net.URL requestURL;
-	protected String requestMethod;
-	protected String requestUserName;
-	protected String requestPassword;
+	private String requestMethod;
 
 	/**
 	 * The <code>URLConnection</code> is assigned to
@@ -79,15 +75,15 @@ public class SimpleHttpRequest implements HttpRequest {
 	 * Response headers are set in this map after
 	 * a response is received.
 	 */
-	protected java.util.Map responseHeadersMap;
+	private java.util.Map responseHeadersMap;
 
 	/**
 	 * Response headers are set in this string after
 	 * a response is received.
 	 */
-	protected String responseHeaders;
+	private String responseHeaders;
 
-	public SimpleHttpRequest(UserAgentContext context, java.net.Proxy proxy) {
+	SimpleHttpRequest(UserAgentContext context, java.net.Proxy proxy) {
 		super();
 		this.context = context;
 		this.proxy = proxy;
@@ -218,8 +214,6 @@ public class SimpleHttpRequest implements HttpRequest {
 			this.isAsync = asyncFlag;
 			this.requestMethod = method;
 			this.requestURL = url;
-			this.requestUserName = userName;
-			this.requestPassword = password;
 		}
 		this.changeState(HttpRequest.STATE_LOADING, 0, null, null);
 	}
@@ -257,7 +251,7 @@ public class SimpleHttpRequest implements HttpRequest {
 	 * This is the charset used to post data provided
 	 * to {@link #send(String)}. It returns "UTF-8" unless overridden.
 	 */
-	protected String getPostCharset() {
+	private String getPostCharset() {
 		return "UTF-8";
 	}
 
@@ -267,9 +261,9 @@ public class SimpleHttpRequest implements HttpRequest {
 	 * It may be overridden to change the behavior of the class.
 	 *
 	 * @param content POST content if any. It may be <code>null</code>.
-	 * @throws IOException
+	 * @throws IOException io
 	 */
-	protected void sendSync(String content) throws IOException {
+	private void sendSync(String content) throws IOException {
 		try {
 			// FireFox posts a "loading" state twice as well.
 			this.changeState(HttpRequest.STATE_LOADING, 0, null, null);
@@ -315,7 +309,6 @@ public class SimpleHttpRequest implements HttpRequest {
 			this.changeState(HttpRequest.STATE_LOADED, istatus, istatusText, null);
 			java.io.InputStream in = err == null ? c.getInputStream() : err;
 			int contentLength = c.getContentLength();
-			//TODO: In the "interactive" state, some response text is supposed to be available.
 			this.changeState(HttpRequest.STATE_INTERACTIVE, istatus, istatusText, null);
 			byte[] bytes = IORoutines.load(in, contentLength == -1 ? 4096 : contentLength);
 			this.changeState(HttpRequest.STATE_COMPLETE, istatus, istatusText, bytes);
@@ -329,11 +322,7 @@ public class SimpleHttpRequest implements HttpRequest {
 	private final EventDispatch readyEvent = new EventDispatch();
 
 	public void addReadyStateChangeListener(final ReadyStateChangeListener listener) {
-		readyEvent.addListener(new GenericEventListener() {
-			public void processEvent(EventObject event) {
-				listener.readyStateChanged();
-			}
-		});
+		readyEvent.addListener(event -> listener.readyStateChanged());
 	}
 
 	private void changeState(int readyState, int status, String statusMessage, byte[] bytes) {
@@ -349,7 +338,7 @@ public class SimpleHttpRequest implements HttpRequest {
 	private String getAllResponseHeaders(URLConnection c) {
 		int idx = 0;
 		String value;
-		StringBuffer buf = new StringBuffer();
+		StringBuilder buf = new StringBuilder();
 		while ((value = c.getHeaderField(idx)) != null) {
 			String key = c.getHeaderFieldKey(idx);
 			buf.append(key);
