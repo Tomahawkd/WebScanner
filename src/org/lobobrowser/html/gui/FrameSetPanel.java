@@ -48,10 +48,9 @@ import java.util.StringTokenizer;
  */
 public class FrameSetPanel extends JComponent implements NodeRenderer {
 
-	public FrameSetPanel() {
+	FrameSetPanel() {
 		super();
 		this.setLayout(WrapperLayout.getInstance());
-		//TODO: This should be a temporary preferred size
 		this.setPreferredSize(new Dimension(600, 400));
 	}
 
@@ -60,7 +59,7 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 			return new HtmlLength[]{new HtmlLength("1*")};
 		}
 		StringTokenizer tok = new StringTokenizer(spec, ",");
-		ArrayList lengths = new ArrayList();
+		ArrayList<HtmlLength> lengths = new ArrayList<>();
 		while (tok.hasMoreTokens()) {
 			String token = tok.nextToken().trim();
 			try {
@@ -68,22 +67,21 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 			} catch (Exception ignored) {
 			}
 		}
-		return (HtmlLength[]) lengths.toArray(HtmlLength.EMPTY_ARRAY);
+		return lengths.toArray(HtmlLength.EMPTY_ARRAY);
 	}
 
 	private HTMLElementImpl[] getSubFrames(HTMLElementImpl parent) {
 		NodeImpl[] children = parent.getChildrenArray();
-		ArrayList subFrames = new ArrayList();
-		for (int i = 0; i < children.length; i++) {
-			NodeImpl child = children[i];
+		ArrayList<HTMLElementImpl> subFrames = new ArrayList<>();
+		for (NodeImpl child : children) {
 			if (child instanceof HTMLElementImpl) {
 				String nodeName = child.getNodeName();
 				if ("FRAME".equalsIgnoreCase(nodeName) || "FRAMESET".equalsIgnoreCase(nodeName)) {
-					subFrames.add(child);
+					subFrames.add((HTMLElementImpl) child);
 				}
 			}
 		}
-		return (HTMLElementImpl[]) subFrames.toArray(new HTMLElementImpl[0]);
+		return subFrames.toArray(new HTMLElementImpl[0]);
 	}
 
 	private HTMLElementImpl rootNode;
@@ -99,15 +97,14 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 		}
 		HTMLElementImpl element = (HTMLElementImpl) node;
 		this.rootNode = element;
-		HtmlRendererContext context = element.getHtmlRendererContext();
-		this.htmlContext = context;
+		this.htmlContext = element.getHtmlRendererContext();
 		this.domInvalid = true;
 		this.invalidate();
 		this.validateAll();
 		this.repaint();
 	}
 
-	protected void validateAll() {
+	private void validateAll() {
 		Component toValidate = this;
 		for (; ; ) {
 			Container parent = toValidate.getParent();
@@ -119,7 +116,7 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 		toValidate.validate();
 	}
 
-	public final void processDocumentNotifications(DocumentNotification[] notifications) {
+	final void processDocumentNotifications(DocumentNotification[] notifications) {
 		// Called in the GUI thread.
 		if (notifications.length > 0) {
 			// Not very efficient, but it will do.
@@ -133,7 +130,6 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 	}
 
 	private HtmlRendererContext htmlContext;
-	private Component[] frameComponents;
 	private boolean domInvalid = true;
 
 	public void setBounds(int x, int y, int w, int h) {
@@ -151,14 +147,13 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 			this.removeAll();
 			HtmlRendererContext context = this.htmlContext;
 			if (context != null) {
-				HTMLElementImpl element = (HTMLElementImpl) this.rootNode;
+				HTMLElementImpl element = this.rootNode;
 				String rows = element.getAttribute("rows");
 				String cols = element.getAttribute("cols");
 				HtmlLength[] rowLengths = this.getLengths(rows);
 				HtmlLength[] colLengths = this.getLengths(cols);
 				HTMLElementImpl[] subframes = this.getSubFrames(element);
 				Component[] frameComponents = new Component[subframes.length];
-				this.frameComponents = frameComponents;
 				for (int i = 0; i < subframes.length; i++) {
 					HTMLElementImpl frameElement = subframes[i];
 					if (frameElement != null && "FRAMESET".equalsIgnoreCase(frameElement.getTagName())) {
@@ -187,18 +182,13 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 					}
 
 				}
-				HtmlLength[] rhl = rowLengths;
-				HtmlLength[] chl = colLengths;
-				Component[] fc = this.frameComponents;
-				if (rhl != null && chl != null && fc != null) {
-					Dimension size = this.getSize();
-					Insets insets = this.getInsets();
-					int width = size.width - insets.left - insets.right;
-					int height = size.height - insets.left - insets.right;
-					int[] absColLengths = this.getAbsoluteLengths(chl, width);
-					int[] absRowLengths = this.getAbsoluteLengths(rhl, height);
-					this.add(this.getSplitPane(this.htmlContext, absColLengths, 0, absColLengths.length, absRowLengths, 0, absRowLengths.length, fc));
-				}
+				Dimension size = this.getSize();
+				Insets insets = this.getInsets();
+				int width = size.width - insets.left - insets.right;
+				int height = size.height - insets.left - insets.right;
+				int[] absColLengths = this.getAbsoluteLengths(colLengths, width);
+				int[] absRowLengths = this.getAbsoluteLengths(rowLengths, height);
+				this.add(this.getSplitPane(absColLengths, 0, absColLengths.length, absRowLengths, 0, absRowLengths.length, frameComponents));
 			}
 		}
 		super.doLayout();
@@ -236,21 +226,21 @@ public class FrameSetPanel extends JComponent implements NodeRenderer {
 		return absLengths;
 	}
 
-	private Component getSplitPane(HtmlRendererContext context, int[] colLengths, int firstCol, int numCols, int[] rowLengths, int firstRow, int numRows, Component[] frameComponents) {
+	private Component getSplitPane(int[] colLengths, int firstCol, int numCols, int[] rowLengths, int firstRow, int numRows, Component[] frameComponents) {
 		if (numCols == 1) {
 			int frameindex = colLengths.length * firstRow + firstCol;
 			Component topComponent = frameindex < frameComponents.length ? frameComponents[frameindex] : null;
 			if (numRows == 1) {
 				return topComponent;
 			} else {
-				Component bottomComponent = this.getSplitPane(context, colLengths, firstCol, numCols, rowLengths, firstRow + 1, numRows - 1, frameComponents);
+				Component bottomComponent = this.getSplitPane(colLengths, firstCol, numCols, rowLengths, firstRow + 1, numRows - 1, frameComponents);
 				JSplitPane sp = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topComponent, bottomComponent);
 				sp.setDividerLocation(rowLengths[firstRow]);
 				return sp;
 			}
 		} else {
-			Component rightComponent = this.getSplitPane(context, colLengths, firstCol + 1, numCols - 1, rowLengths, firstRow, numRows, frameComponents);
-			Component leftComponent = this.getSplitPane(context, colLengths, firstCol, 1, rowLengths, firstRow, numRows, frameComponents);
+			Component rightComponent = this.getSplitPane(colLengths, firstCol + 1, numCols - 1, rowLengths, firstRow, numRows, frameComponents);
+			Component leftComponent = this.getSplitPane(colLengths, firstCol, 1, rowLengths, firstRow, numRows, frameComponents);
 			JSplitPane sp = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftComponent, rightComponent);
 			sp.setDividerLocation(colLengths[firstCol]);
 			return sp;
