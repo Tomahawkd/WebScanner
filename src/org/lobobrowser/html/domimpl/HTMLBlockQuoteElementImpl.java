@@ -24,7 +24,7 @@ import org.lobobrowser.html.style.BlockQuoteRenderState;
 import org.lobobrowser.html.style.RenderState;
 
 public class HTMLBlockQuoteElementImpl extends HTMLAbstractUIElement {
-	public HTMLBlockQuoteElementImpl(String name) {
+	HTMLBlockQuoteElementImpl(String name) {
 		super(name);
 	}
 

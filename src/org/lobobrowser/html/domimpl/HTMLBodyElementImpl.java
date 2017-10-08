@@ -32,7 +32,7 @@ import org.w3c.dom.html2.HTMLDocument;
 
 public class HTMLBodyElementImpl extends HTMLAbstractUIElement implements
 		HTMLBodyElement {
-	public HTMLBodyElementImpl(String name) {
+	HTMLBodyElementImpl(String name) {
 		super(name);
 	}
 
@@ -102,20 +102,9 @@ public class HTMLBodyElementImpl extends HTMLAbstractUIElement implements
 		return new BodyRenderState(prevRenderState, this);
 	}
 
-	public Function getOnload() {
+	private void setOnload(Function onload) {
 		Object document = this.document;
 		if (document instanceof HTMLDocumentImpl) {
-			return ((HTMLDocumentImpl) document).getOnloadHandler();
-		} else {
-			return null;
-		}
-	}
-
-	public void setOnload(Function onload) {
-		Object document = this.document;
-		if (document instanceof HTMLDocumentImpl) {
-			//Note that body.onload overrides 
-			//Window.onload.
 			((HTMLDocumentImpl) document).setOnloadHandler(onload);
 		}
 	}

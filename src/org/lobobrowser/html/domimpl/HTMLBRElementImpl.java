@@ -3,7 +3,7 @@ package org.lobobrowser.html.domimpl;
 import org.w3c.dom.html2.HTMLBRElement;
 
 public class HTMLBRElementImpl extends HTMLElementImpl implements HTMLBRElement {
-	public HTMLBRElementImpl(String name) {
+	HTMLBRElementImpl(String name) {
 		super(name);
 	}
 

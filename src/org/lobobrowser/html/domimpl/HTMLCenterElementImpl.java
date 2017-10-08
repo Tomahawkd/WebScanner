@@ -25,7 +25,7 @@ import org.lobobrowser.html.style.BlockRenderState;
 import org.lobobrowser.html.style.RenderState;
 
 public class HTMLCenterElementImpl extends HTMLAbstractUIElement {
-	public HTMLCenterElementImpl(String name) {
+	HTMLCenterElementImpl(String name) {
 		super(name);
 	}
 
