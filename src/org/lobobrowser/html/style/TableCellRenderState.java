@@ -70,7 +70,6 @@ public class TableCellRenderState extends DisplayRenderState {
 		} else if ("right".equalsIgnoreCase(align)) {
 			axp = 100;
 		} else {
-			// TODO: justify, etc.
 			axp = 0;
 		}
 		this.alignXPercent = axp;
@@ -115,7 +114,6 @@ public class TableCellRenderState extends DisplayRenderState {
 		} else if ("bottom".equalsIgnoreCase(valign)) {
 			ayp = 100;
 		} else {
-			//TODO: baseline, etc.
 			ayp = 50;
 		}
 		this.alignYPercent = ayp;
@@ -221,7 +219,7 @@ public class TableCellRenderState extends DisplayRenderState {
 		}
 		Integer ws = this.iWhiteSpace;
 		if (ws != null) {
-			return ws.intValue();
+			return ws;
 		}
 		AbstractCSS2Properties props = this.getCssProperties();
 		String whiteSpaceText = props == null ? null : props.getWhiteSpace();
@@ -264,7 +262,7 @@ public class TableCellRenderState extends DisplayRenderState {
 				}
 			}
 		}
-		this.iWhiteSpace = new Integer(wsValue);
+		this.iWhiteSpace = wsValue;
 		return wsValue;
 	}
 

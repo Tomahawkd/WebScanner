@@ -43,10 +43,10 @@ public class StyleSheetRenderState implements RenderState {
 	// Serif, SansSerif, Monospaced.
 	private static final String DEFAULT_FONT_FAMILY = "SansSerif";
 	private static final Font DEFAULT_FONT = FONT_FACTORY.getFont(DEFAULT_FONT_FAMILY, null, null, null, HtmlValues.DEFAULT_FONT_SIZE, null, null);
-	protected static final HtmlInsets INVALID_INSETS = new HtmlInsets();
-	protected static final BackgroundInfo INVALID_BACKGROUND_INFO = new BackgroundInfo();
-	protected static final BorderInfo INVALID_BORDER_INFO = new BorderInfo();
-	protected static final Color INVALID_COLOR = new Color(100, 0, 100);
+	static final HtmlInsets INVALID_INSETS = new HtmlInsets();
+	static final BackgroundInfo INVALID_BACKGROUND_INFO = new BackgroundInfo();
+	static final BorderInfo INVALID_BORDER_INFO = new BorderInfo();
+	private static final Color INVALID_COLOR = new Color(100, 0, 100);
 
 	protected final HTMLElementImpl element;
 	protected final HTMLDocumentImpl document;
@@ -63,7 +63,7 @@ public class StyleSheetRenderState implements RenderState {
 	private int iBlankWidth = -1;
 	private boolean iHighlight;
 
-	protected BackgroundInfo iBackgroundInfo = INVALID_BACKGROUND_INFO;
+	BackgroundInfo iBackgroundInfo = INVALID_BACKGROUND_INFO;
 
 	static {
 	}
@@ -94,7 +94,7 @@ public class StyleSheetRenderState implements RenderState {
 	public int getDisplay() {
 		Integer d = this.iDisplay;
 		if (d != null) {
-			return d.intValue();
+			return d;
 		}
 		CSS2Properties props = this.getCssProperties();
 		String displayText = props == null ? null : props.getDisplay();
@@ -121,7 +121,7 @@ public class StyleSheetRenderState implements RenderState {
 		} else {
 			displayInt = this.getDefaultDisplay();
 		}
-		d = new Integer(displayInt);
+		d = displayInt;
 		this.iDisplay = d;
 		return displayInt;
 	}
@@ -139,7 +139,7 @@ public class StyleSheetRenderState implements RenderState {
 		// Dummy implementation
 	}
 
-	protected final AbstractCSS2Properties getCssProperties() {
+	final AbstractCSS2Properties getCssProperties() {
 		HTMLElementImpl element = this.element;
 		return element == null ? null : element.getCurrentStyle();
 	}
@@ -187,18 +187,18 @@ public class StyleSheetRenderState implements RenderState {
 			this.iFont = f;
 			return f;
 		}
-		Float fontSize = null;
+		Float fontSize;
 		String fontStyle = null;
 		String fontVariant = null;
 		String fontWeight = null;
 		String fontFamily = null;
 
-		String newFontSize = style == null ? null : style.getFontSize();
-		String newFontFamily = style == null ? null : style.getFontFamily();
-		String newFontStyle = style == null ? null : style.getFontStyle();
-		String newFontVariant = style == null ? null : style.getFontVariant();
-		String newFontWeight = style == null ? null : style.getFontWeight();
-		String verticalAlign = style == null ? null : style.getVerticalAlign();
+		String newFontSize = style.getFontSize();
+		String newFontFamily = style.getFontFamily();
+		String newFontStyle = style.getFontStyle();
+		String newFontVariant = style.getFontVariant();
+		String newFontWeight = style.getFontWeight();
+		String verticalAlign = style.getVerticalAlign();
 		boolean isSuper = verticalAlign != null && verticalAlign.equalsIgnoreCase("super");
 		boolean isSub = verticalAlign != null && verticalAlign.equalsIgnoreCase("sub");
 		if (newFontSize == null && newFontWeight == null && newFontStyle == null && newFontFamily == null && newFontVariant == null) {
@@ -215,20 +215,20 @@ public class StyleSheetRenderState implements RenderState {
 		}
 		if (newFontSize != null) {
 			try {
-				fontSize = new Float(HtmlValues.getFontSize(newFontSize, prs));
+				fontSize = HtmlValues.getFontSize(newFontSize, prs);
 			} catch (Exception err) {
 				fontSize = HtmlValues.DEFAULT_FONT_SIZE_BOX;
 			}
-		} else if (fontSize == null) {
+		} else {
 			if (prs != null) {
-				fontSize = new Float(prs.getFont().getSize());
+				fontSize = (float) prs.getFont().getSize();
 			} else {
 				fontSize = HtmlValues.DEFAULT_FONT_SIZE_BOX;
 			}
 		}
 		if (newFontFamily != null) {
 			fontFamily = newFontFamily;
-		} else if (fontFamily == null && prs != null) {
+		} else if (prs != null) {
 			fontFamily = prs.getFont().getFamily();
 		}
 		if (fontFamily == null) {
@@ -236,7 +236,7 @@ public class StyleSheetRenderState implements RenderState {
 		}
 		if (newFontStyle != null) {
 			fontStyle = newFontStyle;
-		} else if (fontStyle == null && prs != null) {
+		} else if (prs != null) {
 			int fstyle = prs.getFont().getStyle();
 			if ((fstyle & Font.ITALIC) != 0) {
 				fontStyle = "italic";
@@ -244,12 +244,10 @@ public class StyleSheetRenderState implements RenderState {
 		}
 		if (newFontVariant != null) {
 			fontVariant = newFontVariant;
-		} else if (prs != null) {
-			// TODO: smallcaps?
 		}
 		if (newFontWeight != null) {
 			fontWeight = newFontWeight;
-		} else if (fontWeight == null && prs != null) {
+		} else if (prs != null) {
 			int fstyle = prs.getFont().getStyle();
 			if ((fstyle & Font.BOLD) != 0) {
 				fontWeight = "bold";
@@ -260,14 +258,14 @@ public class StyleSheetRenderState implements RenderState {
 
 		Integer superscript = null;
 		if (isSuper) {
-			superscript = new Integer(1);
+			superscript = 1;
 		} else if (isSub) {
-			superscript = new Integer(-1);
+			superscript = -1;
 		}
 		if (superscript == null && prs != null) {
 			superscript = (Integer) prs.getFont().getAttributes().get(TextAttribute.SUPERSCRIPT);
 		}
-		f = FONT_FACTORY.getFont(fontFamily, fontStyle, fontVariant, fontWeight, fontSize.floatValue(), locales, superscript);
+		f = FONT_FACTORY.getFont(fontFamily, fontStyle, fontVariant, fontWeight, fontSize, locales, superscript);
 		this.iFont = f;
 		return f;
 	}
@@ -386,7 +384,6 @@ public class StyleSheetRenderState implements RenderState {
 			while (tok.hasMoreTokens()) {
 				String token = tok.nextToken();
 				if ("none".equals(token)) {
-					// continue
 				} else if ("underline".equals(token)) {
 					td |= StyleSheetRenderState.MASK_TEXTDECORATION_UNDERLINE;
 				} else if ("line-through".equals(token)) {
@@ -420,7 +417,6 @@ public class StyleSheetRenderState implements RenderState {
 		tt = 0;
 		if (tdText != null) {
 			if ("none".equals(tdText)) {
-				// continue
 			} else if ("capitalize".equals(tdText)) {
 				tt = TEXTTRANSFORM_CAPITALIZE;
 			} else if ("uppercase".equals(tdText)) {
@@ -428,22 +424,15 @@ public class StyleSheetRenderState implements RenderState {
 			} else if ("lowercase".equals(tdText)) {
 				tt = TEXTTRANSFORM_LOWERCASE;
 			}
-// TODO how the explicit "inherit" value is to be handled?
-// 		Who is responsible for CSS cascading? 
-//			... painting code? prevRenderState?
-//			
-//			else if("inherit".equals(tdText)) {
-//				tt = TEXTTRANSFORM_INHERIT;								
-//			}
 		}
 		this.iTextTransform = tt;
 		return tt;
 	}
 
+	@SuppressWarnings("deprecation")
 	public final FontMetrics getFontMetrics() {
 		FontMetrics fm = this.iFontMetrics;
 		if (fm == null) {
-			//TODO getFontMetrics deprecated. How to get text width?
 			fm = Toolkit.getDefaultToolkit().getFontMetrics(this.getFont());
 			this.iFontMetrics = fm;
 		}
@@ -473,17 +462,17 @@ public class StyleSheetRenderState implements RenderState {
 		this.iHighlight = highlight;
 	}
 
-	Map iWordInfoMap = null;
+	private Map<String, WordInfo> iWordInfoMap = null;
 
 	public final WordInfo getWordInfo(String word) {
 		// Expected to be called only in the GUI (rendering) thread.
 		// No synchronization necessary.
-		Map map = this.iWordInfoMap;
+		Map<String, WordInfo> map = this.iWordInfoMap;
 		if (map == null) {
-			map = new HashMap(1);
+			map = new HashMap<>(1);
 			this.iWordInfoMap = map;
 		}
-		WordInfo wi = (WordInfo) map.get(word);
+		WordInfo wi = map.get(word);
 		if (wi != null) {
 			return wi;
 		}
@@ -528,7 +517,6 @@ public class StyleSheetRenderState implements RenderState {
 		} else if ("right".equalsIgnoreCase(textAlign)) {
 			axp = 100;
 		} else {
-			//TODO: justify, <string>
 			axp = 0;
 		}
 		this.alignXPercent = axp;
@@ -536,12 +524,10 @@ public class StyleSheetRenderState implements RenderState {
 	}
 
 	public int getAlignYPercent() {
-		// This is only settable in table cells.
-		// TODO: Does it work with display: table-cell?		
 		return 0;
 	}
 
-	private Map counters = null;
+	private Map<String, ArrayList<Integer>> counters = null;
 
 	public int getCount(String counter, int nesting) {
 		// Expected to be called only in GUI thread.
@@ -558,7 +544,7 @@ public class StyleSheetRenderState implements RenderState {
 			return 0;
 		}
 		Integer integer = (Integer) counterArray.get(nesting);
-		return integer == null ? 0 : integer.intValue();
+		return integer == null ? 0 : integer;
 	}
 
 	public void resetCount(String counter, int nesting, int value) {
@@ -567,17 +553,17 @@ public class StyleSheetRenderState implements RenderState {
 		if (prs != null) {
 			prs.resetCount(counter, nesting, value);
 		} else {
-			Map counters = this.counters;
+			Map<String, ArrayList<Integer>> counters = this.counters;
 			if (counters == null) {
-				counters = new HashMap(2);
+				counters = new HashMap<>(2);
 				this.counters = counters;
-				counters.put(counter, new ArrayList(0));
+				counters.put(counter, new ArrayList<>(0));
 			}
-			ArrayList counterArray = (ArrayList) counters.get(counter);
+			ArrayList<Integer> counterArray = counters.get(counter);
 			while (counterArray.size() <= nesting) {
 				counterArray.add(null);
 			}
-			counterArray.set(nesting, new Integer(value));
+			counterArray.set(nesting, value);
 		}
 	}
 
@@ -587,19 +573,19 @@ public class StyleSheetRenderState implements RenderState {
 		if (prs != null) {
 			return prs.incrementCount(counter, nesting);
 		}
-		Map counters = this.counters;
+		Map<String, ArrayList<Integer>> counters = this.counters;
 		if (counters == null) {
-			counters = new HashMap(2);
+			counters = new HashMap<>(2);
 			this.counters = counters;
-			counters.put(counter, new ArrayList(0));
+			counters.put(counter, new ArrayList<>(0));
 		}
-		ArrayList counterArray = (ArrayList) counters.get(counter);
+		ArrayList<Integer> counterArray = counters.get(counter);
 		while (counterArray.size() <= nesting) {
 			counterArray.add(null);
 		}
-		Integer integer = (Integer) counterArray.get(nesting);
-		int prevValue = integer == null ? 0 : integer.intValue();
-		counterArray.set(nesting, new Integer(prevValue + 1));
+		Integer integer = counterArray.get(nesting);
+		int prevValue = integer == null ? 0 : integer;
+		counterArray.set(nesting, prevValue + 1);
 		return prevValue;
 	}
 
@@ -613,9 +599,7 @@ public class StyleSheetRenderState implements RenderState {
 		if (props != null) {
 			String backgroundColorText = props.getBackgroundColor();
 			if (backgroundColorText != null) {
-				if (binfo == null) {
-					binfo = new BackgroundInfo();
-				}
+				binfo = new BackgroundInfo();
 				binfo.backgroundColor = ColorFactory.getInstance().getColor(backgroundColorText);
 			}
 			String backgroundImageText = props.getBackgroundImage();
@@ -679,7 +663,7 @@ public class StyleSheetRenderState implements RenderState {
 		}
 	}
 
-	protected Integer iWhiteSpace;
+	Integer iWhiteSpace;
 
 	public int getWhiteSpace() {
 		if (RenderThreadState.getState().overrideNoWrap) {
@@ -687,7 +671,7 @@ public class StyleSheetRenderState implements RenderState {
 		}
 		Integer ws = this.iWhiteSpace;
 		if (ws != null) {
-			return ws.intValue();
+			return ws;
 		}
 		AbstractCSS2Properties props = this.getCssProperties();
 		String whiteSpaceText = props == null ? null : props.getWhiteSpace();
@@ -709,12 +693,12 @@ public class StyleSheetRenderState implements RenderState {
 				wsValue = WS_NORMAL;
 			}
 		}
-		this.iWhiteSpace = new Integer(wsValue);
+		this.iWhiteSpace = wsValue;
 		return wsValue;
 	}
 
-	protected HtmlInsets marginInsets = INVALID_INSETS;
-	protected HtmlInsets paddingInsets = INVALID_INSETS;
+	HtmlInsets marginInsets = INVALID_INSETS;
+	private HtmlInsets paddingInsets = INVALID_INSETS;
 
 	public HtmlInsets getMarginInsets() {
 		HtmlInsets mi = this.marginInsets;
@@ -868,7 +852,7 @@ public class StyleSheetRenderState implements RenderState {
 	public int getVisibility() {
 		Integer v = this.cachedVisibility;
 		if (v != null) {
-			return v.intValue();
+			return v;
 		}
 		AbstractCSS2Properties props = this.getCssProperties();
 		int visibility;
@@ -880,18 +864,23 @@ public class StyleSheetRenderState implements RenderState {
 				visibility = VISIBILITY_VISIBLE;
 			} else {
 				String visibTextTL = visibText.toLowerCase();
-				if (visibTextTL.equals("hidden")) {
-					visibility = VISIBILITY_HIDDEN;
-				} else if (visibTextTL.equals("visible")) {
-					visibility = VISIBILITY_VISIBLE;
-				} else if (visibTextTL.equals("collapse")) {
-					visibility = VISIBILITY_COLLAPSE;
-				} else {
-					visibility = VISIBILITY_VISIBLE;
+				switch (visibTextTL) {
+					case "hidden":
+						visibility = VISIBILITY_HIDDEN;
+						break;
+					case "visible":
+						visibility = VISIBILITY_VISIBLE;
+						break;
+					case "collapse":
+						visibility = VISIBILITY_COLLAPSE;
+						break;
+					default:
+						visibility = VISIBILITY_VISIBLE;
+						break;
 				}
 			}
 		}
-		this.cachedVisibility = new Integer(visibility);
+		this.cachedVisibility = visibility;
 		return visibility;
 	}
 
@@ -900,7 +889,7 @@ public class StyleSheetRenderState implements RenderState {
 	public int getPosition() {
 		Integer p = this.cachedPosition;
 		if (p != null) {
-			return p.intValue();
+			return p;
 		}
 		AbstractCSS2Properties props = this.getCssProperties();
 		int position;
@@ -912,20 +901,26 @@ public class StyleSheetRenderState implements RenderState {
 				position = POSITION_STATIC;
 			} else {
 				String positionTextTL = positionText.toLowerCase();
-				if (positionTextTL.equals("absolute")) {
-					position = POSITION_ABSOLUTE;
-				} else if (positionTextTL.equals("static")) {
-					position = POSITION_STATIC;
-				} else if (positionTextTL.equals("relative")) {
-					position = POSITION_RELATIVE;
-				} else if (positionTextTL.equals("fixed")) {
-					position = POSITION_FIXED;
-				} else {
-					position = POSITION_STATIC;
+				switch (positionTextTL) {
+					case "absolute":
+						position = POSITION_ABSOLUTE;
+						break;
+					case "static":
+						position = POSITION_STATIC;
+						break;
+					case "relative":
+						position = POSITION_RELATIVE;
+						break;
+					case "fixed":
+						position = POSITION_FIXED;
+						break;
+					default:
+						position = POSITION_STATIC;
+						break;
 				}
 			}
 		}
-		this.cachedPosition = new Integer(position);
+		this.cachedPosition = position;
 		return position;
 	}
 
@@ -934,7 +929,7 @@ public class StyleSheetRenderState implements RenderState {
 	public int getFloat() {
 		Integer p = this.cachedFloat;
 		if (p != null) {
-			return p.intValue();
+			return p;
 		}
 		AbstractCSS2Properties props = this.getCssProperties();
 		int floatValue;
@@ -946,16 +941,20 @@ public class StyleSheetRenderState implements RenderState {
 				floatValue = FLOAT_NONE;
 			} else {
 				String floatTextTL = floatText.toLowerCase();
-				if (floatTextTL.equals("left")) {
-					floatValue = FLOAT_LEFT;
-				} else if (floatTextTL.equals("right")) {
-					floatValue = FLOAT_RIGHT;
-				} else {
-					floatValue = FLOAT_NONE;
+				switch (floatTextTL) {
+					case "left":
+						floatValue = FLOAT_LEFT;
+						break;
+					case "right":
+						floatValue = FLOAT_RIGHT;
+						break;
+					default:
+						floatValue = FLOAT_NONE;
+						break;
 				}
 			}
 		}
-		this.cachedFloat = new Integer(floatValue);
+		this.cachedFloat = floatValue;
 		return floatValue;
 	}
 
@@ -963,8 +962,8 @@ public class StyleSheetRenderState implements RenderState {
 		return "StyleSheetRenderState[font=" + this.getFont() + ",textDecoration=" + this.getTextDecorationMask() + "]";
 	}
 
-	protected int overflowX = -1;
-	protected int overflowY = -1;
+	int overflowX = -1;
+	int overflowY = -1;
 
 	public int getOverflowX() {
 		int overflow = this.overflowX;
@@ -1034,7 +1033,7 @@ public class StyleSheetRenderState implements RenderState {
 		return overflow;
 	}
 
-	protected BorderInfo borderInfo = INVALID_BORDER_INFO;
+	BorderInfo borderInfo = INVALID_BORDER_INFO;
 
 	public BorderInfo getBorderInfo() {
 		BorderInfo binfo = this.borderInfo;

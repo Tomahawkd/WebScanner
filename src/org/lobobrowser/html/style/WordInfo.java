@@ -29,9 +29,9 @@ import java.awt.*;
  * @author J. H. S.
  */
 class WordInfo {
-	public FontMetrics fontMetrics;
-	public int descent;
-	public int ascentPlusLeading;
+	FontMetrics fontMetrics;
+	int descent;
+	int ascentPlusLeading;
 	public int width;
 	public int height;
 }
