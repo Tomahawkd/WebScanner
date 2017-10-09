@@ -37,7 +37,6 @@ import org.w3c.dom.html2.HTMLElement;
 import org.w3c.dom.html2.HTMLLinkElement;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.*;
 import java.net.*;
@@ -451,8 +450,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 		return this.parentRcontext;
 	}
 
-	private volatile HtmlRendererContext opener;
-
 	public String getStatus() {
 		return "";
 	}
@@ -539,14 +536,6 @@ public class SimpleHtmlRendererContext implements HtmlRendererContext {
 
 	public boolean onMouseClick(HTMLElement element, MouseEvent event) {
 		return true;
-	}
-
-	private static java.awt.Window getWindow(Component c) {
-		java.awt.Component current = c;
-		while (current != null && !(current instanceof java.awt.Window)) {
-			current = current.getParent();
-		}
-		return (java.awt.Window) current;
 	}
 
 	/**

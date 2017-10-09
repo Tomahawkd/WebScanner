@@ -51,7 +51,6 @@ import java.net.URLConnection;
 public class SimpleHttpRequest implements HttpRequest {
 	private int readyState;
 	private int status;
-	private String statusText;
 	private byte[] responseBytes;
 	private final UserAgentContext context;
 	private final Proxy proxy;
@@ -66,18 +65,6 @@ public class SimpleHttpRequest implements HttpRequest {
 	 */
 	protected java.net.URLConnection connection;
 
-
-	/**
-	 * Response headers are set in this map after
-	 * a response is received.
-	 */
-	private java.util.Map responseHeadersMap;
-
-	/**
-	 * Response headers are set in this string after
-	 * a response is received.
-	 */
-	private String responseHeaders;
 
 	SimpleHttpRequest(UserAgentContext context, java.net.Proxy proxy) {
 		super();
@@ -181,7 +168,7 @@ public class SimpleHttpRequest implements HttpRequest {
 			this.requestMethod = method;
 			this.requestURL = url;
 		}
-		this.changeState(HttpRequest.STATE_LOADING, 0, null, null);
+		this.changeState(HttpRequest.STATE_LOADING, 0, null);
 	}
 
 	/**
@@ -232,14 +219,13 @@ public class SimpleHttpRequest implements HttpRequest {
 	private void sendSync(String content) throws IOException {
 		try {
 			// FireFox posts a "loading" state twice as well.
-			this.changeState(HttpRequest.STATE_LOADING, 0, null, null);
+			this.changeState(HttpRequest.STATE_LOADING, 0, null);
 			URLConnection c;
 			synchronized (this) {
 				c = this.connection;
 			}
 			c.setRequestProperty("User-Agent", this.context.getUserAgent());
 			int istatus;
-			String istatusText;
 			java.io.InputStream err;
 			if (c instanceof HttpURLConnection) {
 				HttpURLConnection hc = (HttpURLConnection) c;
@@ -261,23 +247,26 @@ public class SimpleHttpRequest implements HttpRequest {
 					}
 				}
 				istatus = hc.getResponseCode();
-				istatusText = hc.getResponseMessage();
+				hc.getResponseMessage();
 				err = hc.getErrorStream();
 			} else {
 				istatus = 0;
-				istatusText = "";
 				err = null;
 			}
 			synchronized (this) {
-				this.responseHeaders = this.getAllResponseHeaders(c);
-				this.responseHeadersMap = c.getHeaderFields();
+				/*
+	  Response headers are set in this string after
+	  a response is received.
+	 */
+				this.getAllResponseHeaders(c);
+				c.getHeaderFields();
 			}
-			this.changeState(HttpRequest.STATE_LOADED, istatus, istatusText, null);
+			this.changeState(HttpRequest.STATE_LOADED, istatus, null);
 			java.io.InputStream in = err == null ? c.getInputStream() : err;
 			int contentLength = c.getContentLength();
-			this.changeState(HttpRequest.STATE_INTERACTIVE, istatus, istatusText, null);
+			this.changeState(HttpRequest.STATE_INTERACTIVE, istatus, null);
 			byte[] bytes = IORoutines.load(in, contentLength == -1 ? 4096 : contentLength);
-			this.changeState(HttpRequest.STATE_COMPLETE, istatus, istatusText, bytes);
+			this.changeState(HttpRequest.STATE_COMPLETE, istatus, bytes);
 		} finally {
 			synchronized (this) {
 				this.connection = null;
@@ -291,11 +280,10 @@ public class SimpleHttpRequest implements HttpRequest {
 		readyEvent.addListener(event -> listener.readyStateChanged());
 	}
 
-	private void changeState(int readyState, int status, String statusMessage, byte[] bytes) {
+	private void changeState(int readyState, int status, byte[] bytes) {
 		synchronized (this) {
 			this.readyState = readyState;
 			this.status = status;
-			this.statusText = statusMessage;
 			this.responseBytes = bytes;
 		}
 		this.readyEvent.fireEvent(null);

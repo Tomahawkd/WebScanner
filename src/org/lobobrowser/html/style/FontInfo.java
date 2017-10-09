@@ -25,5 +25,5 @@ class FontInfo {
 	String fontStyle;
 	String fontVariant;
 	String fontWeight;
-	public String fontSize;
+	String fontSize;
 }
