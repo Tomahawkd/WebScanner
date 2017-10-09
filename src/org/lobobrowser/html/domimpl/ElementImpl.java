@@ -248,7 +248,7 @@ public class ElementImpl extends NodeImpl implements Element {
 		}
 	}
 
-	final String normalizeAttributeName(String name) {
+	private String normalizeAttributeName(String name) {
 		return name.toLowerCase();
 	}
 

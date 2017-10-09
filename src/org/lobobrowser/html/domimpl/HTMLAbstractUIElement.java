@@ -1,8 +1,5 @@
 package org.lobobrowser.html.domimpl;
 
-import org.lobobrowser.html.UserAgentContext;
-import org.mozilla.javascript.Function;
-
 import java.util.Map;
 
 /**
@@ -30,25 +27,6 @@ public class HTMLAbstractUIElement extends HTMLElementImpl {
 
 	private Map functionByAttribute = null;
 
-	Function getEventFunction(Function varValue, String attributeName) {
-		if (varValue != null) {
-			return varValue;
-		}
-		String normalAttributeName = this.normalizeAttributeName(attributeName);
-		synchronized (this) {
-			Map fba = this.functionByAttribute;
-			Function f = fba == null ? null : (Function) fba.get(normalAttributeName);
-			if (f != null) {
-				return f;
-			}
-			UserAgentContext uac = this.getUserAgentContext();
-			if (uac == null) {
-				throw new IllegalStateException("No user agent context.");
-			}
-			return null;
-		}
-	}
-
 	protected void assignAttributeField(String normalName, String value) {
 		super.assignAttributeField(normalName, value);
 		if (normalName.startsWith("on")) {
@@ -59,5 +37,16 @@ public class HTMLAbstractUIElement extends HTMLElementImpl {
 				}
 			}
 		}
+	}
+
+
+	public String getDir() {
+		return "";
+	}
+
+	public void setDir(String dir) {
+	}
+
+	public void setClassName(String className) {
 	}
 }

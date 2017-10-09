@@ -27,8 +27,7 @@ import org.w3c.dom.CharacterData;
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 
-public abstract class CharacterDataImpl extends NodeImpl implements
-		CharacterData {
+public abstract class CharacterDataImpl extends NodeImpl implements CharacterData {
 	protected volatile String text;
 
 	CharacterDataImpl() {
@@ -120,7 +119,7 @@ public abstract class CharacterDataImpl extends NodeImpl implements
 	public String toString() {
 		String someText = this.text;
 		int length = someText.length();
-		if (someText != null && someText.length() > 32) {
+		if (someText.length() > 32) {
 			someText = someText.substring(0, 29) + "...";
 		}
 		return this.getNodeName() + "[length=" + length + ",text=" + someText + "]";

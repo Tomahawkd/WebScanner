@@ -23,14 +23,16 @@
  */
 package org.lobobrowser.util;
 
+import org.w3c.dom.Element;
+
 import java.lang.ref.Reference;
 import java.lang.ref.ReferenceQueue;
 import java.lang.ref.WeakReference;
 import java.util.*;
 
-public class WeakValueHashMap implements Map {
-	private final Map map = new HashMap();
-	private final ReferenceQueue queue = new ReferenceQueue();
+public class WeakValueHashMap implements Map<String, Element> {
+	private final Map<String, Reference<Element>> map = new HashMap<>();
+	private final ReferenceQueue<Element> queue = new ReferenceQueue<>();
 
 	public WeakValueHashMap() {
 		super();
@@ -45,45 +47,46 @@ public class WeakValueHashMap implements Map {
 	}
 
 	public boolean containsKey(Object key) {
-		WeakReference wf = (WeakReference) this.map.get(key);
-		return wf != null && wf.get() != null;
+		if (key instanceof String) {
+			Reference<Element> wf = this.map.get(key);
+			return wf != null && wf.get() != null;
+		} else return false;
 	}
 
 	public boolean containsValue(Object value) {
 		throw new UnsupportedOperationException();
 	}
 
-	public Object get(Object key) {
+	public Element get(Object key) {
 		this.checkQueue();
-		WeakReference wf = (WeakReference) this.map.get(key);
+		Reference<Element> wf = this.map.get(key);
 		return wf == null ? null : wf.get();
 	}
 
-	public Object put(Object key, Object value) {
+	public Element put(String key, Element value) {
 		this.checkQueue();
 		return this.putImpl(key, value);
 	}
 
-	private Object putImpl(Object key, Object value) {
+	private Element putImpl(String key, Element value) {
 		if (value == null) {
 			throw new IllegalArgumentException("null values not accepted");
 		}
-		Reference ref = new LocalWeakReference(key, value, this.queue);
-		WeakReference oldWf = (WeakReference) this.map.put(key, ref);
+		Reference<Element> ref = new LocalWeakReference(key, value, this.queue);
+		Reference<Element> oldWf = this.map.put(key, ref);
 		return oldWf == null ? null : oldWf.get();
 	}
 
-	public Object remove(Object key) {
+	public Element remove(Object key) {
 		this.checkQueue();
-		WeakReference wf = (WeakReference) this.map.remove(key);
+		Reference<Element> wf = this.map.remove(key);
 		return wf == null ? null : wf.get();
 	}
 
-	public void putAll(Map t) {
+	public void putAll(Map<? extends String, ? extends Element> t) {
 		this.checkQueue();
-		for (Object o : t.entrySet()) {
-			Entry entry = (Entry) o;
-			this.putImpl(entry.getKey(), entry.getValue());
+		for (Entry<? extends String, ? extends Element> o : t.entrySet()) {
+			this.putImpl(o.getKey(), o.getValue());
 		}
 	}
 
@@ -92,52 +95,35 @@ public class WeakValueHashMap implements Map {
 		this.map.clear();
 	}
 
-	public Set keySet() {
+	public Set<String> keySet() {
 		return this.map.keySet();
 	}
 
 	private void checkQueue() {
-		ReferenceQueue queue = this.queue;
+		ReferenceQueue<Element> queue = this.queue;
 		LocalWeakReference ref;
 		while ((ref = (LocalWeakReference) queue.poll()) != null) {
 			this.map.remove(ref.getKey());
 		}
 	}
 
-	public Collection values() {
-		return new FilteredCollection(this.map.values(), new LocalFilter());
+	public Collection<Element> values() {
+		return new ArrayList<>();
 	}
 
-	public Set entrySet() {
+	public Set<Entry<String, Element>> entrySet() {
 		throw new UnsupportedOperationException();
 	}
 
-	private class LocalFilter implements ObjectFilter {
-		/* (non-Javadoc)
-		 * @see org.xamjwg.util.ObjectFilter#decode(java.lang.Object)
-		 */
-		public Object decode(Object source) {
-			WeakReference wf = (WeakReference) source;
-			return wf == null ? null : wf.get();
-		}
+	private static class LocalWeakReference extends WeakReference<Element> {
+		private final String key;
 
-		/* (non-Javadoc)
-		 * @see org.xamjwg.util.ObjectFilter#encode(java.lang.Object)
-		 */
-		public Object encode(Object source) {
-			throw new java.lang.UnsupportedOperationException("Read-only collection.");
-		}
-	}
-
-	private static class LocalWeakReference extends WeakReference {
-		private final Object key;
-
-		LocalWeakReference(Object key, Object target, ReferenceQueue queue) {
+		LocalWeakReference(String key, Element target, ReferenceQueue<Element> queue) {
 			super(target, queue);
 			this.key = key;
 		}
 
-		public Object getKey() {
+		public String getKey() {
 			return key;
 		}
 

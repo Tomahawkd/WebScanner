@@ -645,7 +645,7 @@ public class HtmlBlockPanel extends JComponent implements NodeRenderer, Renderab
 		return null;
 	}
 
-	public Collection getDelayedPairs() {
+	public Collection<DelayedPair> getDelayedPairs() {
 		return null;
 	}
 
@@ -667,9 +667,7 @@ public class HtmlBlockPanel extends JComponent implements NodeRenderer, Renderab
 			c = new HashSet<>();
 			this.components = c;
 		}
-		if (c.add(component)) {
-		} else {
-		}
+		c.add(component);
 	}
 
 	private void updateGUIComponents() {

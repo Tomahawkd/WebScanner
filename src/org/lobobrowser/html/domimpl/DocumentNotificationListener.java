@@ -55,14 +55,6 @@ public interface DocumentNotificationListener {
 	 */
 	void structureInvalidated(NodeImpl node);
 
-	/**
-	 * Called when a external script (a SCRIPT tag with a src attribute)
-	 * is about to start loading.
-	 *
-	 * @param node node
-	 */
-	void externalScriptLoading(NodeImpl node);
-
 
 	/**
 	 * This is called when the whole document

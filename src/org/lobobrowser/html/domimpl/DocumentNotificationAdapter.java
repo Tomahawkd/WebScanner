@@ -29,9 +29,6 @@ public abstract class DocumentNotificationAdapter implements
 	public void allInvalidated() {
 	}
 
-	public void externalScriptLoading(NodeImpl node) {
-	}
-
 	public void invalidated(NodeImpl node) {
 	}
 

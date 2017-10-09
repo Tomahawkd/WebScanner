@@ -538,10 +538,6 @@ public class HtmlPanel extends JComponent implements FrameContext {
 			HtmlPanel.this.addNotification(new DocumentNotification(DocumentNotification.SIZE, node));
 		}
 
-		public void externalScriptLoading(NodeImpl node) {
-			// Ignorable here.
-		}
-
 		public void nodeLoaded(NodeImpl node) {
 			HtmlPanel.this.addNotification(new DocumentNotification(DocumentNotification.GENERIC, node));
 		}
