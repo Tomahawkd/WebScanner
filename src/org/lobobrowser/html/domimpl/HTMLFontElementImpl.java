@@ -28,7 +28,7 @@ import org.w3c.dom.html2.HTMLFontElement;
 
 public class HTMLFontElementImpl extends HTMLAbstractUIElement implements
 		HTMLFontElement {
-	public HTMLFontElementImpl(String name) {
+	HTMLFontElementImpl(String name) {
 		super(name);
 	}
 

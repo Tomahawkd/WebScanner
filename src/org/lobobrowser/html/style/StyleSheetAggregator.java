@@ -162,7 +162,7 @@ public class StyleSheetAggregator {
 		rules.add(new StyleRuleInfo(ancestorSelectors, styleRule));
 	}
 
-	public final Collection<CSSStyleDeclaration> getActiveStyleDeclarations(HTMLElementImpl element, String elementName, String elementId, String className, Set pseudoNames) {
+	public final Collection<CSSStyleDeclaration> getActiveStyleDeclarations(HTMLElementImpl element, String elementName, String elementId, String className, Set<String> pseudoNames) {
 		Collection<CSSStyleDeclaration> styleDeclarations = null;
 		String elementTL = elementName.toLowerCase();
 		Collection<StyleRuleInfo> elementRules = this.rulesByElement.get(elementTL);
@@ -437,7 +437,7 @@ public class StyleSheetAggregator {
 		 * @param element     The element to test for a match.
 		 * @param pseudoNames A set of pseudo-names in lowercase.
 		 */
-		private boolean isSelectorMatch(HTMLElementImpl element, Set pseudoNames) {
+		private boolean isSelectorMatch(HTMLElementImpl element, Set<String> pseudoNames) {
 			ArrayList as = this.ancestorSelectors;
 			HTMLElementImpl currentElement = element;
 			int size = as.size();
@@ -535,7 +535,7 @@ public class StyleSheetAggregator {
 			}
 		}
 
-		final boolean matches(Set names) {
+		final boolean matches(Set<String> names) {
 			if (names == null) {
 				return this.pseudoElement == null;
 			} else {

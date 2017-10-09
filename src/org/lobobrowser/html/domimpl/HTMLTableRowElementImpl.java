@@ -32,10 +32,9 @@ import org.w3c.dom.html2.HTMLTableRowElement;
 
 import java.util.ArrayList;
 
-public class HTMLTableRowElementImpl extends HTMLElementImpl implements
-		HTMLTableRowElement {
+public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTableRowElement {
 	HTMLTableRowElementImpl(String name) {
-		super(name, true);
+		super(name);
 	}
 
 	public int getRowIndex() {

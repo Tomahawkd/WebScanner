@@ -28,7 +28,7 @@ import org.w3c.dom.html2.HTMLHtmlElement;
 public class HTMLHtmlElementImpl extends HTMLElementImpl implements HTMLHtmlElement {
 
 	HTMLHtmlElementImpl(String name) {
-		super(name, true);
+		super(name);
 	}
 
 	public String getVersion() {

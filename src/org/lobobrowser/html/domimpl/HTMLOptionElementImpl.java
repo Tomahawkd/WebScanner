@@ -5,7 +5,7 @@ import org.w3c.dom.html2.HTMLSelectElement;
 
 public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOptionElement {
 	HTMLOptionElementImpl(String name) {
-		super(name, true);
+		super(name);
 	}
 
 	public boolean getDefaultSelected() {

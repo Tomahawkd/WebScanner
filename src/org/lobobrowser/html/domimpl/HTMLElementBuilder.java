@@ -221,12 +221,6 @@ public abstract class HTMLElementBuilder {
 		}
 	}
 
-	public static class GenericMarkup extends HTMLElementBuilder {
-		public HTMLElementImpl build(String name) {
-			return new HTMLGenericMarkupElement(name);
-		}
-	}
-
 	public static class HtmlObject extends HTMLElementBuilder {
 		public HTMLElementImpl build(String name) {
 			return new HTMLObjectElementImpl(name);

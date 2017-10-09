@@ -24,7 +24,7 @@ import org.w3c.dom.UserDataHandler;
 
 public class HTMLBaseElementImpl extends HTMLElementImpl {
 	HTMLBaseElementImpl(String name) {
-		super(name, true);
+		super(name);
 	}
 
 	public Object setUserData(String key, Object data, UserDataHandler handler) {

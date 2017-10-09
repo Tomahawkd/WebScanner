@@ -31,7 +31,7 @@ import org.lobobrowser.html.style.RenderState;
 public class HTMLFontSizeChangeElementImpl extends HTMLAbstractUIElement {
 	private final int fontChange;
 
-	public HTMLFontSizeChangeElementImpl(String name, int fontChange) {
+	HTMLFontSizeChangeElementImpl(String name, int fontChange) {
 		super(name);
 		this.fontChange = fontChange;
 	}
@@ -43,7 +43,7 @@ public class HTMLFontSizeChangeElementImpl extends HTMLAbstractUIElement {
 	protected AbstractCSS2Properties createDefaultStyleSheet() {
 		ModelNode parentModelNode = this.getParentModelNode();
 		RenderState parentRS = parentModelNode == null ? null : parentModelNode.getRenderState();
-		String fontSize = null;
+		String fontSize;
 		int prevFontSize = parentRS != null ? parentRS.getFont().getSize() : HtmlValues.DEFAULT_FONT_SIZE_INT;
 		int newFontSize = prevFontSize + (this.fontChange * 2);
 		fontSize = newFontSize + "px";

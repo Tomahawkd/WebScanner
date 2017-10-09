@@ -27,7 +27,7 @@ import org.lobobrowser.html.style.RenderState;
  * Element used for I, EM and CITE.
  */
 public class HTMLEmElementImpl extends HTMLAbstractUIElement {
-	public HTMLEmElementImpl(String name) {
+	HTMLEmElementImpl(String name) {
 		super(name);
 	}
 

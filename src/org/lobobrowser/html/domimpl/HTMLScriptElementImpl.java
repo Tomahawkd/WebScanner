@@ -29,7 +29,7 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements
 		HTMLScriptElement {
 
 	HTMLScriptElementImpl(String name) {
-		super(name, true);
+		super(name);
 	}
 
 	private String text;

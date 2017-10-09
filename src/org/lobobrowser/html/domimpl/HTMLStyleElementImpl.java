@@ -36,7 +36,7 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements
 	private CSSStyleSheet styleSheet;
 
 	HTMLStyleElementImpl(String name) {
-		super(name, true);
+		super(name);
 	}
 
 	private boolean disabled;

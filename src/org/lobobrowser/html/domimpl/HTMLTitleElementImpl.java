@@ -25,7 +25,7 @@ import org.w3c.dom.UserDataHandler;
 
 public class HTMLTitleElementImpl extends HTMLElementImpl {
 	HTMLTitleElementImpl(String name) {
-		super(name, true);
+		super(name);
 	}
 
 	public Object setUserData(String key, Object data, UserDataHandler handler) {
