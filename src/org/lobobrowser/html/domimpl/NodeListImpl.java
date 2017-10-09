@@ -31,9 +31,9 @@ import java.util.Collection;
 
 public class NodeListImpl implements NodeList {
 	//Note: class must be public for reflection to work.
-	private final ArrayList nodeList = new ArrayList();
+	private final ArrayList<Node> nodeList = new ArrayList<>();
 
-	public NodeListImpl(Collection collection) {
+	NodeListImpl(Collection<Node> collection) {
 		super();
 		nodeList.addAll(collection);
 	}
@@ -44,7 +44,7 @@ public class NodeListImpl implements NodeList {
 
 	public Node item(int index) {
 		try {
-			return (Node) this.nodeList.get(index);
+			return this.nodeList.get(index);
 		} catch (IndexOutOfBoundsException iob) {
 			return null;
 		}

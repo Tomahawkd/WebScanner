@@ -26,7 +26,7 @@ package org.lobobrowser.html.domimpl;
 import org.w3c.dom.Node;
 
 public class TextFilter implements NodeFilter {
-	public TextFilter() {
+	TextFilter() {
 		super();
 	}
 

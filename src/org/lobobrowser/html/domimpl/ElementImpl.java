@@ -37,7 +37,7 @@ public class ElementImpl extends NodeImpl implements Element {
 		this.name = name;
 	}
 
-	protected Map attributes;
+	protected Map<String, String> attributes;
 
 	/*
 	 * (non-Javadoc)
@@ -46,9 +46,9 @@ public class ElementImpl extends NodeImpl implements Element {
 	 */
 	public NamedNodeMap getAttributes() {
 		synchronized (this) {
-			Map attrs = this.attributes;
+			Map<String, String> attrs = this.attributes;
 			if (attrs == null) {
-				attrs = new HashMap();
+				attrs = new HashMap<>();
 				this.attributes = attrs;
 			}
 			return new NamedNodeMapImpl(this, this.attributes);
@@ -159,11 +159,11 @@ public class ElementImpl extends NodeImpl implements Element {
 
 	public NodeList getElementsByTagName(String name) {
 		boolean matchesAll = "*".equals(name);
-		List descendents = new LinkedList();
+		List<Node> descendents = new LinkedList<>();
 		synchronized (this.treeLock) {
-			ArrayList nl = this.nodeList;
+			ArrayList<Node> nl = this.nodeList;
 			if (nl != null) {
-				for (Object child : nl) {
+				for (Node child : nl) {
 					if (child instanceof Element) {
 						Element childElement = (Element) child;
 						if (matchesAll || isTagName(childElement, name)) {
@@ -277,9 +277,9 @@ public class ElementImpl extends NodeImpl implements Element {
 	public void setAttribute(String name, String value) throws DOMException {
 		String normalName = this.normalizeAttributeName(name);
 		synchronized (this) {
-			Map attribs = this.attributes;
+			Map<String, String> attribs = this.attributes;
 			if (attribs == null) {
-				attribs = new HashMap(2);
+				attribs = new HashMap<>(2);
 				this.attributes = attribs;
 			}
 			attribs.put(normalName, value);
@@ -292,10 +292,9 @@ public class ElementImpl extends NodeImpl implements Element {
 		String value = newAttr.getValue();
 		synchronized (this) {
 			if (this.attributes == null) {
-				this.attributes = new HashMap();
+				this.attributes = new HashMap<>();
 			}
 			this.attributes.put(normalName, value);
-			// this.setIdAttribute(normalName, newAttr.isId());
 		}
 		this.assignAttributeField(normalName, value);
 		return newAttr;

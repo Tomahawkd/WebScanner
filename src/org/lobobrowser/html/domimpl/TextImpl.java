@@ -29,11 +29,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
 public class TextImpl extends CharacterDataImpl implements Text {
-	public TextImpl() {
-		this("");
-	}
 
-	public TextImpl(String text) {
+	TextImpl(String text) {
 		this.text = text;
 	}
 

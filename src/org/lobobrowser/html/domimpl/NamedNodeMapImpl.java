@@ -27,21 +27,17 @@ import org.w3c.dom.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class NamedNodeMapImpl implements NamedNodeMap {
 	//Note: class must be public for reflection to work.
-	private final Map attributes = new HashMap();
-	private final ArrayList attributeList = new ArrayList();
+	private final Map<String, Node> attributes = new HashMap<>();
+	private final ArrayList<Node> attributeList = new ArrayList<>();
 
-	public NamedNodeMapImpl(Element owner, Map attribs) {
-		Iterator i = attribs.entrySet().iterator();
-		while (i.hasNext()) {
-			Map.Entry entry = (Map.Entry) i.next();
-			String name = (String) entry.getKey();
-			String value = (String) entry.getValue();
-			//TODO: "specified" attributes
+	NamedNodeMapImpl(Element owner, Map<String, String> attribs) {
+		for (Map.Entry<String, String> o : attribs.entrySet()) {
+			String name = o.getKey();
+			String value = o.getValue();
 			Attr attr = new AttrImpl(name, value, true, owner, "ID".equals(name));
 			this.attributes.put(name, attr);
 			this.attributeList.add(attr);
@@ -53,15 +49,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
 	}
 
 	public Node getNamedItem(String name) {
-		return (Node) this.attributes.get(name);
-	}
-
-	/**
-	 * @param name
-	 */
-	public Node namedItem(String name) {
-		// Method needed for Javascript indexing.
-		return this.getNamedItem(name);
+		return this.attributes.get(name);
 	}
 
 	public Node getNamedItemNS(String namespaceURI,
@@ -71,14 +59,14 @@ public class NamedNodeMapImpl implements NamedNodeMap {
 
 	public Node item(int index) {
 		try {
-			return (Node) this.attributeList.get(index);
+			return this.attributeList.get(index);
 		} catch (IndexOutOfBoundsException iob) {
 			return null;
 		}
 	}
 
 	public Node removeNamedItem(String name) throws DOMException {
-		return (Node) this.attributes.remove(name);
+		return this.attributes.remove(name);
 	}
 
 	public Node removeNamedItemNS(String namespaceURI,
@@ -87,7 +75,7 @@ public class NamedNodeMapImpl implements NamedNodeMap {
 	}
 
 	public Node setNamedItem(Node arg) throws DOMException {
-		Object prevValue = this.attributes.put(arg.getNodeName(), arg);
+		Node prevValue = this.attributes.put(arg.getNodeName(), arg);
 		if (prevValue != null) {
 			this.attributeList.remove(prevValue);
 		}

@@ -31,18 +31,14 @@ import java.awt.*;
  * from the UI (such as image dimensions).
  */
 public interface UINode {
-	/**
-	 * Called
-	 *
-	 * @param modelNode
-	 */
-	public void repaint(ModelNode modelNode);
 
-	public Rectangle getBounds();
+	void repaint(ModelNode modelNode);
 
-	public Rectangle getBoundsRelativeToBlock();
+	Rectangle getBounds();
 
-	public void focus();
+	Rectangle getBoundsRelativeToBlock();
 
-	public void blur();
+	void focus();
+
+	void blur();
 }
