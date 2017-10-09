@@ -25,18 +25,14 @@ package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.style.ImageRenderState;
 import org.lobobrowser.html.style.RenderState;
-import org.mozilla.javascript.Function;
 import org.w3c.dom.html2.HTMLImageElement;
 
 import java.util.ArrayList;
 
 public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
 		HTMLImageElement {
-	public HTMLImageElementImpl() {
-		super("IMG");
-	}
 
-	public HTMLImageElementImpl(String name) {
+	HTMLImageElementImpl(String name) {
 		super(name);
 	}
 
@@ -150,16 +146,6 @@ public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
 		}
 	}
 
-	private Function onload;
-
-	public Function getOnload() {
-		return this.getEventFunction(this.onload, "onload");
-	}
-
-	public void setOnload(Function onload) {
-		this.onload = onload;
-	}
-
 	private java.awt.Image image = null;
 	private String imageSrc;
 
@@ -182,53 +168,37 @@ public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
 		}
 	}
 
-	private final ArrayList listeners = new ArrayList(1);
+	private final ArrayList<ImageListener> listeners = new ArrayList<>(1);
 
 	/**
 	 * Adds a listener of image loading events.
 	 * The listener gets called right away if there's already
 	 * an image.
 	 *
-	 * @param listener
 	 */
 	public void addImageListener(ImageListener listener) {
-		ArrayList l = this.listeners;
 		java.awt.Image currentImage;
-		synchronized (l) {
+		synchronized (this.listeners) {
 			currentImage = this.image;
-			l.add(listener);
+			this.listeners.add(listener);
 		}
 		if (currentImage != null) {
-			// Call listener right away if there's already an
-			// image; holding no locks.
 			listener.imageLoaded(new ImageEvent(this, currentImage));
-			// Should not call onload handler here. That's taken
-			// care of otherwise.
-		}
-	}
-
-	public void removeImageListener(ImageListener listener) {
-		ArrayList l = this.listeners;
-		synchronized (l) {
-			l.remove(l);
 		}
 	}
 
 	private void dispatchEvent(String expectedImgSrc, ImageEvent event) {
-		ArrayList l = this.listeners;
 		ImageListener[] listenerArray;
-		synchronized (l) {
+		synchronized (this.listeners) {
 			if (!expectedImgSrc.equals(this.imageSrc)) {
 				return;
 			}
 			this.image = event.image;
 			// Get array of listeners while holding lock.
-			listenerArray = (ImageListener[]) l.toArray(ImageListener.EMPTY_ARRAY);
+			listenerArray = this.listeners.toArray(ImageListener.EMPTY_ARRAY);
 		}
-		int llength = listenerArray.length;
-		for (int i = 0; i < llength; i++) {
-			// Inform listener, holding no lock.
-			listenerArray[i].imageLoaded(event);
+		for (ImageListener aListenerArray : listenerArray) {
+			aListenerArray.imageLoaded(event);
 		}
 	}
 
@@ -239,7 +209,7 @@ public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
 	private class LocalImageListener implements ImageListener {
 		private final String expectedImgSrc;
 
-		public LocalImageListener(String imgSrc) {
+		LocalImageListener(String imgSrc) {
 			this.expectedImgSrc = imgSrc;
 		}
 

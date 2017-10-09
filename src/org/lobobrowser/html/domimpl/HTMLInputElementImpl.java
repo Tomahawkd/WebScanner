@@ -26,11 +26,9 @@ package org.lobobrowser.html.domimpl;
 import org.lobobrowser.html.FormInput;
 import org.w3c.dom.html2.HTMLInputElement;
 
-import java.util.logging.Level;
-
 public class HTMLInputElementImpl extends HTMLBaseInputElement implements
 		HTMLInputElement {
-	public HTMLInputElementImpl(String name) {
+	HTMLInputElementImpl(String name) {
 		super(name);
 	}
 
@@ -122,11 +120,6 @@ public class HTMLInputElementImpl extends HTMLBaseInputElement implements
 	public boolean isSubmittableWithEnterKey() {
 		String type = this.getType();
 		return (type == null || "".equals(type) || "text".equals(type) || "password".equals(type));
-	}
-
-	public boolean isSubmittableWithPress() {
-		String type = this.getType();
-		return "submit".equals(type) || "image".equals(type);
 	}
 
 	public boolean isSubmitInput() {

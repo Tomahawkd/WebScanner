@@ -27,7 +27,7 @@ import org.lobobrowser.html.style.RenderState;
  * Element used for TT and CODE.
  */
 public class HTMLMonospacedElementImpl extends HTMLAbstractUIElement {
-	public HTMLMonospacedElementImpl(String name) {
+	HTMLMonospacedElementImpl(String name) {
 		super(name);
 	}
 

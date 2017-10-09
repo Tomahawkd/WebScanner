@@ -41,10 +41,9 @@ public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements
 		HTMLLinkElement {
 	private CSSStyleSheet styleSheet;
 
-	public HTMLLinkElementImpl(String name) {
+	HTMLLinkElementImpl(String name) {
 		super(name);
 	}
-
 
 	private boolean disabled;
 
@@ -135,7 +134,7 @@ public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements
 	 * If the LINK refers to a stylesheet document, this method
 	 * loads and parses it.
 	 */
-	protected void processLink() {
+	private void processLink() {
 		this.styleSheet = null;
 		String rel = this.getAttribute("rel");
 		if (rel != null) {
@@ -168,30 +167,12 @@ public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements
 								}
 								doc.addStyleSheet(sheet);
 							}
-
-
-						} catch (Throwable err) {
+						} catch (Throwable ignored) {
 						}
 					}
 				}
 			}
 		}
-	}
-
-	public String getAbsoluteHref() {
-		HtmlRendererContext rcontext = this.getHtmlRendererContext();
-		if (rcontext != null) {
-			String href = this.getHref();
-			if (href != null && href.length() > 0) {
-				String target = this.getTarget();
-				try {
-					URL url = this.getFullURL(href);
-					return url == null ? null : url.toExternalForm();
-				} catch (MalformedURLException ignored) {
-				}
-			}
-		}
-		return null;
 	}
 
 	public void navigate() {

@@ -6,16 +6,12 @@ import org.w3c.dom.html2.HTMLObjectElement;
 
 public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
 		HTMLObjectElement {
-	public HTMLObjectElementImpl(String name) {
+	HTMLObjectElementImpl(String name) {
 		super(name);
 	}
 
 	public String getAlign() {
 		return this.getAttribute("align");
-	}
-
-	public String getAlt() {
-		return this.getAttribute("alt");
 	}
 
 	public String getArchive() {
@@ -48,10 +44,6 @@ public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
 
 	public void setAlign(String align) {
 		this.setAttribute("align", align);
-	}
-
-	public void setAlt(String alt) {
-		this.setAttribute("alt", alt);
 	}
 
 	public void setArchive(String archive) {
@@ -108,7 +100,10 @@ public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
 
 	public int getHspace() {
 		try {
-			return Integer.parseInt(this.getAttribute("hspace"));
+			String attr = this.getAttribute("hspace");
+			if (attr != null) {
+				return Integer.parseInt(attr);
+			} else return 0;
 		} catch (Exception err) {
 			return 0;
 		}
@@ -120,7 +115,10 @@ public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
 
 	public int getTabIndex() {
 		try {
-			return Integer.parseInt(this.getAttribute("tabindex"));
+			String attr = this.getAttribute("tabindex");
+			if (attr != null) {
+				return Integer.parseInt(attr);
+			} else return 0;
 		} catch (Exception err) {
 			return 0;
 		}
@@ -136,7 +134,10 @@ public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
 
 	public int getVspace() {
 		try {
-			return Integer.parseInt(this.getAttribute("vspace"));
+			String attr = this.getAttribute("vspace");
+			if (attr != null) {
+				return Integer.parseInt(attr);
+			} else return 0;
 		} catch (Exception err) {
 			return 0;
 		}

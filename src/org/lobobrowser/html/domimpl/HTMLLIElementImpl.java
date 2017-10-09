@@ -28,7 +28,7 @@ import org.lobobrowser.html.style.RenderState;
 import org.w3c.dom.html2.HTMLLIElement;
 
 public class HTMLLIElementImpl extends HTMLAbstractUIElement implements HTMLLIElement {
-	public HTMLLIElementImpl(String name) {
+	HTMLLIElementImpl(String name) {
 		super(name);
 	}
 
