@@ -154,17 +154,6 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 		this.setAttribute("charset", charset);
 	}
 
-	int getAttributeAsInt(String name, int defaultValue) {
-		String value = this.getAttribute(name);
-		try {
-			if (value != null) {
-				return Integer.parseInt(value);
-			} else return defaultValue;
-		} catch (Exception err) {
-			return defaultValue;
-		}
-	}
-
 	public boolean getAttributeAsBoolean(String name) {
 		return this.getAttribute(name) != null;
 	}
@@ -206,26 +195,24 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 			for (int i = classNameArray.length; --i >= 0; ) {
 				String className = classNameArray[i];
 				Collection<CSSStyleDeclaration> sds = this.findStyleDeclarations(elementName, id, className, pseudoNames);
-				if (sds != null) {
-					for (CSSStyleDeclaration sd : sds) {
-						if (style == null) {
-							style = new ComputedCSS2Properties(this);
-						}
-						style.addStyleDeclaration(sd);
-					}
-				}
+				style = addDeclaration(style, sds);
 			}
 		} else {
 			String id = this.getId();
 			String elementName = this.getTagName();
 			Collection<CSSStyleDeclaration> sds = this.findStyleDeclarations(elementName, id, null, pseudoNames);
-			if (sds != null) {
-				for (CSSStyleDeclaration sd1 : sds) {
-					if (style == null) {
-						style = new ComputedCSS2Properties(this);
-					}
-					style.addStyleDeclaration(sd1);
+			style = addDeclaration(style, sds);
+		}
+		return style;
+	}
+	
+	private AbstractCSS2Properties addDeclaration(AbstractCSS2Properties style, Collection<CSSStyleDeclaration> sds) {
+		if (sds != null) {
+			for (CSSStyleDeclaration sd1 : sds) {
+				if (style == null) {
+					style = new ComputedCSS2Properties(this);
 				}
+				style.addStyleDeclaration(sd1);
 			}
 		}
 		return style;

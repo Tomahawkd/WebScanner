@@ -29,8 +29,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.html2.HTMLBodyElement;
 import org.w3c.dom.html2.HTMLDocument;
 
-public class HTMLBodyElementImpl extends HTMLAbstractUIElement implements
-		HTMLBodyElement {
+public class HTMLBodyElementImpl extends HTMLAbstractUIElement implements HTMLBodyElement {
 	HTMLBodyElementImpl(String name) {
 		super(name);
 	}
@@ -86,6 +85,4 @@ public class HTMLBodyElementImpl extends HTMLAbstractUIElement implements
 			super.assignAttributeField(normalName, value);
 		}
 	}
-
-
 }

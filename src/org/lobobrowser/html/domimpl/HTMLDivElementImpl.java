@@ -25,8 +25,7 @@ import org.lobobrowser.html.style.BlockRenderState;
 import org.lobobrowser.html.style.RenderState;
 import org.w3c.dom.html2.HTMLDivElement;
 
-public class HTMLDivElementImpl extends HTMLAbstractUIElement implements
-		HTMLDivElement {
+public class HTMLDivElementImpl extends HTMLAbstractUIElement implements HTMLDivElement {
 
 	HTMLDivElementImpl(String name) {
 		super(name);

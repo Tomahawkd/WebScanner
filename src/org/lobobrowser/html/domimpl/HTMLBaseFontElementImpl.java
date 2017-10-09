@@ -23,8 +23,7 @@ package org.lobobrowser.html.domimpl;
 import org.lobobrowser.html.style.*;
 import org.w3c.dom.html2.HTMLBaseFontElement;
 
-public class HTMLBaseFontElementImpl extends HTMLAbstractUIElement implements
-		HTMLBaseFontElement {
+public class HTMLBaseFontElementImpl extends HTMLAbstractUIElement implements HTMLBaseFontElement {
 	HTMLBaseFontElementImpl(String name) {
 		super(name);
 	}
