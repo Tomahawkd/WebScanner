@@ -31,9 +31,9 @@ import java.awt.*;
  * Represents a renderer (view) node.
  */
 public interface Renderable {
-	public static final Renderable[] EMPTY_ARRAY = new Renderable[0];
+	Renderable[] EMPTY_ARRAY = new Renderable[0];
 
-	public void paint(Graphics g);
+	void paint(Graphics g);
 
-	public ModelNode getModelNode();
+	ModelNode getModelNode();
 }

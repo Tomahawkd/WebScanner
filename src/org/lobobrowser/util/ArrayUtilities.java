@@ -23,6 +23,8 @@
  */
 package org.lobobrowser.util;
 
+import org.lobobrowser.html.renderer.Renderable;
+
 import java.util.Iterator;
 
 /**
@@ -37,16 +39,16 @@ public class ArrayUtilities {
 		super();
 	}
 
-	public static Iterator iterator(Object[] array, int offset, int length) {
-		return new ArrayIterator(array, offset, length);
+	public static Iterator<Renderable> iterator(Renderable[] array, int offset, int length) {
+		return new ArrayIterator<>(array, offset, length);
 	}
 
-	private static class ArrayIterator implements Iterator {
-		private final Object[] array;
+	private static class ArrayIterator<T> implements Iterator<T> {
+		private final T[] array;
 		private final int top;
 		private int offset;
 
-		ArrayIterator(Object[] array, int offset, int length) {
+		ArrayIterator(T[] array, int offset, int length) {
 			this.array = array;
 			this.offset = offset;
 			this.top = offset + length;
@@ -62,7 +64,7 @@ public class ArrayUtilities {
 		/* (non-Javadoc)
 		 * @see java.util.Iterator#next()
 		 */
-		public Object next() {
+		public T next() {
 			return this.array[this.offset++];
 		}
 

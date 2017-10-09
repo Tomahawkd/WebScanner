@@ -31,11 +31,6 @@ public class RenderableSpot {
 	public final int x;
 	public final int y;
 
-	/**
-	 * @param renderable
-	 * @param x
-	 * @param y
-	 */
 	public RenderableSpot(BoundableRenderable renderable, int x, int y) {
 		super();
 		this.renderable = renderable;

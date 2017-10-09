@@ -1392,7 +1392,7 @@ public class RBlockViewport extends BaseRCollection {
 		// Expected to be called only in GUI thread.
 		SortedSet<PositionedRenderable> others = this.positionedRenderables;
 		if (others == null) {
-			others = new TreeSet<PositionedRenderable>(new ZIndexComparator());
+			others = new TreeSet<>(new ZIndexComparator<>());
 			this.positionedRenderables = others;
 		}
 		others.add(new PositionedRenderable(renderable, verticalAlignable, this.positionedOrdinal++, isFloat));

@@ -29,13 +29,13 @@ final class RFloatInfo implements Renderable {
 	private final BoundableRenderable element;
 	private final boolean leftFloat;
 
-	public RFloatInfo(ModelNode node, BoundableRenderable element, boolean leftFloat) {
+	RFloatInfo(ModelNode node, BoundableRenderable element, boolean leftFloat) {
 		this.modelNode = node;
 		this.element = element;
 		this.leftFloat = leftFloat;
 	}
 
-	public boolean isLeftFloat() {
+	boolean isLeftFloat() {
 		return this.leftFloat;
 	}
 
@@ -44,7 +44,6 @@ final class RFloatInfo implements Renderable {
 	}
 
 	public void paint(Graphics g) {
-		// nop
 	}
 
 	public final BoundableRenderable getRenderable() {

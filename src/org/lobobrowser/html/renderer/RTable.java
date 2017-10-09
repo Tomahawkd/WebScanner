@@ -36,14 +36,14 @@ import java.util.*;
 
 class RTable extends BaseElementRenderable {
 	private static final int MAX_CACHE_SIZE = 10;
-	private final Map cachedLayout = new HashMap(5);
+	private final Map<LayoutKey, LayoutValue> cachedLayout = new HashMap<>(5);
 	private final TableMatrix tableMatrix;
-	private SortedSet positionedRenderables;
+	private SortedSet<PositionedRenderable> positionedRenderables;
 	private int otherOrdinal;
 	private LayoutKey lastLayoutKey = null;
 	private LayoutValue lastLayoutValue = null;
 
-	public RTable(HTMLElementImpl modelNode, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer container) {
+	RTable(HTMLElementImpl modelNode, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer container) {
 		super(container, modelNode, pcontext);
 		this.tableMatrix = new TableMatrix(modelNode, pcontext, rcontext, frameContext, this, this);
 	}
@@ -62,33 +62,28 @@ class RTable extends BaseElementRenderable {
 		try {
 			this.prePaint(g);
 			Dimension size = this.getSize();
-			//TODO: No scrollbars
-			TableMatrix tm = this.tableMatrix;
-			tm.paint(g, size);
-			Collection prs = this.positionedRenderables;
+			this.tableMatrix.paint(g, size);
+			Collection<PositionedRenderable> prs = this.positionedRenderables;
 			if (prs != null) {
-				Iterator i = prs.iterator();
-				while (i.hasNext()) {
-					PositionedRenderable pr = (PositionedRenderable) i.next();
+				for (PositionedRenderable pr : prs) {
 					BoundableRenderable r = pr.renderable;
 					r.paintTranslated(g);
 				}
 			}
 		} finally {
-			// Must always call super implementation
 			super.paint(g);
 		}
 	}
 
 	public void doLayout(int availWidth, int availHeight, boolean sizeOnly) {
-		Map cachedLayout = this.cachedLayout;
+		Map<LayoutKey, LayoutValue> cachedLayout = this.cachedLayout;
 		RenderState rs = this.modelNode.getRenderState();
 		int whitespace = rs == null ? RenderState.WS_NORMAL : rs.getWhiteSpace();
 		Font font = rs == null ? null : rs.getFont();
 		LayoutKey layoutKey = new LayoutKey(availWidth, availHeight, whitespace, font);
 		LayoutValue layoutValue;
 		if (sizeOnly) {
-			layoutValue = (LayoutValue) cachedLayout.get(layoutKey);
+			layoutValue = cachedLayout.get(layoutKey);
 		} else {
 			if (Objects.equals(layoutKey, this.lastLayoutKey)) {
 				layoutValue = this.lastLayoutValue;
@@ -108,14 +103,9 @@ class RTable extends BaseElementRenderable {
 			TableMatrix tm = this.tableMatrix;
 			Insets insets = this.getInsets(false, false);
 			tm.reset(insets, availWidth, availHeight);
-			//TODO: No scrollbars
 			tm.build(availWidth, availHeight, sizeOnly);
 			tm.doLayout(insets);
 
-			// Import applicable delayed pairs.
-			// Only needs to be done if layout was
-			// forced. Otherwise, they should've
-			// been imported already.
 			Collection<DelayedPair> pairs = this.delayedPairs;
 			if (pairs != null) {
 				for (DelayedPair pair : pairs) {
@@ -127,7 +117,6 @@ class RTable extends BaseElementRenderable {
 			layoutValue = new LayoutValue(tm.getTableWidth(), tm.getTableHeight());
 			if (sizeOnly) {
 				if (cachedLayout.size() > MAX_CACHE_SIZE) {
-					// Unlikely, but we should ensure it's bounded.
 					cachedLayout.clear();
 				}
 				cachedLayout.put(layoutKey, layoutValue);
@@ -155,12 +144,10 @@ class RTable extends BaseElementRenderable {
 	 * @see org.xamjwg.html.renderer.BoundableRenderable#getRenderablePoint(int, int)
 	 */
 	public RenderableSpot getLowestRenderableSpot(int x, int y) {
-		Collection prs = this.positionedRenderables;
+		Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			Iterator i = prs.iterator();
-			while (i.hasNext()) {
-				PositionedRenderable pr = (PositionedRenderable) i.next();
-				BoundableRenderable r = pr.renderable;
+			for (PositionedRenderable pr1 : prs) {
+				BoundableRenderable r = pr1.renderable;
 				int childX = x - r.getX();
 				int childY = y - r.getY();
 				RenderableSpot rs = r.getLowestRenderableSpot(childX, childY);
@@ -180,11 +167,9 @@ class RTable extends BaseElementRenderable {
 	 * @see org.xamjwg.html.renderer.BoundableRenderable#onMouseClick(java.awt.event.MouseEvent, int, int)
 	 */
 	public boolean onMouseClick(MouseEvent event, int x, int y) {
-		Collection prs = this.positionedRenderables;
+		Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			Iterator i = prs.iterator();
-			while (i.hasNext()) {
-				PositionedRenderable pr = (PositionedRenderable) i.next();
+			for (PositionedRenderable pr : prs) {
 				BoundableRenderable r = pr.renderable;
 				Rectangle bounds = r.getBounds();
 				if (bounds.contains(x, y)) {
@@ -200,12 +185,10 @@ class RTable extends BaseElementRenderable {
 	}
 
 	public boolean onDoubleClick(MouseEvent event, int x, int y) {
-		Collection prs = this.positionedRenderables;
+		Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			Iterator i = prs.iterator();
-			while (i.hasNext()) {
-				PositionedRenderable pr = (PositionedRenderable) i.next();
-				BoundableRenderable r = pr.renderable;
+			for (PositionedRenderable pr1 : prs) {
+				BoundableRenderable r = pr1.renderable;
 				Rectangle bounds = r.getBounds();
 				if (bounds.contains(x, y)) {
 					int childX = x - r.getX();
@@ -230,12 +213,10 @@ class RTable extends BaseElementRenderable {
 	 * @see org.xamjwg.html.renderer.BoundableRenderable#onMousePressed(java.awt.event.MouseEvent, int, int)
 	 */
 	public boolean onMousePressed(MouseEvent event, int x, int y) {
-		Collection prs = this.positionedRenderables;
+		Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			Iterator i = prs.iterator();
-			while (i.hasNext()) {
-				PositionedRenderable pr = (PositionedRenderable) i.next();
-				BoundableRenderable r = pr.renderable;
+			for (PositionedRenderable pr1 : prs) {
+				BoundableRenderable r = pr1.renderable;
 				Rectangle bounds = r.getBounds();
 				if (bounds.contains(x, y)) {
 					int childX = x - r.getX();
@@ -253,11 +234,9 @@ class RTable extends BaseElementRenderable {
 	 * @see org.xamjwg.html.renderer.BoundableRenderable#onMouseReleased(java.awt.event.MouseEvent, int, int)
 	 */
 	public boolean onMouseReleased(MouseEvent event, int x, int y) {
-		Collection prs = this.positionedRenderables;
+		Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
-			Iterator i = prs.iterator();
-			while (i.hasNext()) {
-				PositionedRenderable pr = (PositionedRenderable) i.next();
+			for (PositionedRenderable pr : prs) {
 				BoundableRenderable r = pr.renderable;
 				Rectangle bounds = r.getBounds();
 				if (bounds.contains(x, y)) {
@@ -276,12 +255,11 @@ class RTable extends BaseElementRenderable {
 	 * @see org.xamjwg.html.renderer.RCollection#getRenderables()
 	 */
 	public Iterator<Renderable> getRenderables() {
-		Collection prs = this.positionedRenderables;
+		Collection<PositionedRenderable> prs = this.positionedRenderables;
 		if (prs != null) {
 			Collection<Renderable> c = new java.util.LinkedList<>();
-			for (Object pr1 : prs) {
-				PositionedRenderable pr = (PositionedRenderable) pr1;
-				BoundableRenderable r = pr.renderable;
+			for (PositionedRenderable pr1 : prs) {
+				BoundableRenderable r = pr1.renderable;
 				c.add(r);
 			}
 			Iterator<Renderable> i2 = this.tableMatrix.getRenderables();
@@ -305,11 +283,11 @@ class RTable extends BaseElementRenderable {
 		return this.container.getPaintedBackgroundColor();
 	}
 
-	private final void addPositionedRenderable(BoundableRenderable renderable, boolean verticalAlignable, boolean isFloat) {
+	private void addPositionedRenderable(BoundableRenderable renderable, boolean verticalAlignable, boolean isFloat) {
 		// Expected to be called only in GUI thread.
-		SortedSet others = this.positionedRenderables;
+		SortedSet<PositionedRenderable> others = this.positionedRenderables;
 		if (others == null) {
-			others = new TreeSet(new ZIndexComparator());
+			others = new TreeSet<>(new ZIndexComparator<>());
 			this.positionedRenderables = others;
 		}
 		others.add(new PositionedRenderable(renderable, verticalAlignable, this.otherOrdinal++, isFloat));
@@ -335,7 +313,7 @@ class RTable extends BaseElementRenderable {
 		public final int whitespace;
 		public final Font font;
 
-		public LayoutKey(int availWidth, int availHeight, int whitespace, Font font) {
+		LayoutKey(int availWidth, int availHeight, int whitespace, Font font) {
 			super();
 			this.availWidth = availWidth;
 			this.availHeight = availHeight;
@@ -367,7 +345,7 @@ class RTable extends BaseElementRenderable {
 		public final int width;
 		public final int height;
 
-		public LayoutValue(int width, int height) {
+		LayoutValue(int width, int height) {
 			this.width = width;
 			this.height = height;
 		}

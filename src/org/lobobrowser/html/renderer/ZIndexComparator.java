@@ -2,7 +2,7 @@ package org.lobobrowser.html.renderer;
 
 import java.util.Comparator;
 
-class ZIndexComparator implements Comparator {
+class ZIndexComparator<E> implements Comparator<E> {
 	//Note: It is assumed that objects don't change their 
 	//z-indexes or ordinals after entering the sorted set.
 	//They may do so after the sorted set is no longer valid.
