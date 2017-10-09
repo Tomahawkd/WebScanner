@@ -50,14 +50,6 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 		}
 	}
 
-	public String getDefaultValue() {
-		return this.getAttribute("defaultValue");
-	}
-
-	public void setDefaultValue(String defaultValue) {
-		this.setAttribute("defaultValue", defaultValue);
-	}
-
 	public HTMLFormElement getForm() {
 		Node parent = this.getParentNode();
 		while (parent != null && !(parent instanceof HTMLFormElement)) {
@@ -88,28 +80,12 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 		this.setAttribute("accept", accept);
 	}
 
-	public String getAccessKey() {
-		return this.getAttribute("accessKey");
-	}
-
-	public void setAccessKey(String accessKey) {
-		this.setAttribute("accessKey", accessKey);
-	}
-
 	public String getAlign() {
 		return this.getAttribute("align");
 	}
 
 	public void setAlign(String align) {
 		this.setAttribute("align", align);
-	}
-
-	public String getAlt() {
-		return this.getAttribute("alit");
-	}
-
-	public void setAlt(String alt) {
-		this.setAttribute("alt", alt);
 	}
 
 	public boolean getDisabled() {
@@ -130,30 +106,6 @@ public abstract class HTMLBaseInputElement extends HTMLAbstractUIElement {
 
 	public void setName(String name) {
 		this.setAttribute("name", name);
-	}
-
-	public boolean getReadOnly() {
-		InputContext ic = this.inputContext;
-		return ic != null && ic.getReadOnly();
-	}
-
-	public void setReadOnly(boolean readOnly) {
-		InputContext ic = this.inputContext;
-		if (ic != null) {
-			ic.setReadOnly(readOnly);
-		}
-	}
-
-	public int getTabIndex() {
-		InputContext ic = this.inputContext;
-		return ic == null ? 0 : ic.getTabIndex();
-	}
-
-	public void setTabIndex(int tabIndex) {
-		InputContext ic = this.inputContext;
-		if (ic != null) {
-			ic.setTabIndex(tabIndex);
-		}
 	}
 
 	public String getValue() {

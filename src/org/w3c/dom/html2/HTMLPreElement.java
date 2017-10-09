@@ -41,11 +41,11 @@ public interface HTMLPreElement extends HTMLElement {
      * Fixed width for content. See the width attribute definition in HTML 
      * 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public int getWidth();
+    int getWidth();
     /**
      * Fixed width for content. See the width attribute definition in HTML 
      * 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public void setWidth(int width);
+    void setWidth(int width);
 
 }

@@ -1,6 +1,5 @@
 package org.lobobrowser.html.domimpl;
 
-import org.w3c.dom.Document;
 import org.w3c.dom.html2.HTMLFormElement;
 import org.w3c.dom.html2.HTMLObjectElement;
 
@@ -14,16 +13,8 @@ public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
 		return this.getAttribute("align");
 	}
 
-	public String getArchive() {
-		return this.getAttribute("archive");
-	}
-
 	public String getCode() {
 		return this.getAttribute("code");
-	}
-
-	public String getCodeBase() {
-		return this.getAttribute("codebase");
 	}
 
 	public String getHeight() {
@@ -46,16 +37,8 @@ public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("align", align);
 	}
 
-	public void setArchive(String archive) {
-		this.setAttribute("archive", archive);
-	}
-
 	public void setCode(String code) {
 		this.setAttribute("code", code);
-	}
-
-	public void setCodeBase(String codeBase) {
-		this.setAttribute("codebase", codeBase);
 	}
 
 	public void setHeight(String height) {
@@ -78,108 +61,28 @@ public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
 		return this.getAttribute("border");
 	}
 
-	public String getCodeType() {
-		return this.getAttribute("codetype");
-	}
-
-	public Document getContentDocument() {
-		return this.getOwnerDocument();
-	}
-
 	public String getData() {
 		return this.getAttribute("data");
-	}
-
-	public boolean getDeclare() {
-		return "declare".equalsIgnoreCase(this.getAttribute("declare"));
 	}
 
 	public HTMLFormElement getForm() {
 		return (HTMLFormElement) this.getAncestorForJavaClass(HTMLFormElement.class);
 	}
 
-	public int getHspace() {
-		try {
-			String attr = this.getAttribute("hspace");
-			if (attr != null) {
-				return Integer.parseInt(attr);
-			} else return 0;
-		} catch (Exception err) {
-			return 0;
-		}
-	}
-
-	public String getStandby() {
-		return this.getAttribute("standby");
-	}
-
-	public int getTabIndex() {
-		try {
-			String attr = this.getAttribute("tabindex");
-			if (attr != null) {
-				return Integer.parseInt(attr);
-			} else return 0;
-		} catch (Exception err) {
-			return 0;
-		}
-	}
-
 	public String getType() {
 		return this.getAttribute("type");
-	}
-
-	public String getUseMap() {
-		return this.getAttribute("usemap");
-	}
-
-	public int getVspace() {
-		try {
-			String attr = this.getAttribute("vspace");
-			if (attr != null) {
-				return Integer.parseInt(attr);
-			} else return 0;
-		} catch (Exception err) {
-			return 0;
-		}
 	}
 
 	public void setBorder(String border) {
 		this.setAttribute("border", border);
 	}
 
-	public void setCodeType(String codeType) {
-		this.setAttribute("codetype", codeType);
-	}
-
 	public void setData(String data) {
 		this.setAttribute("data", data);
-	}
-
-	public void setDeclare(boolean declare) {
-		this.setAttribute("declare", declare ? "declare" : null);
-	}
-
-	public void setHspace(int hspace) {
-		this.setAttribute("hspace", String.valueOf(hspace));
-	}
-
-	public void setStandby(String standby) {
-		this.setAttribute("standby", standby);
-	}
-
-	public void setTabIndex(int tabIndex) {
-		this.setAttribute("tabindex", String.valueOf(tabIndex));
 	}
 
 	public void setType(String type) {
 		this.setAttribute("type", type);
 	}
 
-	public void setUseMap(String useMap) {
-		this.setAttribute("usemap", useMap);
-	}
-
-	public void setVspace(int vspace) {
-		this.setAttribute("vspace", String.valueOf(vspace));
-	}
 }

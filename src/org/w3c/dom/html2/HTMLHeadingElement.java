@@ -42,11 +42,11 @@ public interface HTMLHeadingElement extends HTMLElement {
      * Horizontal text alignment. See the align attribute definition in HTML 
      * 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public String getAlign();
+    String getAlign();
     /**
      * Horizontal text alignment. See the align attribute definition in HTML 
      * 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public void setAlign(String align);
+    void setAlign(String align);
 
 }

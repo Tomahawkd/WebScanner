@@ -52,14 +52,6 @@ public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("align", align);
 	}
 
-	public String getAlt() {
-		return this.getAttribute("alt");
-	}
-
-	public void setAlt(String alt) {
-		this.setAttribute("alt", alt);
-	}
-
 	public String getBorder() {
 		return this.getAttribute("border");
 	}
@@ -77,30 +69,6 @@ public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("height", String.valueOf(height));
 	}
 
-	public int getHspace() {
-		return this.getAttributeAsInt("hspace", 0);
-	}
-
-	public void setHspace(int hspace) {
-		this.setAttribute("hspace", String.valueOf("hspace"));
-	}
-
-	public boolean getIsMap() {
-		return this.getAttributeAsBoolean("isMap");
-	}
-
-	public void setIsMap(boolean isMap) {
-		this.setAttribute("isMap", isMap ? "isMap" : null);
-	}
-
-	public String getLongDesc() {
-		return this.getAttribute("longDesc");
-	}
-
-	public void setLongDesc(String longDesc) {
-		this.setAttribute("longDesc", longDesc);
-	}
-
 	public String getSrc() {
 		return this.getAttribute("src");
 	}
@@ -112,22 +80,6 @@ public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
 	 */
 	public void setSrc(String src) {
 		this.setAttribute("src", src);
-	}
-
-	public String getUseMap() {
-		return this.getAttribute("useMap");
-	}
-
-	public void setUseMap(String useMap) {
-		this.setAttribute("useMap", useMap);
-	}
-
-	public int getVspace() {
-		return this.getAttributeAsInt("vspace", 0);
-	}
-
-	public void setVspace(int vspace) {
-		this.setAttribute("vspace", String.valueOf(vspace));
 	}
 
 	public int getWidth() {

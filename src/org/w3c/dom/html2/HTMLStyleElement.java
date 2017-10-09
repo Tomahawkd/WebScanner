@@ -42,32 +42,32 @@ public interface HTMLStyleElement extends HTMLElement {
     /**
      * Enables/disables the style sheet. 
      */
-    public boolean getDisabled();
+    boolean getDisabled();
     /**
      * Enables/disables the style sheet. 
      */
-    public void setDisabled(boolean disabled);
+    void setDisabled(boolean disabled);
 
     /**
      * Designed for use with one or more target media. See the media attribute 
      * definition in HTML 4.01.
      */
-    public String getMedia();
+    String getMedia();
     /**
      * Designed for use with one or more target media. See the media attribute 
      * definition in HTML 4.01.
      */
-    public void setMedia(String media);
+    void setMedia(String media);
 
     /**
      * The content type of the style sheet language. See the type attribute 
      * definition in HTML 4.01.
      */
-    public String getType();
+    String getType();
     /**
      * The content type of the style sheet language. See the type attribute 
      * definition in HTML 4.01.
      */
-    public void setType(String type);
+    void setType(String type);
 
 }

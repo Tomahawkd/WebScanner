@@ -33,18 +33,6 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 		super(name);
 	}
 
-	public int getCellIndex() {
-		return 0;
-	}
-
-	public String getAbbr() {
-		return this.getAttribute("abbr");
-	}
-
-	public void setAbbr(String abbr) {
-		this.setAttribute("abbr", abbr);
-	}
-
 	public String getAlign() {
 		return this.getAttribute("align");
 	}
@@ -53,20 +41,8 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("align", align);
 	}
 
-	public String getAxis() {
-		return this.getAttribute("axis");
-	}
-
-	public void setAxis(String axis) {
-		this.setAttribute("axis", axis);
-	}
-
 	public String getBgColor() {
 		return this.getAttribute("bgcolor");
-	}
-
-	public void setBgColor(String bgColor) {
-		this.setAttribute("bgcolor", bgColor);
 	}
 
 	public String getCh() {
@@ -75,14 +51,6 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 
 	public void setCh(String ch) {
 		this.setAttribute("ch", ch);
-	}
-
-	public String getChOff() {
-		return this.getAttribute("choff");
-	}
-
-	public void setChOff(String chOff) {
-		this.setAttribute("choff", chOff);
 	}
 
 	public int getColSpan() {
@@ -96,10 +64,6 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 				return 1;
 			}
 		}
-	}
-
-	public void setColSpan(int colSpan) {
-		this.setAttribute("colspan", String.valueOf(colSpan));
 	}
 
 	public String getHeaders() {
@@ -118,14 +82,6 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("height", height);
 	}
 
-	public boolean getNoWrap() {
-		return "nowrap".equalsIgnoreCase(this.getAttribute("nowrap"));
-	}
-
-	public void setNoWrap(boolean noWrap) {
-		this.setAttribute("nowrap", noWrap ? "nowrap" : null);
-	}
-
 	public int getRowSpan() {
 		String rowSpanText = this.getAttribute("rowspan");
 		if (rowSpanText == null) {
@@ -139,10 +95,6 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 		}
 	}
 
-	public void setRowSpan(int rowSpan) {
-		this.setAttribute("rowspan", String.valueOf(rowSpan));
-	}
-
 	public String getScope() {
 		return this.getAttribute("scope");
 	}
@@ -153,10 +105,6 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 
 	public String getVAlign() {
 		return this.getAttribute("valign");
-	}
-
-	public void setVAlign(String vAlign) {
-		this.setAttribute("valign", vAlign);
 	}
 
 	public String getWidth() {

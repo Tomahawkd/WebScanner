@@ -24,7 +24,6 @@
 package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.BrowserFrame;
-import org.w3c.dom.Document;
 import org.w3c.dom.html2.HTMLFrameElement;
 
 public class HTMLFrameElementImpl extends HTMLElementImpl implements
@@ -43,38 +42,6 @@ public class HTMLFrameElementImpl extends HTMLElementImpl implements
 		return this.browserFrame;
 	}
 
-	public String getFrameBorder() {
-		return this.getAttribute("frameBorder");
-	}
-
-	public void setFrameBorder(String frameBorder) {
-		this.setAttribute("frameBorder", frameBorder);
-	}
-
-	public String getLongDesc() {
-		return this.getAttribute("longdesc");
-	}
-
-	public void setLongDesc(String longDesc) {
-		this.setAttribute("longdesc", longDesc);
-	}
-
-	public String getMarginHeight() {
-		return this.getAttribute("marginHeight");
-	}
-
-	public void setMarginHeight(String marginHeight) {
-		this.setAttribute("marginHeight", marginHeight);
-	}
-
-	public String getMarginWidth() {
-		return this.getAttribute("marginWidth");
-	}
-
-	public void setMarginWidth(String marginWidth) {
-		this.setAttribute("marginWidth", marginWidth);
-	}
-
 	public String getName() {
 		return this.getAttribute("name");
 	}
@@ -85,37 +52,12 @@ public class HTMLFrameElementImpl extends HTMLElementImpl implements
 
 	private boolean noResize;
 
-	public boolean getNoResize() {
-		return this.noResize;
-	}
-
-	public void setNoResize(boolean noResize) {
-		this.noResize = noResize;
-	}
-
-	public String getScrolling() {
-		return this.getAttribute("scrolling");
-	}
-
-	public void setScrolling(String scrolling) {
-		this.setAttribute("scrolling", scrolling);
-	}
-
 	public String getSrc() {
 		return this.getAttribute("src");
 	}
 
 	public void setSrc(String src) {
 		this.setAttribute("src", src);
-	}
-
-	public Document getContentDocument() {
-		BrowserFrame frame = this.browserFrame;
-		if (frame == null) {
-			// Not loaded yet
-			return null;
-		}
-		return frame.getContentDocument();
 	}
 
 }

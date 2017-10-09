@@ -41,46 +41,33 @@ public interface HTMLHRElement extends HTMLElement {
      * Align the rule on the page. See the align attribute definition in HTML 
      * 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public String getAlign();
+    String getAlign();
     /**
      * Align the rule on the page. See the align attribute definition in HTML 
      * 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public void setAlign(String align);
-
-    /**
-     * Indicates to the user agent that there should be no shading in the 
-     * rendering of this element. See the noshade attribute definition in 
-     * HTML 4.01. This attribute is deprecated in HTML 4.01.
-     */
-    public boolean getNoShade();
-    /**
-     * Indicates to the user agent that there should be no shading in the 
-     * rendering of this element. See the noshade attribute definition in 
-     * HTML 4.01. This attribute is deprecated in HTML 4.01.
-     */
-    public void setNoShade(boolean noShade);
+    void setAlign(String align);
 
     /**
      * The height of the rule. See the size attribute definition in HTML 4.01. 
      * This attribute is deprecated in HTML 4.01.
      */
-    public String getSize();
+    String getSize();
     /**
      * The height of the rule. See the size attribute definition in HTML 4.01. 
      * This attribute is deprecated in HTML 4.01.
      */
-    public void setSize(String size);
+    void setSize(String size);
 
     /**
      * The width of the rule. See the width attribute definition in HTML 4.01. 
      * This attribute is deprecated in HTML 4.01.
      */
-    public String getWidth();
+    String getWidth();
     /**
      * The width of the rule. See the width attribute definition in HTML 4.01. 
      * This attribute is deprecated in HTML 4.01.
      */
-    public void setWidth(String width);
+    void setWidth(String width);
 
 }

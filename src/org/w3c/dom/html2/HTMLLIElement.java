@@ -41,24 +41,24 @@ public interface HTMLLIElement extends HTMLElement {
      * List item bullet style. See the type attribute definition in HTML 4.01. 
      * This attribute is deprecated in HTML 4.01.
      */
-    public String getType();
+    String getType();
     /**
      * List item bullet style. See the type attribute definition in HTML 4.01. 
      * This attribute is deprecated in HTML 4.01.
      */
-    public void setType(String type);
+    void setType(String type);
 
     /**
      * Reset sequence number when used in <code>OL</code>. See the value 
      * attribute definition in HTML 4.01. This attribute is deprecated in 
      * HTML 4.01.
      */
-    public int getValue();
+    int getValue();
     /**
      * Reset sequence number when used in <code>OL</code>. See the value 
      * attribute definition in HTML 4.01. This attribute is deprecated in 
      * HTML 4.01.
      */
-    public void setValue(int value);
+    void setValue(int value);
 
 }

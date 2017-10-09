@@ -41,11 +41,11 @@ public interface HTMLHtmlElement extends HTMLElement {
      * Version information about the document's DTD. See the version attribute 
      * definition in HTML 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public String getVersion();
+    String getVersion();
     /**
      * Version information about the document's DTD. See the version attribute 
      * definition in HTML 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public void setVersion(String version);
+    void setVersion(String version);
 
 }

@@ -37,107 +37,60 @@ package org.w3c.dom.html2;
  * <p>See also the <a href='http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109'>Document Object Model (DOM) Level 2 HTML Specification</a>.
  */
 public interface HTMLTextAreaElement extends HTMLElement {
-    /**
-     * Represents the contents of the element. The value of this attribute 
-     * does not change if the contents of the corresponding form control, in 
-     * an interactive user agent, changes.
-     * @version DOM Level 2
-     */
-    public String getDefaultValue();
-    /**
-     * Represents the contents of the element. The value of this attribute 
-     * does not change if the contents of the corresponding form control, in 
-     * an interactive user agent, changes.
-     * @version DOM Level 2
-     */
-    public void setDefaultValue(String defaultValue);
 
     /**
      * Returns the <code>FORM</code> element containing this control. Returns 
      * <code>null</code> if this control is not within the context of a 
      * form. 
      */
-    public HTMLFormElement getForm();
-
-    /**
-     * A single character access key to give access to the form control. See 
-     * the accesskey attribute definition in HTML 4.01.
-     */
-    public String getAccessKey();
-    /**
-     * A single character access key to give access to the form control. See 
-     * the accesskey attribute definition in HTML 4.01.
-     */
-    public void setAccessKey(String accessKey);
+    HTMLFormElement getForm();
 
     /**
      * Width of control (in characters). See the cols attribute definition in 
      * HTML 4.01.
      */
-    public int getCols();
+    int getCols();
     /**
      * Width of control (in characters). See the cols attribute definition in 
      * HTML 4.01.
      */
-    public void setCols(int cols);
+    void setCols(int cols);
 
     /**
      * The control is unavailable in this context. See the disabled attribute 
      * definition in HTML 4.01.
      */
-    public boolean getDisabled();
+    boolean getDisabled();
     /**
      * The control is unavailable in this context. See the disabled attribute 
      * definition in HTML 4.01.
      */
-    public void setDisabled(boolean disabled);
+    void setDisabled(boolean disabled);
 
     /**
      * Form control or object name when submitted with a form. See the name 
      * attribute definition in HTML 4.01.
      */
-    public String getName();
+    String getName();
     /**
      * Form control or object name when submitted with a form. See the name 
      * attribute definition in HTML 4.01.
      */
-    public void setName(String name);
-
-    /**
-     * This control is read-only. See the readonly attribute definition in 
-     * HTML 4.01.
-     */
-    public boolean getReadOnly();
-    /**
-     * This control is read-only. See the readonly attribute definition in 
-     * HTML 4.01.
-     */
-    public void setReadOnly(boolean readOnly);
+    void setName(String name);
 
     /**
      * Number of text rows. See the rows attribute definition in HTML 4.01.
      */
-    public int getRows();
+    int getRows();
     /**
      * Number of text rows. See the rows attribute definition in HTML 4.01.
      */
-    public void setRows(int rows);
-
-    /**
-     * Index that represents the element's position in the tabbing order. See 
-     * the tabindex attribute definition in HTML 4.01.
-     */
-    public int getTabIndex();
-    /**
-     * Index that represents the element's position in the tabbing order. See 
-     * the tabindex attribute definition in HTML 4.01.
-     */
-    public void setTabIndex(int tabIndex);
+    void setRows(int rows);
 
     /**
      * The type of this form control. This the string "textarea".
      */
-    public String getType();
+    String getType();
 
     /**
      * Represents the current contents of the corresponding form control, in 
@@ -146,7 +99,7 @@ public interface HTMLTextAreaElement extends HTMLElement {
      * element. If the entirety of the data can not fit into a single 
      * <code>DOMString</code>, the implementation may truncate the data.
      */
-    public String getValue();
+    String getValue();
     /**
      * Represents the current contents of the corresponding form control, in 
      * an interactive user agent. Changing this attribute changes the 
@@ -154,21 +107,21 @@ public interface HTMLTextAreaElement extends HTMLElement {
      * element. If the entirety of the data can not fit into a single 
      * <code>DOMString</code>, the implementation may truncate the data.
      */
-    public void setValue(String value);
+    void setValue(String value);
 
     /**
      * Removes keyboard focus from this element.
      */
-    public void blur();
+    void blur();
 
     /**
      * Gives keyboard focus to this element.
      */
-    public void focus();
+    void focus();
 
     /**
      * Select the contents of the <code>TEXTAREA</code>.
      */
-    public void select();
+    void select();
 
 }

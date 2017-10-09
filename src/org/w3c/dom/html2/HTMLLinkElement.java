@@ -44,93 +44,64 @@ public interface HTMLLinkElement extends HTMLElement {
      * Enables/disables the link. This is currently only used for style sheet 
      * links, and may be used to activate or deactivate style sheets. 
      */
-    public boolean getDisabled();
+    boolean getDisabled();
     /**
      * Enables/disables the link. This is currently only used for style sheet 
      * links, and may be used to activate or deactivate style sheets. 
      */
-    public void setDisabled(boolean disabled);
+    void setDisabled(boolean disabled);
 
     /**
      * The character encoding of the resource being linked to. See the charset 
      * attribute definition in HTML 4.01.
      */
-    public String getCharset();
+    String getCharset();
     /**
      * The character encoding of the resource being linked to. See the charset 
      * attribute definition in HTML 4.01.
      */
-    public void setCharset(String charset);
+    void setCharset(String charset);
 
     /**
      * The URI [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>] of the linked resource. See the href attribute definition in 
      * HTML 4.01.
      */
-    public String getHref();
+    String getHref();
     /**
      * The URI [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>] of the linked resource. See the href attribute definition in 
      * HTML 4.01.
      */
-    public void setHref(String href);
-
-    /**
-     * Language code of the linked resource. See the hreflang attribute 
-     * definition in HTML 4.01.
-     */
-    public String getHreflang();
-    /**
-     * Language code of the linked resource. See the hreflang attribute 
-     * definition in HTML 4.01.
-     */
-    public void setHreflang(String hreflang);
+    void setHref(String href);
 
     /**
      * Designed for use with one or more target media. See the media attribute 
      * definition in HTML 4.01.
      */
-    public String getMedia();
+    String getMedia();
     /**
      * Designed for use with one or more target media. See the media attribute 
      * definition in HTML 4.01.
      */
-    public void setMedia(String media);
-
-    /**
-     * Forward link type. See the rel attribute definition in HTML 4.01.
-     */
-    public String getRel();
-    /**
-     * Forward link type. See the rel attribute definition in HTML 4.01.
-     */
-    public void setRel(String rel);
-
-    /**
-     * Reverse link type. See the rev attribute definition in HTML 4.01.
-     */
-    public String getRev();
-    /**
-     * Reverse link type. See the rev attribute definition in HTML 4.01.
-     */
-    public void setRev(String rev);
+    void setMedia(String media);
 
     /**
      * Frame to render the resource in. See the target attribute definition in 
      * HTML 4.01.
      */
-    public String getTarget();
+    String getTarget();
     /**
      * Frame to render the resource in. See the target attribute definition in 
      * HTML 4.01.
      */
-    public void setTarget(String target);
+    void setTarget(String target);
 
     /**
      * Advisory content type. See the type attribute definition in HTML 4.01.
      */
-    public String getType();
+    String getType();
     /**
      * Advisory content type. See the type attribute definition in HTML 4.01.
      */
-    public void setType(String type);
+    void setType(String type);
 
 }

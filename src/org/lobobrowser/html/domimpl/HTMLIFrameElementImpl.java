@@ -3,7 +3,6 @@ package org.lobobrowser.html.domimpl;
 import org.lobobrowser.html.BrowserFrame;
 import org.lobobrowser.html.style.IFrameRenderState;
 import org.lobobrowser.html.style.RenderState;
-import org.w3c.dom.Document;
 import org.w3c.dom.html2.HTMLIFrameElement;
 
 public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
@@ -35,41 +34,12 @@ public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
 		return this.getAttribute("align");
 	}
 
-	public Document getContentDocument() {
-		BrowserFrame frame = this.browserFrame;
-		if (frame == null) {
-			// Not loaded yet
-			return null;
-		}
-		return frame.getContentDocument();
-	}
-
-	public String getFrameBorder() {
-		return this.getAttribute("frameborder");
-	}
-
 	public String getHeight() {
 		return this.getAttribute("height");
 	}
 
-	public String getLongDesc() {
-		return this.getAttribute("longdesc");
-	}
-
-	public String getMarginHeight() {
-		return this.getAttribute("marginheight");
-	}
-
-	public String getMarginWidth() {
-		return this.getAttribute("marginwidth");
-	}
-
 	public String getName() {
 		return this.getAttribute("name");
-	}
-
-	public String getScrolling() {
-		return this.getAttribute("scrolling");
 	}
 
 	public String getSrc() {
@@ -84,32 +54,12 @@ public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("align", align);
 	}
 
-	public void setFrameBorder(String frameBorder) {
-		this.setAttribute("frameborder", frameBorder);
-	}
-
 	public void setHeight(String height) {
 		this.setAttribute("height", height);
 	}
 
-	public void setLongDesc(String longDesc) {
-		this.setAttribute("longdesc", longDesc);
-	}
-
-	public void setMarginHeight(String marginHeight) {
-		this.setAttribute("marginHeight", marginHeight);
-	}
-
-	public void setMarginWidth(String marginWidth) {
-		this.setAttribute("marginWidth", marginWidth);
-	}
-
 	public void setName(String name) {
 		this.setAttribute("name", name);
-	}
-
-	public void setScrolling(String scrolling) {
-		this.setAttribute("scrolling", scrolling);
 	}
 
 	public void setSrc(String src) {

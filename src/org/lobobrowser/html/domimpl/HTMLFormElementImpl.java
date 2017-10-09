@@ -83,14 +83,6 @@ public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("name", name);
 	}
 
-	public String getAcceptCharset() {
-		return this.getAttribute("acceptCharset");
-	}
-
-	public void setAcceptCharset(String acceptCharset) {
-		this.setAttribute("acceptCharset", acceptCharset);
-	}
-
 	public String getAction() {
 		return this.getAttribute("action");
 	}
@@ -101,10 +93,6 @@ public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
 
 	public String getEnctype() {
 		return this.getAttribute("enctype");
-	}
-
-	public void setEnctype(String enctype) {
-		this.setAttribute("enctype", enctype);
 	}
 
 	public String getMethod() {

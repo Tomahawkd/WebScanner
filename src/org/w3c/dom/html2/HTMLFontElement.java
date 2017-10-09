@@ -42,33 +42,33 @@ public interface HTMLFontElement extends HTMLElement {
      * Font color. See the color attribute definition in HTML 4.01. This 
      * attribute is deprecated in HTML 4.01.
      */
-    public String getColor();
+    String getColor();
     /**
      * Font color. See the color attribute definition in HTML 4.01. This 
      * attribute is deprecated in HTML 4.01.
      */
-    public void setColor(String color);
+    void setColor(String color);
 
     /**
      * Font face identifier. See the face attribute definition in HTML 4.01. 
      * This attribute is deprecated in HTML 4.01.
      */
-    public String getFace();
+    String getFace();
     /**
      * Font face identifier. See the face attribute definition in HTML 4.01. 
      * This attribute is deprecated in HTML 4.01.
      */
-    public void setFace(String face);
+    void setFace(String face);
 
     /**
      * Font size. See the size attribute definition in HTML 4.01. This 
      * attribute is deprecated in HTML 4.01.
      */
-    public String getSize();
+    String getSize();
     /**
      * Font size. See the size attribute definition in HTML 4.01. This 
      * attribute is deprecated in HTML 4.01.
      */
-    public void setSize(String size);
+    void setSize(String size);
 
 }

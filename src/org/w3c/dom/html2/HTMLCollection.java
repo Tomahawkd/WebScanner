@@ -46,7 +46,7 @@ public interface HTMLCollection {
     /**
      * This attribute specifies the length or size of the list. 
      */
-    public int getLength();
+    int getLength();
 
     /**
      * This method retrieves a node specified by ordinal index. Nodes are 
@@ -57,7 +57,7 @@ public interface HTMLCollection {
      *   success. A value of <code>null</code> is returned if the index is 
      *   out of range. 
      */
-    public Node item(int index);
+    Node item(int index);
 
     /**
      * This method retrieves a <code>Node</code> using a name. With [<a href='http://www.w3.org/TR/1999/REC-html401-19991224'>HTML 4.01</a>] 
@@ -74,6 +74,6 @@ public interface HTMLCollection {
      *   string. Upon failure (e.g., no node with this name exists), returns 
      *   <code>null</code>.
      */
-    public Node namedItem(String name);
+    Node namedItem(String name);
 
 }

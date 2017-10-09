@@ -33,15 +33,6 @@ public class HTMLUListElementImpl extends HTMLAbstractUIElement implements
 		super(name);
 	}
 
-	public boolean getCompact() {
-		String compactText = this.getAttribute("compact");
-		return "compact".equalsIgnoreCase(compactText);
-	}
-
-	public void setCompact(boolean compact) {
-		this.setAttribute("compact", compact ? "compact" : null);
-	}
-
 	public String getType() {
 		return this.getAttribute("type");
 	}

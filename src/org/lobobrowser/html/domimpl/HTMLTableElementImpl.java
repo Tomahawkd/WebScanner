@@ -24,11 +24,7 @@
 package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.style.*;
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Node;
 import org.w3c.dom.html2.*;
-
-import java.util.ArrayList;
 
 public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 		HTMLTableElement {
@@ -39,40 +35,12 @@ public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 
 	private HTMLTableCaptionElement caption;
 
-	public HTMLTableCaptionElement getCaption() {
-		return this.caption;
-	}
-
-	public void setCaption(HTMLTableCaptionElement caption) throws DOMException {
-		this.caption = caption;
-	}
-
 	private HTMLTableSectionElement thead;
-
-	public HTMLTableSectionElement getTHead() {
-		return this.thead;
-	}
-
-	public void setTHead(HTMLTableSectionElement tHead) throws DOMException {
-		this.thead = tHead;
-	}
 
 	private HTMLTableSectionElement tfoot;
 
-	public HTMLTableSectionElement getTFoot() {
-		return this.tfoot;
-	}
-
-	public void setTFoot(HTMLTableSectionElement tFoot) throws DOMException {
-		this.tfoot = tFoot;
-	}
-
 	public HTMLCollection getRows() {
 		return new DescendentHTMLCollection(this, new ElementFilter("TR"), this.treeLock, false);
-	}
-
-	public HTMLCollection getTBodies() {
-		return new DescendentHTMLCollection(this, new ElementFilter("TBODY"), this.treeLock, false);
 	}
 
 	public String getAlign() {
@@ -87,32 +55,12 @@ public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 		return this.getAttribute("bgcolor");
 	}
 
-	public void setBgColor(String bgColor) {
-		this.setAttribute("bgcolor", bgColor);
-	}
-
 	public String getBorder() {
 		return this.getAttribute("border");
 	}
 
 	public void setBorder(String border) {
 		this.setAttribute("border", border);
-	}
-
-	public String getCellPadding() {
-		return this.getAttribute("cellpadding");
-	}
-
-	public void setCellPadding(String cellPadding) {
-		this.setAttribute("cellpadding", cellPadding);
-	}
-
-	public String getCellSpacing() {
-		return this.getAttribute("cellspacing");
-	}
-
-	public void setCellSpacing(String cellSpacing) {
-		this.setAttribute("cellspacing", cellSpacing);
 	}
 
 	public String getFrame() {
@@ -131,105 +79,12 @@ public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("rules", rules);
 	}
 
-	public String getSummary() {
-		return this.getAttribute("summary");
-	}
-
-	public void setSummary(String summary) {
-		this.setAttribute("summary", summary);
-	}
-
 	public String getWidth() {
 		return this.getAttribute("width");
 	}
 
 	public void setWidth(String width) {
 		this.setAttribute("width", width);
-	}
-
-	public HTMLElement createTHead() {
-		org.w3c.dom.Document doc = this.document;
-		return doc == null ? null : (HTMLElement) doc.createElement("thead");
-	}
-
-	public void deleteTHead() {
-		this.removeChildren(new ElementFilter("THEAD"));
-	}
-
-	public HTMLElement createTFoot() {
-		org.w3c.dom.Document doc = this.document;
-		return doc == null ? null : (HTMLElement) doc.createElement("tfoot");
-	}
-
-	public void deleteTFoot() {
-		this.removeChildren(new ElementFilter("TFOOT"));
-	}
-
-	public HTMLElement createCaption() {
-		org.w3c.dom.Document doc = this.document;
-		return doc == null ? null : (HTMLElement) doc.createElement("caption");
-	}
-
-	public void deleteCaption() {
-		this.removeChildren(new ElementFilter("CAPTION"));
-	}
-
-	/**
-	 * Inserts a row at the index given. If <code>index</code> is <code>-1</code>,
-	 * the row is appended as the last row.
-	 */
-	public HTMLElement insertRow(int index) throws DOMException {
-		org.w3c.dom.Document doc = this.document;
-		if (doc == null) {
-			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Orphan element");
-		}
-		HTMLElement rowElement = (HTMLElement) doc.createElement("TR");
-		synchronized (this.treeLock) {
-			if (index == -1) {
-				this.appendChild(rowElement);
-				return rowElement;
-			}
-			ArrayList<Node> nl = this.nodeList;
-			if (nl != null) {
-				int size = nl.size();
-				int trcount = 0;
-				for (int i = 0; i < size; i++) {
-					Node node = nl.get(i);
-					if ("TR".equalsIgnoreCase(node.getNodeName())) {
-						if (trcount == index) {
-							this.insertAt(rowElement, i);
-							return rowElement;
-						}
-						trcount++;
-					}
-				}
-			} else {
-				this.appendChild(rowElement);
-				return rowElement;
-			}
-		}
-		throw new DOMException(DOMException.INDEX_SIZE_ERR, "Index out of range");
-	}
-
-	public void deleteRow(int index) throws DOMException {
-		synchronized (this.treeLock) {
-			ArrayList<Node> nl = this.nodeList;
-			if (nl != null) {
-				int size = nl.size();
-				int trcount = 0;
-				for (int i = 0; i < size; i++) {
-					Node node = nl.get(i);
-					if ("TR".equalsIgnoreCase(node.getNodeName())) {
-						if (trcount == index) {
-							this.removeChildAt(i);
-							return;
-						}
-						trcount++;
-					}
-				}
-			}
-		}
-		throw new DOMException(DOMException.INDEX_SIZE_ERR, "Index out of range");
 	}
 
 	protected RenderState createRenderState(RenderState prevRenderState) {

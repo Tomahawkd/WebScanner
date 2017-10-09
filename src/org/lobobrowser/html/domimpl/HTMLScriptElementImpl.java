@@ -47,14 +47,6 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements
 		this.text = text;
 	}
 
-	public String getHtmlFor() {
-		return this.getAttribute("htmlFor");
-	}
-
-	public void setHtmlFor(String htmlFor) {
-		this.setAttribute("htmlFor", htmlFor);
-	}
-
 	public String getEvent() {
 		return this.getAttribute("event");
 	}
@@ -64,14 +56,6 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements
 	}
 
 	private boolean defer;
-
-	public boolean getDefer() {
-		return this.defer;
-	}
-
-	public void setDefer(boolean defer) {
-		this.defer = defer;
-	}
 
 	public String getSrc() {
 		return this.getAttribute("src");

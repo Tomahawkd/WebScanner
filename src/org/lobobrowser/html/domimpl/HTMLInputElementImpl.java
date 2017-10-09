@@ -32,41 +32,12 @@ public class HTMLInputElementImpl extends HTMLBaseInputElement implements
 		super(name);
 	}
 
-	private boolean defaultChecked;
-
-	public boolean getDefaultChecked() {
-		return this.defaultChecked;
-	}
-
-	public void setDefaultChecked(boolean defaultChecked) {
-		this.defaultChecked = defaultChecked;
-	}
-
 	public boolean getChecked() {
 		InputContext ic = this.inputContext;
 		if (ic == null) {
 			return this.getAttributeAsBoolean("checked");
 		} else {
 			return ic.getChecked();
-		}
-	}
-
-	public void setChecked(boolean checked) {
-		InputContext ic = this.inputContext;
-		if (ic != null) {
-			ic.setChecked(checked);
-		}
-	}
-
-	public int getMaxLength() {
-		InputContext ic = this.inputContext;
-		return ic == null ? 0 : ic.getMaxLength();
-	}
-
-	public void setMaxLength(int maxLength) {
-		InputContext ic = this.inputContext;
-		if (ic != null) {
-			ic.setMaxLength(maxLength);
 		}
 	}
 
@@ -100,14 +71,6 @@ public class HTMLInputElementImpl extends HTMLBaseInputElement implements
 
 	public void setType(String type) {
 		this.setAttribute("type", type);
-	}
-
-	public String getUseMap() {
-		return this.getAttribute("usemap");
-	}
-
-	public void setUseMap(String useMap) {
-		this.setAttribute("usemap", useMap);
 	}
 
 	public void click() {

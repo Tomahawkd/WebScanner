@@ -25,9 +25,7 @@ package org.lobobrowser.html.domimpl;
 
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
-import org.w3c.dom.html2.HTMLCollection;
 import org.w3c.dom.html2.HTMLElement;
-import org.w3c.dom.html2.HTMLTableCellElement;
 import org.w3c.dom.html2.HTMLTableRowElement;
 
 import java.util.ArrayList;
@@ -35,39 +33,6 @@ import java.util.ArrayList;
 public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTableRowElement {
 	HTMLTableRowElementImpl(String name) {
 		super(name);
-	}
-
-	public int getRowIndex() {
-		NodeImpl parent = (NodeImpl) this.getParentNode();
-		if (parent == null) {
-			return -1;
-		}
-		try {
-			parent.visit(new NodeVisitor() {
-				private int count = 0;
-
-				public void visit(Node node) {
-					if (node instanceof HTMLTableRowElementImpl) {
-						if (HTMLTableRowElementImpl.this == node) {
-							throw new StopVisitorException(this.count);
-						}
-						this.count++;
-					}
-				}
-			});
-		} catch (StopVisitorException sve) {
-			return (Integer) sve.getTag();
-		}
-		return -1;
-	}
-
-	public int getSectionRowIndex() {
-		return 0;
-	}
-
-	public HTMLCollection getCells() {
-		NodeFilter filter = node -> node instanceof HTMLTableCellElementImpl;
-		return new DescendentHTMLCollection(this, filter, this.treeLock, false);
 	}
 
 	public String getAlign() {
@@ -82,10 +47,6 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTabl
 		return this.getAttribute("bgcolor");
 	}
 
-	public void setBgColor(String bgColor) {
-		this.setAttribute("bgcolor", bgColor);
-	}
-
 	public String getCh() {
 		return this.getAttribute("ch");
 	}
@@ -94,24 +55,8 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTabl
 		this.setAttribute("ch", ch);
 	}
 
-	public String getChOff() {
-		return this.getAttribute("choff");
-	}
-
-	public void setChOff(String chOff) {
-		this.setAttribute("choff", chOff);
-	}
-
 	public String getVAlign() {
 		return this.getAttribute("valign");
-	}
-
-	public void setVAlign(String vAlign) {
-		this.setAttribute("valign", vAlign);
-	}
-
-	public HTMLElement insertCell(int index) throws DOMException {
-		return this.insertCell(index, "TD");
 	}
 
 	private HTMLElement insertCell(int index, String tagName) throws DOMException {
@@ -147,21 +92,4 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTabl
 		throw new DOMException(DOMException.INDEX_SIZE_ERR, "Index out of range");
 	}
 
-	public void deleteCell(int index) throws DOMException {
-		synchronized (this.treeLock) {
-			ArrayList<Node> nl = this.nodeList;
-			if (nl != null) {
-				int trcount = 0;
-				for (Node aNl : nl) {
-					if (aNl instanceof HTMLTableCellElement) {
-						if (trcount == index) {
-							this.removeChildAt(index);
-						}
-						trcount++;
-					}
-				}
-			}
-		}
-		throw new DOMException(DOMException.INDEX_SIZE_ERR, "Index out of range");
-	}
 }

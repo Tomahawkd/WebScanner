@@ -11,10 +11,6 @@ public class HTMLHRElementImpl extends HTMLAbstractUIElement implements HTMLHREl
 		return this.getAttribute("align");
 	}
 
-	public boolean getNoShade() {
-		return "noshade".equalsIgnoreCase(this.getAttribute("noshade"));
-	}
-
 	public String getSize() {
 		return this.getAttribute("size");
 	}
@@ -25,10 +21,6 @@ public class HTMLHRElementImpl extends HTMLAbstractUIElement implements HTMLHREl
 
 	public void setAlign(String align) {
 		this.setAttribute("align", align);
-	}
-
-	public void setNoShade(boolean noShade) {
-		this.setAttribute("noshade", noShade ? "noshade" : null);
 	}
 
 	public void setSize(String size) {

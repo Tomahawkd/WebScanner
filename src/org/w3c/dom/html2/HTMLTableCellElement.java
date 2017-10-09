@@ -38,164 +38,95 @@ package org.w3c.dom.html2;
  * <p>See also the <a href='http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109'>Document Object Model (DOM) Level 2 HTML Specification</a>.
  */
 public interface HTMLTableCellElement extends HTMLElement {
-    /**
-     * The index of this cell in the row, starting from 0. This index is in 
-     * document tree order and not display order.
-     */
-    public int getCellIndex();
-
-    /**
-     * Abbreviation for header cells. See the abbr attribute definition in 
-     * HTML 4.01.
-     */
-    public String getAbbr();
-    /**
-     * Abbreviation for header cells. See the abbr attribute definition in 
-     * HTML 4.01.
-     */
-    public void setAbbr(String abbr);
 
     /**
      * Horizontal alignment of data in cell. See the align attribute definition
      *  in HTML 4.01.
      */
-    public String getAlign();
+    String getAlign();
     /**
      * Horizontal alignment of data in cell. See the align attribute definition
      *  in HTML 4.01.
      */
-    public void setAlign(String align);
-
-    /**
-     * Names group of related headers. See the axis attribute definition in 
-     * HTML 4.01.
-     */
-    public String getAxis();
-    /**
-     * Names group of related headers. See the axis attribute definition in 
-     * HTML 4.01.
-     */
-    public void setAxis(String axis);
+    void setAlign(String align);
 
     /**
      * Cell background color. See the bgcolor attribute definition in HTML 
      * 4.01. This attribute is deprecated in HTML 4.01.
      */
-    public String getBgColor();
-    /**
-     * Cell background color. See the bgcolor attribute definition in HTML 
-     * 4.01. This attribute is deprecated in HTML 4.01.
-     */
-    public void setBgColor(String bgColor);
+    String getBgColor();
 
     /**
      * Alignment character for cells in a column. See the char attribute 
      * definition in HTML 4.01.
      */
-    public String getCh();
+    String getCh();
     /**
      * Alignment character for cells in a column. See the char attribute 
      * definition in HTML 4.01.
      */
-    public void setCh(String ch);
-
-    /**
-     * Offset of alignment character. See the charoff attribute definition in 
-     * HTML 4.01.
-     */
-    public String getChOff();
-    /**
-     * Offset of alignment character. See the charoff attribute definition in 
-     * HTML 4.01.
-     */
-    public void setChOff(String chOff);
+    void setCh(String ch);
 
     /**
      * Number of columns spanned by cell. See the colspan attribute definition 
      * in HTML 4.01.
      */
-    public int getColSpan();
-    /**
-     * Number of columns spanned by cell. See the colspan attribute definition 
-     * in HTML 4.01.
-     */
-    public void setColSpan(int colSpan);
+    int getColSpan();
 
     /**
      * List of <code>id</code> attribute values for header cells. See the 
      * headers attribute definition in HTML 4.01.
      */
-    public String getHeaders();
+    String getHeaders();
     /**
      * List of <code>id</code> attribute values for header cells. See the 
      * headers attribute definition in HTML 4.01.
      */
-    public void setHeaders(String headers);
+    void setHeaders(String headers);
 
     /**
      * Cell height. See the height attribute definition in HTML 4.01. This 
      * attribute is deprecated in HTML 4.01.
      */
-    public String getHeight();
+    String getHeight();
     /**
      * Cell height. See the height attribute definition in HTML 4.01. This 
      * attribute is deprecated in HTML 4.01.
      */
-    public void setHeight(String height);
-
-    /**
-     * Suppress word wrapping. See the nowrap attribute definition in HTML 
-     * 4.01. This attribute is deprecated in HTML 4.01.
-     */
-    public boolean getNoWrap();
-    /**
-     * Suppress word wrapping. See the nowrap attribute definition in HTML 
-     * 4.01. This attribute is deprecated in HTML 4.01.
-     */
-    public void setNoWrap(boolean noWrap);
+    void setHeight(String height);
 
     /**
      * Number of rows spanned by cell. See the rowspan attribute definition in 
      * HTML 4.01.
      */
-    public int getRowSpan();
-    /**
-     * Number of rows spanned by cell. See the rowspan attribute definition in 
-     * HTML 4.01.
-     */
-    public void setRowSpan(int rowSpan);
+    int getRowSpan();
 
     /**
      * Scope covered by header cells. See the scope attribute definition in 
      * HTML 4.01.
      */
-    public String getScope();
+    String getScope();
     /**
      * Scope covered by header cells. See the scope attribute definition in 
      * HTML 4.01.
      */
-    public void setScope(String scope);
+    void setScope(String scope);
 
     /**
      * Vertical alignment of data in cell. See the valign attribute definition 
      * in HTML 4.01.
      */
-    public String getVAlign();
-    /**
-     * Vertical alignment of data in cell. See the valign attribute definition 
-     * in HTML 4.01.
-     */
-    public void setVAlign(String vAlign);
+    String getVAlign();
 
     /**
      * Cell width. See the width attribute definition in HTML 4.01. This 
      * attribute is deprecated in HTML 4.01.
      */
-    public String getWidth();
+    String getWidth();
     /**
      * Cell width. See the width attribute definition in HTML 4.01. This 
      * attribute is deprecated in HTML 4.01.
      */
-    public void setWidth(String width);
+    void setWidth(String width);
 
 }

@@ -48,14 +48,14 @@ public interface HTMLOptionsCollection {
     /**
      *  This attribute specifies the length or size of the list. 
      */
-    public int getLength();
+    int getLength();
     /**
      *  This attribute specifies the length or size of the list. 
      * @exception DOMException
      *    NOT_SUPPORTED_ERR: if setting the length is not allowed by the 
      *   implementation. 
      */
-    public void setLength(int length)
+    void setLength(int length)
                           throws DOMException;
 
     /**
@@ -67,22 +67,5 @@ public interface HTMLOptionsCollection {
      *   success. A value of <code>null</code> is returned if the index is 
      *   out of range. 
      */
-    public Node item(int index);
-
-    /**
-     * This method retrieves a <code>Node</code> using a name. It first 
-     * searches for a <code>Node</code> with a matching <code>id</code> 
-     * attribute. If it doesn't find one, it then searches for a 
-     * <code>Node</code> with a matching <code>name</code> attribute, but 
-     * only on those elements that are allowed a name attribute. This method 
-     * is case insensitive in HTML documents and case sensitive in XHTML 
-     * documents.
-     * @param name The name of the <code>Node</code> to be fetched.
-     * @return The <code>Node</code> with a <code>name</code> or 
-     *   <code>id</code> attribute whose value corresponds to the specified 
-     *   string. Upon failure (e.g., no node with this name exists), returns 
-     *   <code>null</code>.
-     */
-    public Node namedItem(String name);
-
+    Node item(int index);
 }

@@ -49,28 +49,12 @@ public class HTMLBodyElementImpl extends HTMLAbstractUIElement implements
 		}
 	}
 
-	public String getALink() {
-		return this.getAttribute("alink");
-	}
-
-	public void setALink(String aLink) {
-		this.setAttribute("alink", aLink);
-	}
-
 	public String getBackground() {
 		return this.getAttribute("background");
 	}
 
 	public void setBackground(String background) {
 		this.setAttribute("background", background);
-	}
-
-	public String getBgColor() {
-		return this.getAttribute("bgcolor");
-	}
-
-	public void setBgColor(String bgColor) {
-		this.setAttribute("bgcolor", bgColor);
 	}
 
 	public String getLink() {
@@ -91,10 +75,6 @@ public class HTMLBodyElementImpl extends HTMLAbstractUIElement implements
 
 	public String getVLink() {
 		return this.getAttribute("vlink");
-	}
-
-	public void setVLink(String vLink) {
-		this.setAttribute("vlink", vLink);
 	}
 
 	protected RenderState createRenderState(RenderState prevRenderState) {

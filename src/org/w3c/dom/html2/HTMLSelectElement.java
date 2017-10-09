@@ -46,47 +46,45 @@ public interface HTMLSelectElement extends HTMLElement {
      * when the multiple attribute is <code>true</code> and the string 
      * "select-one" when <code>false</code>.
      */
-    public String getType();
+    String getType();
 
     /**
      * The ordinal index of the selected option, starting from 0. The value -1 
      * is returned if no element is selected. If multiple options are 
      * selected, the index of the first selected option is returned. 
      */
-    public int getSelectedIndex();
+    int getSelectedIndex();
     /**
      * The ordinal index of the selected option, starting from 0. The value -1 
      * is returned if no element is selected. If multiple options are 
      * selected, the index of the first selected option is returned. 
      */
-    public void setSelectedIndex(int selectedIndex);
+    void setSelectedIndex(int selectedIndex);
 
     /**
      *  The current form control value (i.e. the value of the currently 
      * selected option), if multiple options are selected this is the value 
      * of the first selected option. 
      */
-    public String getValue();
+    String getValue();
     /**
      *  The current form control value (i.e. the value of the currently 
      * selected option), if multiple options are selected this is the value 
      * of the first selected option. 
      */
-    public void setValue(String value);
+    void setValue(String value);
 
     /**
      *  The number of options in this <code>SELECT</code>. 
-     * @version DOM Level 2
      */
-    public int getLength();
+    int getLength();
     /**
      *  The number of options in this <code>SELECT</code>. 
      * @exception DOMException
      *    NOT_SUPPORTED_ERR: if setting the length is not allowed by the 
      *   implementation. 
-     * @version DOM Level 2
      */
-    public void setLength(int length)
+    void setLength(int length)
                       throws DOMException;
 
     /**
@@ -94,69 +92,57 @@ public interface HTMLSelectElement extends HTMLElement {
      * <code>null</code> if this control is not within the context of a 
      * form. 
      */
-    public HTMLFormElement getForm();
+    HTMLFormElement getForm();
 
     /**
      * The collection of <code>OPTION</code> elements contained by this 
      * element. 
-     * @version DOM Level 2
      */
-    public HTMLOptionsCollection getOptions();
+    HTMLOptionsCollection getOptions();
 
     /**
      * The control is unavailable in this context. See the disabled attribute 
      * definition in HTML 4.01.
      */
-    public boolean getDisabled();
+    boolean getDisabled();
     /**
      * The control is unavailable in this context. See the disabled attribute 
      * definition in HTML 4.01.
      */
-    public void setDisabled(boolean disabled);
+    void setDisabled(boolean disabled);
 
     /**
      * If true, multiple <code>OPTION</code> elements may be selected in this 
      * <code>SELECT</code>. See the multiple attribute definition in HTML 
      * 4.01.
      */
-    public boolean getMultiple();
+    boolean getMultiple();
     /**
      * If true, multiple <code>OPTION</code> elements may be selected in this 
      * <code>SELECT</code>. See the multiple attribute definition in HTML 
      * 4.01.
      */
-    public void setMultiple(boolean multiple);
+    void setMultiple(boolean multiple);
 
     /**
      * Form control or object name when submitted with a form. See the name 
      * attribute definition in HTML 4.01.
      */
-    public String getName();
+    String getName();
     /**
      * Form control or object name when submitted with a form. See the name 
      * attribute definition in HTML 4.01.
      */
-    public void setName(String name);
+    void setName(String name);
 
     /**
      * Number of visible rows. See the size attribute definition in HTML 4.01.
      */
-    public int getSize();
+    int getSize();
     /**
      * Number of visible rows. See the size attribute definition in HTML 4.01.
      */
-    public void setSize(int size);
-
-    /**
-     * Index that represents the element's position in the tabbing order. See 
-     * the tabindex attribute definition in HTML 4.01.
-     */
-    public int getTabIndex();
-    /**
-     * Index that represents the element's position in the tabbing order. See 
-     * the tabindex attribute definition in HTML 4.01.
-     */
-    public void setTabIndex(int tabIndex);
+    void setSize(int size);
 
     /**
      * Add a new element to the collection of <code>OPTION</code> elements for 
@@ -174,8 +160,8 @@ public interface HTMLSelectElement extends HTMLElement {
      *   NOT_FOUND_ERR: Raised if <code>before</code> is not a descendant of 
      *   the <code>SELECT</code> element. 
      */
-    public void add(HTMLElement element, 
-                    HTMLElement before)
+    void add(HTMLElement element,
+             HTMLElement before)
                     throws DOMException;
 
     /**
@@ -184,16 +170,16 @@ public interface HTMLSelectElement extends HTMLElement {
      * given index.
      * @param index The index of the item to remove, starting from 0.
      */
-    public void remove(int index);
+    void remove(int index);
 
     /**
      * Removes keyboard focus from this element.
      */
-    public void blur();
+    void blur();
 
     /**
      * Gives keyboard focus to this element.
      */
-    public void focus();
+    void focus();
 
 }

@@ -68,36 +68,12 @@ public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("href", href);
 	}
 
-	public String getHreflang() {
-		return this.getAttribute("hreflang");
-	}
-
-	public void setHreflang(String hreflang) {
-		this.setAttribute("hreflang", hreflang);
-	}
-
 	public String getMedia() {
 		return this.getAttribute("media");
 	}
 
 	public void setMedia(String media) {
 		this.setAttribute("media", media);
-	}
-
-	public String getRel() {
-		return this.getAttribute("rel");
-	}
-
-	public void setRel(String rel) {
-		this.setAttribute("rel", rel);
-	}
-
-	public String getRev() {
-		return this.getAttribute("rev");
-	}
-
-	public void setRev(String rev) {
-		this.setAttribute("rev", rev);
 	}
 
 	public String getTarget() {
