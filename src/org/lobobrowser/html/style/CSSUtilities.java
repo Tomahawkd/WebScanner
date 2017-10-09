@@ -50,7 +50,7 @@ public class CSSUtilities {
 		try {
 			BufferedReader reader = new BufferedReader(new StringReader(text));
 			String line;
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			String pendingLine = null;
 			// Only last line should be trimmed.
 			while ((line = reader.readLine()) != null) {
@@ -71,7 +71,6 @@ public class CSSUtilities {
 			}
 			return sb.toString();
 		} catch (IOException ioe) {
-			// not possible
 			throw new IllegalStateException(ioe.getMessage());
 		}
 	}
@@ -88,7 +87,7 @@ public class CSSUtilities {
 		final HttpRequest request = bcontext.createHttpRequest();
 		URL baseURL = new URL(baseUri);
 		URL scriptURL = Urls.createURL(baseURL, href);
-		final String scriptURI = scriptURL == null ? href : scriptURL.toExternalForm();
+		final String scriptURI = scriptURL.toExternalForm();
 		// Perform a synchronous request
 		SecurityManager sm = System.getSecurityManager();
 		if (sm == null) {
@@ -100,15 +99,13 @@ public class CSSUtilities {
 
 		} else {
 			// Code might have restrictions on loading items from elsewhere.
-			AccessController.doPrivileged(new PrivilegedAction() {
-				public Object run() {
-					try {
-						request.open("GET", scriptURI, false);
-						request.send(null);
-					} catch (java.io.IOException ignored) {
-					}
-					return null;
+			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
+				try {
+					request.open("GET", scriptURI, false);
+					request.send(null);
+				} catch (IOException ignored) {
 				}
+				return null;
 			});
 		}
 		int status = request.getStatus();
@@ -153,7 +150,7 @@ public class CSSUtilities {
 		return false;
 	}
 
-	public static boolean matchesMedia(MediaList mediaList, UserAgentContext rcontext) {
+	static boolean matchesMedia(MediaList mediaList, UserAgentContext rcontext) {
 		if (mediaList == null) {
 			return true;
 		}

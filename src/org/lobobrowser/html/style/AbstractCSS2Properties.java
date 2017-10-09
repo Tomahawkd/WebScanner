@@ -38,139 +38,139 @@ import java.util.Map;
 
 public abstract class AbstractCSS2Properties implements CSS2Properties {
 
-	public static final String FLOAT = "float";
-	public static final String AZIMUTH = "azimuth";
-	public static final String BACKGROUND = "background";
-	public static final String BACKGROUND_ATTACHMENT = "background-attachment";
-	public static final String BACKGROUND_COLOR = "background-color";
-	public static final String BACKGROUND_IMAGE = "background-image";
-	public static final String BACKGROUND_POSITION = "background-position";
-	public static final String BACKGROUND_REPEAT = "background-repeat";
-	public static final String BORDER = "border";
-	public static final String BORDER_BOTTOM = "border-bottom";
-	public static final String BORDER_BOTTOM_COLOR = "border-bottom-color";
-	public static final String BORDER_BOTTOM_STYLE = "border-bottom-style";
-	public static final String BORDER_BOTTOM_WIDTH = "border-bottom-width";
-	public static final String BORDER_COLLAPSE = "border-collapse";
-	public static final String BORDER_COLOR = "border-color";
-	public static final String BORDER_LEFT = "border-left";
-	public static final String BORDER_LEFT_COLOR = "border-left-color";
-	public static final String BORDER_LEFT_STYLE = "border-left-style";
-	public static final String BORDER_LEFT_WIDTH = "border-left-width";
-	public static final String BORDER_RIGHT = "border-right";
-	public static final String BORDER_RIGHT_COLOR = "border-right-color";
-	public static final String BORDER_RIGHT_STYLE = "border-right-style";
-	public static final String BORDER_RIGHT_WIDTH = "border-right-width";
-	public static final String BORDER_SPACING = "border-spacing";
-	public static final String BORDER_STYLE = "border-style";
-	public static final String BORDER_TOP = "border-top";
-	public static final String BORDER_TOP_COLOR = "border-top-color";
-	public static final String BORDER_TOP_STYLE = "border-top-style";
-	public static final String BORDER_TOP_WIDTH = "border-top-width";
-	public static final String BORDER_WIDTH = "border-width";
-	public static final String BOTTOM = "bottom";
-	public static final String CAPTION_SIDE = "caption-side";
-	public static final String CLEAR = "clear";
-	public static final String CLIP = "clip";
-	public static final String COLOR = "color";
-	public static final String CONTENT = "content";
-	public static final String COUNTER_INCREMENT = "counter-increment";
-	public static final String COUNTER_RESET = "counter-reset";
-	public static final String CSS_FLOAT = "css-float";
-	public static final String CUE = "cue";
-	public static final String CUE_AFTER = "cue-after";
-	public static final String CUE_BEFORE = "cue-before";
-	public static final String CURSOR = "cursor";
-	public static final String DIRECTION = "direction";
-	public static final String DISPLAY = "display";
-	public static final String ELEVATION = "elevation";
-	public static final String EMPTY_CELLS = "empty-cells";
-	public static final String FONT = "font";
-	public static final String FONT_FAMILY = "font-family";
-	public static final String FONT_SIZE = "font-size";
-	public static final String FONT_SIZE_ADJUST = "font-size-adjust";
-	public static final String FONT_STRETCH = "font-stretch";
-	public static final String FONT_STYLE = "font-style";
-	public static final String FONT_VARIANT = "font-variant";
-	public static final String FONT_WEIGHT = "font-weight";
-	public static final String HEIGHT = "height";
-	public static final String LEFT = "left";
-	public static final String LETTER_SPACING = "letter-spacing";
-	public static final String LINE_HEIGHT = "line-height";
-	public static final String LIST_STYLE = "list-style";
-	public static final String LIST_STYLE_IMAGE = "list-style-image";
-	public static final String LIST_STYLE_POSITION = "list-style-position";
-	public static final String LIST_STYLE_TYPE = "list-style-type";
-	public static final String MARGIN = "margin";
-	public static final String MARGIN_BOTTOM = "margin-bottom";
-	public static final String MARGIN_LEFT = "margin-left";
-	public static final String MARGIN_RIGHT = "margin-right";
-	public static final String MARGIN_TOP = "margin-top";
-	public static final String MARKER_OFFSET = "marker-offset";
-	public static final String MARKS = "marks";
-	public static final String MAX_HEIGHT = "max-height";
-	public static final String MAX_WIDTH = "max-width";
-	public static final String MIN_HEIGHT = "min-height";
-	public static final String MIN_WIDTH = "min-width";
-	public static final String ORPHANS = "orphans";
-	public static final String OUTLINE = "outline";
-	public static final String OUTLINE_COLOR = "outline-color";
-	public static final String OUTLINE_STYLE = "outline-style";
-	public static final String OUTLINE_WIDTH = "outline-width";
-	public static final String OVERFLOW = "overflow";
-	public static final String PADDING = "padding";
-	public static final String PADDING_BOTTOM = "padding-bottom";
-	public static final String PADDING_LEFT = "padding-left";
-	public static final String PADDING_RIGHT = "padding-right";
-	public static final String PADDING_TOP = "padding-top";
-	public static final String PAGE = "page";
-	public static final String PAGE_BREAK_AFTER = "page-break-after";
-	public static final String PAGE_BREAK_BEFORE = "page-break-before";
-	public static final String PAGE_BREAK_INSIDE = "page-break-inside";
-	public static final String PAUSE = "pause";
-	public static final String PAUSE_AFTER = "pause-after";
-	public static final String PAUSE_BEFORE = "pause-before";
-	public static final String PITCH = "pitch";
-	public static final String PITCH_RANGE = "pitch-range";
-	public static final String PLAY_DURING = "play-during";
-	public static final String POSITION = "position";
-	public static final String QUOTES = "quotes";
-	public static final String RICHNESS = "richness";
-	public static final String RIGHT = "right";
-	public static final String SIZE = "size";
-	public static final String SPEAK = "speak";
-	public static final String SPEAK_HEADER = "speak-header";
-	public static final String SPEAK_NUMERAL = "speak-numeral";
-	public static final String SPEAK_PUNCTUATION = "speak-puctuation";
-	public static final String SPEECH_RATE = "speech-rate";
-	public static final String STRESS = "stress";
-	public static final String TABLE_LAYOUT = "table-layout";
-	public static final String TEXT_ALIGN = "text-align";
-	public static final String TEXT_DECORATION = "text-decoration";
-	public static final String TEXT_INDENT = "text-indent";
-	public static final String TEXT_SHADOW = "text-shadow";
-	public static final String TEXT_TRANSFORM = "text-transform";
-	public static final String TOP = "top";
-	public static final String UNICODE_BIDI = "unicode-bidi";
-	public static final String VERTICAL_ALIGN = "vertical-align";
-	public static final String VISIBILITY = "visibility";
-	public static final String VOICE_FAMILY = "voice-family";
-	public static final String VOLUME = "volume";
-	public static final String WHITE_SPACE = "white-space";
-	public static final String WIDOWS = "widows";
-	public static final String WIDTH = "width";
-	public static final String WORD_SPACING = "word_spacing";
-	public static final String Z_INDEX = "z-index";
+	private static final String FLOAT = "float";
+	private static final String AZIMUTH = "azimuth";
+	static final String BACKGROUND = "background";
+	private static final String BACKGROUND_ATTACHMENT = "background-attachment";
+	static final String BACKGROUND_COLOR = "background-color";
+	static final String BACKGROUND_IMAGE = "background-image";
+	static final String BACKGROUND_POSITION = "background-position";
+	static final String BACKGROUND_REPEAT = "background-repeat";
+	static final String BORDER = "border";
+	static final String BORDER_BOTTOM = "border-bottom";
+	private static final String BORDER_BOTTOM_COLOR = "border-bottom-color";
+	private static final String BORDER_BOTTOM_STYLE = "border-bottom-style";
+	private static final String BORDER_BOTTOM_WIDTH = "border-bottom-width";
+	private static final String BORDER_COLLAPSE = "border-collapse";
+	private static final String BORDER_COLOR = "border-color";
+	static final String BORDER_LEFT = "border-left";
+	private static final String BORDER_LEFT_COLOR = "border-left-color";
+	private static final String BORDER_LEFT_STYLE = "border-left-style";
+	private static final String BORDER_LEFT_WIDTH = "border-left-width";
+	static final String BORDER_RIGHT = "border-right";
+	private static final String BORDER_RIGHT_COLOR = "border-right-color";
+	private static final String BORDER_RIGHT_STYLE = "border-right-style";
+	private static final String BORDER_RIGHT_WIDTH = "border-right-width";
+	private static final String BORDER_SPACING = "border-spacing";
+	private static final String BORDER_STYLE = "border-style";
+	static final String BORDER_TOP = "border-top";
+	private static final String BORDER_TOP_COLOR = "border-top-color";
+	private static final String BORDER_TOP_STYLE = "border-top-style";
+	private static final String BORDER_TOP_WIDTH = "border-top-width";
+	private static final String BORDER_WIDTH = "border-width";
+	private static final String BOTTOM = "bottom";
+	private static final String CAPTION_SIDE = "caption-side";
+	private static final String CLEAR = "clear";
+	private static final String CLIP = "clip";
+	private static final String COLOR = "color";
+	private static final String CONTENT = "content";
+	private static final String COUNTER_INCREMENT = "counter-increment";
+	private static final String COUNTER_RESET = "counter-reset";
+	private static final String CSS_FLOAT = "css-float";
+	private static final String CUE = "cue";
+	private static final String CUE_AFTER = "cue-after";
+	private static final String CUE_BEFORE = "cue-before";
+	private static final String CURSOR = "cursor";
+	private static final String DIRECTION = "direction";
+	private static final String DISPLAY = "display";
+	private static final String ELEVATION = "elevation";
+	private static final String EMPTY_CELLS = "empty-cells";
+	static final String FONT = "font";
+	static final String FONT_FAMILY = "font-family";
+	static final String FONT_SIZE = "font-size";
+	private static final String FONT_SIZE_ADJUST = "font-size-adjust";
+	private static final String FONT_STRETCH = "font-stretch";
+	static final String FONT_STYLE = "font-style";
+	static final String FONT_VARIANT = "font-variant";
+	static final String FONT_WEIGHT = "font-weight";
+	private static final String HEIGHT = "height";
+	private static final String LEFT = "left";
+	private static final String LETTER_SPACING = "letter-spacing";
+	static final String LINE_HEIGHT = "line-height";
+	private static final String LIST_STYLE = "list-style";
+	private static final String LIST_STYLE_IMAGE = "list-style-image";
+	private static final String LIST_STYLE_POSITION = "list-style-position";
+	private static final String LIST_STYLE_TYPE = "list-style-type";
+	private static final String MARGIN = "margin";
+	private static final String MARGIN_BOTTOM = "margin-bottom";
+	private static final String MARGIN_LEFT = "margin-left";
+	private static final String MARGIN_RIGHT = "margin-right";
+	private static final String MARGIN_TOP = "margin-top";
+	private static final String MARKER_OFFSET = "marker-offset";
+	private static final String MARKS = "marks";
+	private static final String MAX_HEIGHT = "max-height";
+	private static final String MAX_WIDTH = "max-width";
+	private static final String MIN_HEIGHT = "min-height";
+	private static final String MIN_WIDTH = "min-width";
+	private static final String ORPHANS = "orphans";
+	private static final String OUTLINE = "outline";
+	private static final String OUTLINE_COLOR = "outline-color";
+	private static final String OUTLINE_STYLE = "outline-style";
+	private static final String OUTLINE_WIDTH = "outline-width";
+	private static final String OVERFLOW = "overflow";
+	private static final String PADDING = "padding";
+	private static final String PADDING_BOTTOM = "padding-bottom";
+	private static final String PADDING_LEFT = "padding-left";
+	private static final String PADDING_RIGHT = "padding-right";
+	private static final String PADDING_TOP = "padding-top";
+	private static final String PAGE = "page";
+	private static final String PAGE_BREAK_AFTER = "page-break-after";
+	private static final String PAGE_BREAK_BEFORE = "page-break-before";
+	private static final String PAGE_BREAK_INSIDE = "page-break-inside";
+	private static final String PAUSE = "pause";
+	private static final String PAUSE_AFTER = "pause-after";
+	private static final String PAUSE_BEFORE = "pause-before";
+	private static final String PITCH = "pitch";
+	private static final String PITCH_RANGE = "pitch-range";
+	private static final String PLAY_DURING = "play-during";
+	private static final String POSITION = "position";
+	private static final String QUOTES = "quotes";
+	private static final String RICHNESS = "richness";
+	private static final String RIGHT = "right";
+	private static final String SIZE = "size";
+	private static final String SPEAK = "speak";
+	private static final String SPEAK_HEADER = "speak-header";
+	private static final String SPEAK_NUMERAL = "speak-numeral";
+	private static final String SPEAK_PUNCTUATION = "speak-puctuation";
+	private static final String SPEECH_RATE = "speech-rate";
+	private static final String STRESS = "stress";
+	private static final String TABLE_LAYOUT = "table-layout";
+	private static final String TEXT_ALIGN = "text-align";
+	private static final String TEXT_DECORATION = "text-decoration";
+	private static final String TEXT_INDENT = "text-indent";
+	private static final String TEXT_SHADOW = "text-shadow";
+	private static final String TEXT_TRANSFORM = "text-transform";
+	private static final String TOP = "top";
+	private static final String UNICODE_BIDI = "unicode-bidi";
+	private static final String VERTICAL_ALIGN = "vertical-align";
+	private static final String VISIBILITY = "visibility";
+	private static final String VOICE_FAMILY = "voice-family";
+	private static final String VOLUME = "volume";
+	private static final String WHITE_SPACE = "white-space";
+	private static final String WIDOWS = "widows";
+	private static final String WIDTH = "width";
+	private static final String WORD_SPACING = "word_spacing";
+	private static final String Z_INDEX = "z-index";
 
-	private static final Map SUB_SETTERS = new HashMap(20);
+	private static final Map<String, SubPropertySetter> SUB_SETTERS = new HashMap<>(20);
 
 	private final CSS2PropertiesContext context;
 	private AbstractCSS2Properties localStyleProperties;
-	private Collection styleDeclarations;
-	private Map valueMap = null;
+	private Collection<CSSStyleDeclaration> styleDeclarations;
+	private Map<String, Property> valueMap = null;
 
 	static {
-		Map subSetters = SUB_SETTERS;
+		Map<String, SubPropertySetter> subSetters = SUB_SETTERS;
 		subSetters.put(MARGIN, new FourCornersSetter(MARGIN, "margin-", ""));
 		subSetters.put(PADDING, new FourCornersSetter(PADDING, "padding-", ""));
 		subSetters.put(BORDER, new BorderSetter1());
@@ -192,9 +192,9 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 
 	public void addStyleDeclaration(CSSStyleDeclaration styleDeclaration) {
 		synchronized (this) {
-			Collection sd = this.styleDeclarations;
+			Collection<CSSStyleDeclaration> sd = this.styleDeclarations;
 			if (sd == null) {
-				sd = new LinkedList();
+				sd = new LinkedList<>();
 				this.styleDeclarations = sd;
 			}
 			sd.add(styleDeclaration);
@@ -218,23 +218,12 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 		}
 	}
 
-	public AbstractCSS2Properties getLocalStyleProperties() {
-		synchronized (this) {
-			return this.localStyleProperties;
-		}
-	}
-
-//	private final String getPropertyValue(String name) {
-//		String lowerCase = name.toLowerCase();
-//		return this.getPropertyValueLC(lowerCase);
-//	}
-
-	public final String getPropertyValue(String name) {
+	final String getPropertyValue(String name) {
 		return this.getPropertyValueLC(name.toLowerCase());
 	}
 
-	private final String getPropertyValueLC(String lowerCaseName) {
-		Map vm = this.valueMap;
+	private String getPropertyValueLC(String lowerCaseName) {
+		Map<String, Property> vm = this.valueMap;
 		synchronized (this) {
 			// Local properties have precedence
 			AbstractCSS2Properties localProps = this.localStyleProperties;
@@ -245,7 +234,7 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 				}
 			}
 			if (vm != null) {
-				Property p = (Property) vm.get(lowerCaseName);
+				Property p = vm.get(lowerCaseName);
 				return p == null ? null : p.value;
 			}
 		}
@@ -259,10 +248,10 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 	 * @param value         The property value.
 	 */
 	protected void setPropertyValueLC(String lowerCaseName, String value) {
-		Map vm = this.valueMap;
+		Map<String, Property> vm = this.valueMap;
 		synchronized (this) {
 			if (vm == null) {
-				vm = new HashMap(1);
+				vm = new HashMap<>(1);
 				this.valueMap = vm;
 			}
 			vm.put(lowerCaseName, new Property(value, true));
@@ -278,17 +267,16 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 	 * @param lowerCaseName The name of the property in lowercase.
 	 * @param value         The property value.
 	 */
-	protected final void setPropertyValueLCAlt(String lowerCaseName, String value, boolean important) {
-		Map vm = this.valueMap;
+	final void setPropertyValueLCAlt(String lowerCaseName, String value, boolean important) {
+		Map<String, Property> vm = this.valueMap;
 		synchronized (this) {
 			if (vm == null) {
-				vm = new HashMap(1);
+				vm = new HashMap<>(1);
 				this.valueMap = vm;
 			} else {
 				if (!important) {
-					Property oldProperty = (Property) vm.get(lowerCaseName);
+					Property oldProperty = vm.get(lowerCaseName);
 					if (oldProperty != null && oldProperty.important) {
-						// Ignore setting
 						return;
 					}
 				}
@@ -297,8 +285,8 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 		}
 	}
 
-	protected final void setPropertyValueProcessed(String lowerCaseName, String value, CSSStyleDeclaration declaration, boolean important) {
-		SubPropertySetter setter = (SubPropertySetter) SUB_SETTERS.get(lowerCaseName);
+	final void setPropertyValueProcessed(String lowerCaseName, String value, CSSStyleDeclaration declaration, boolean important) {
+		SubPropertySetter setter = SUB_SETTERS.get(lowerCaseName);
 		if (setter != null) {
 			setter.changeValue(this, value, declaration, important);
 		} else {
@@ -306,39 +294,11 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 		}
 	}
 
-//	/**
-//	 * Gets the style declaration where a property value might have come from.
-//	 * This method can be used to obtain the URL of the style document, in
-//	 * order to resolve relative URLs.
-//	 * @param lowerCaseName The name of the property in lowercase.
-//	 */
-//	public final CSSStyleDeclaration getStyleDeclaration(String lowerCaseName) {
-//		// Converts blanks to nulls.
-//		synchronized(this) {
-//			Collection sds = this.styleDeclarations;
-//			if(sds == null) {
-//				return null;
-//			}
-//			Iterator i = sds.iterator();
-//			while(i.hasNext()) {
-//				Object styleObject = i.next();
-//				if(styleObject instanceof CSSStyleDeclaration) {
-//					CSSStyleDeclaration styleDeclaration = (CSSStyleDeclaration) styleObject;
-//					String pv = styleDeclaration.getPropertyValue(lowerCaseName);
-//					if(pv != null && pv.length() != 0) {
-//						return styleDeclaration;
-//					}
-//				}
-//			}
-//		}
-//		return null;
-//	}
-
 	//---------- NonStandard properties
 
 	private String overlayColor;
 
-	public String getOverlayColor() {
+	String getOverlayColor() {
 		return this.overlayColor;
 	}
 
@@ -1536,12 +1496,12 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 		return this.getClass().getSimpleName() + "[size=" + size + "]";
 	}
 
-	private static interface SubPropertySetter {
-		public void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration, boolean important);
+	private interface SubPropertySetter {
+		void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration, boolean important);
 	}
 
 	private static class BorderSetter1 implements SubPropertySetter {
-		public void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
+		void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
 			this.changeValue(properties, newValue, declaration, true);
 		}
 
@@ -1557,11 +1517,11 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 	private static class BorderSetter2 implements SubPropertySetter {
 		private final String name;
 
-		public BorderSetter2(String baseName) {
+		BorderSetter2(String baseName) {
 			this.name = baseName;
 		}
 
-		public void changeValue(AbstractCSS2Properties properties, String value, CSSStyleDeclaration declaration) {
+		void changeValue(AbstractCSS2Properties properties, String value, CSSStyleDeclaration declaration) {
 			this.changeValue(properties, value, declaration, true);
 		}
 
@@ -1572,11 +1532,10 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 				String color = null;
 				String style = null;
 				String width = null;
-				for (int i = 0; i < array.length; i++) {
-					String token = array[i];
+				for (String token : array) {
 					if (HtmlValues.isBorderStyle(token)) {
 						style = token;
-					} else if (org.lobobrowser.util.gui.ColorFactory.getInstance().isColor(token)) {
+					} else if (ColorFactory.getInstance().isColor(token)) {
 						color = token;
 					} else {
 						width = token;
@@ -1601,13 +1560,13 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 		private final String suffix;
 		private final String property;
 
-		public FourCornersSetter(String property, String prefix, String suffix) {
+		FourCornersSetter(String property, String prefix, String suffix) {
 			this.prefix = prefix;
 			this.suffix = suffix;
 			this.property = property;
 		}
 
-		public void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
+		void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
 			this.changeValue(properties, newValue, declaration, true);
 		}
 
@@ -1651,7 +1610,7 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 	}
 
 	private static class BackgroundImageSetter implements SubPropertySetter {
-		public void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
+		void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
 			this.changeValue(properties, newValue, declaration, true);
 		}
 
@@ -1699,7 +1658,7 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 	}
 
 	private static class BackgroundSetter implements SubPropertySetter {
-		public void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
+		void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
 			this.changeValue(properties, newValue, declaration, true);
 		}
 
@@ -1713,8 +1672,7 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 				String image = null;
 				String backgroundRepeat = null;
 				String position = null;
-				for (int i = 0; i < tokens.length; i++) {
-					String token = tokens[i];
+				for (String token : tokens) {
 					if (ColorFactory.getInstance().isColor(token)) {
 						color = token;
 					} else if (HtmlValues.isUrl(token)) {
@@ -1749,7 +1707,7 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 	}
 
 	private static class FontSetter implements SubPropertySetter {
-		public void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
+		void changeValue(AbstractCSS2Properties properties, String newValue, CSSStyleDeclaration declaration) {
 			this.changeValue(properties, newValue, declaration, true);
 		}
 
@@ -1806,7 +1764,7 @@ public abstract class AbstractCSS2Properties implements CSS2Properties {
 						properties.setPropertyValueLCAlt(LINE_HEIGHT, lineHeightText, important);
 					}
 					if (++i < length) {
-						StringBuffer fontFamilyBuff = new StringBuffer();
+						StringBuilder fontFamilyBuff = new StringBuilder();
 						do {
 							token = tokens[i];
 							fontFamilyBuff.append(token);

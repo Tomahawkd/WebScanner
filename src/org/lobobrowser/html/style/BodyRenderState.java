@@ -82,9 +82,7 @@ public class BodyRenderState extends StyleSheetRenderState {
 				bottomMargin = marginHeight;
 			}
 			if (leftMargin != null) {
-				if (insets == null) {
-					insets = new HtmlInsets();
-				}
+				insets = new HtmlInsets();
 				insets.left = HtmlValues.getOldSyntaxPixelSizeSimple(leftMargin, 0);
 				insets.leftType = HtmlInsets.TYPE_PIXELS;
 			}

@@ -22,17 +22,15 @@ package org.lobobrowser.html.style;
 
 
 public interface CSS2PropertiesContext {
-	public void informLookInvalid();
+	void informLookInvalid();
 
-	public void informSizeInvalid();
+	void informSizeInvalid();
 
-	public void informPositionInvalid();
+	void informPositionInvalid();
 
-	public void informLayoutInvalid();
+	void informLayoutInvalid();
 
-	public void informInvalid();
+	void informInvalid();
 
-	public AbstractCSS2Properties getParentStyle();
-
-	public String getDocumentBaseURI();
+	String getDocumentBaseURI();
 }
