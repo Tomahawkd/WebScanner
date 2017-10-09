@@ -34,8 +34,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
-		HTMLFormElement {
+public class HTMLFormElementImpl extends HTMLAbstractUIElement implements HTMLFormElement {
 	HTMLFormElementImpl(String name) {
 		super(name);
 	}

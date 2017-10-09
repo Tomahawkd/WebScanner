@@ -26,8 +26,7 @@ package org.lobobrowser.html.domimpl;
 import org.lobobrowser.html.BrowserFrame;
 import org.w3c.dom.html2.HTMLFrameElement;
 
-public class HTMLFrameElementImpl extends HTMLElementImpl implements
-		HTMLFrameElement, FrameNode {
+public class HTMLFrameElementImpl extends HTMLElementImpl implements HTMLFrameElement, FrameNode {
 	private volatile BrowserFrame browserFrame;
 
 	HTMLFrameElementImpl(String name) {
@@ -49,8 +48,6 @@ public class HTMLFrameElementImpl extends HTMLElementImpl implements
 	public void setName(String name) {
 		this.setAttribute("name", name);
 	}
-
-	private boolean noResize;
 
 	public String getSrc() {
 		return this.getAttribute("src");

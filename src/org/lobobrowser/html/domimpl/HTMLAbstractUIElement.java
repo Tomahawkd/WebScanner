@@ -39,6 +39,30 @@ public class HTMLAbstractUIElement extends HTMLElementImpl {
 		}
 	}
 
+	protected void appendInnerTextImpl(StringBuffer buffer) {
+		int length = buffer.length();
+		int lineBreaks;
+		if (length == 0) {
+			lineBreaks = 2;
+		} else {
+			int start = length - 4;
+			if (start < 0) {
+				start = 0;
+			}
+			lineBreaks = 0;
+			for (int i = start; i < length; i++) {
+				char ch = buffer.charAt(i);
+				if (ch == '\n') {
+					lineBreaks++;
+				}
+			}
+		}
+		for (int i = 0; i < 2 - lineBreaks; i++) {
+			buffer.append("\r\n");
+		}
+		super.appendInnerTextImpl(buffer);
+		buffer.append("\r\n\r\n");
+	}
 
 	public String getDir() {
 		return "";

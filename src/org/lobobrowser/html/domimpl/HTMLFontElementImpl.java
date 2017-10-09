@@ -26,8 +26,7 @@ import org.lobobrowser.html.style.HtmlValues;
 import org.lobobrowser.html.style.RenderState;
 import org.w3c.dom.html2.HTMLFontElement;
 
-public class HTMLFontElementImpl extends HTMLAbstractUIElement implements
-		HTMLFontElement {
+public class HTMLFontElementImpl extends HTMLAbstractUIElement implements HTMLFontElement {
 	HTMLFontElementImpl(String name) {
 		super(name);
 	}

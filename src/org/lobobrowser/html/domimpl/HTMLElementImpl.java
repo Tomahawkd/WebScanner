@@ -205,7 +205,7 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 		}
 		return style;
 	}
-	
+
 	private AbstractCSS2Properties addDeclaration(AbstractCSS2Properties style, Collection<CSSStyleDeclaration> sds) {
 		if (sds != null) {
 			for (CSSStyleDeclaration sd1 : sds) {
