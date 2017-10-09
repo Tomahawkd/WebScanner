@@ -36,22 +36,7 @@ public class IFrameRenderState extends StyleSheetRenderState {
 			return overflow;
 		}
 		overflow = super.getOverflowX();
-		if (overflow == OVERFLOW_NONE) {
-			HTMLElementImpl element = this.element;
-			if (element != null) {
-				String scrolling = element.getAttribute("scrolling");
-				if (scrolling != null) {
-					scrolling = scrolling.trim().toLowerCase();
-					if ("no".equals(scrolling)) {
-						overflow = OVERFLOW_HIDDEN;
-					} else if ("yes".equals(scrolling)) {
-						overflow = OVERFLOW_SCROLL;
-					} else if ("auto".equals(scrolling)) {
-						overflow = OVERFLOW_AUTO;
-					}
-				}
-			}
-		}
+		overflow = setOverflow(overflow);
 		this.overflowX = overflow;
 		return overflow;
 	}
@@ -62,6 +47,12 @@ public class IFrameRenderState extends StyleSheetRenderState {
 			return overflow;
 		}
 		overflow = super.getOverflowY();
+		overflow = setOverflow(overflow);
+		this.overflowY = overflow;
+		return overflow;
+	}
+
+	private int setOverflow(int overflow) {
 		if (overflow == OVERFLOW_NONE) {
 			HTMLElementImpl element = this.element;
 			if (element != null) {
@@ -78,7 +69,6 @@ public class IFrameRenderState extends StyleSheetRenderState {
 				}
 			}
 		}
-		this.overflowY = overflow;
 		return overflow;
 	}
 

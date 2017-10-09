@@ -24,7 +24,6 @@
 package org.lobobrowser.html.style;
 
 public final class HtmlLength {
-	// Note: Preferred type has higher value
 	public static final int PIXELS = 1;
 	public static final int LENGTH = 2;
 	public static final int MULTI_LENGTH = 0;
@@ -76,8 +75,7 @@ public final class HtmlLength {
 	}
 
 	public final int getLength(int availLength) {
-		int lt = this.lengthType;
-		if (lt == LENGTH) {
+		if (this.lengthType == LENGTH) {
 			return (availLength * this.value) / 100;
 		} else {
 			return this.value;
@@ -91,12 +89,8 @@ public final class HtmlLength {
 	}
 
 	public final boolean isPreferredOver(HtmlLength otherLength) {
-		if (otherLength == null) {
-			return true;
-		}
-		if (this.lengthType > otherLength.lengthType) {
-			return true;
-		}
-		return this.value > otherLength.value;
+		return otherLength == null ||
+				this.lengthType > otherLength.lengthType ||
+				this.value > otherLength.value;
 	}
 }
