@@ -112,9 +112,8 @@ public class ElementImpl extends NodeImpl implements Element {
 	public final String getAttribute(String name) {
 		String normalName = this.normalizeAttributeName(name);
 		synchronized (this) {
-			Map attributes = this.attributes;
-			return attributes == null ? null : (String) attributes
-					.get(normalName);
+			Map<String, String> attributes = this.attributes;
+			return attributes == null ? null : attributes.get(normalName);
 		}
 	}
 
@@ -126,9 +125,8 @@ public class ElementImpl extends NodeImpl implements Element {
 	public Attr getAttributeNode(String name) {
 		String normalName = this.normalizeAttributeName(name);
 		synchronized (this) {
-			Map attributes = this.attributes;
-			String value = attributes == null ? null : (String) attributes
-					.get(normalName);
+			Map<String, String> attributes = this.attributes;
+			String value = attributes == null ? null : attributes.get(normalName);
 			return value == null ? null : this.getAttr(normalName, value);
 		}
 	}
@@ -191,7 +189,7 @@ public class ElementImpl extends NodeImpl implements Element {
 	public boolean hasAttribute(String name) {
 		String normalName = this.normalizeAttributeName(name);
 		synchronized (this) {
-			Map attributes = this.attributes;
+			Map<String, String> attributes = this.attributes;
 			return attributes != null && attributes.containsKey(normalName);
 		}
 	}
@@ -205,7 +203,7 @@ public class ElementImpl extends NodeImpl implements Element {
 	public void removeAttribute(String name) throws DOMException {
 		String normalName = this.normalizeAttributeName(name);
 		synchronized (this) {
-			Map attributes = this.attributes;
+			Map<String, String> attributes = this.attributes;
 			if (attributes == null) {
 				return;
 			}
@@ -216,11 +214,11 @@ public class ElementImpl extends NodeImpl implements Element {
 	public Attr removeAttributeNode(Attr oldAttr) throws DOMException {
 		String normalName = this.normalizeAttributeName(oldAttr.getName());
 		synchronized (this) {
-			Map attributes = this.attributes;
+			Map<String, String> attributes = this.attributes;
 			if (attributes == null) {
 				return null;
 			}
-			String oldValue = (String) attributes.remove(normalName);
+			String oldValue = attributes.remove(normalName);
 			return oldValue == null ? null : this.getAttr(normalName, oldValue);
 		}
 	}
@@ -245,19 +243,7 @@ public class ElementImpl extends NodeImpl implements Element {
 			}
 			HTMLDocumentImpl document = (HTMLDocumentImpl) this.document;
 			if (document != null) {
-				//// Do not remove old ID. Consider scenario where both
-				//// name and ID are provided in an element.
-//				if (oldId != null) {
-//					document.removeElementById(oldId);
-//				}
 				document.setElementById(value, this);
-				if (isName) {
-					String oldName = this.getAttribute("name");
-					if (oldName != null) {
-						document.removeNamedItem(oldName);
-					}
-					document.setNamedItem(value, this);
-				}
 			}
 		}
 	}

@@ -32,9 +32,8 @@
 
 package org.w3c.dom.html2;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
 import org.w3c.dom.DOMException;
+import org.w3c.dom.Document;
 
 /**
  * An <code>HTMLDocument</code> is the root of the HTML hierarchy and holds 
@@ -53,31 +52,24 @@ public interface HTMLDocument extends Document {
      * The title of a document as specified by the <code>TITLE</code> element 
      * in the head of the document. 
      */
-    public String getTitle();
+    String getTitle();
     /**
      * The title of a document as specified by the <code>TITLE</code> element 
      * in the head of the document. 
      */
-    public void setTitle(String title);
-
-    /**
-     * Returns the URI [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>] of the page that linked to this page. The value is an 
-     * empty string if the user navigated to the page directly (not through 
-     * a link, but, for example, via a bookmark). 
-     */
-    public String getReferrer();
+    void setTitle(String title);
 
     /**
      * The domain name of the server that served the document, or 
      * <code>null</code> if the server cannot be identified by a domain 
      * name. 
      */
-    public String getDomain();
+    String getDomain();
 
     /**
      * The absolute URI [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>] of the document. 
      */
-    public String getURL();
+    String getURL();
 
     /**
      * The element that contains the content for the document. In documents 
@@ -85,14 +77,14 @@ public interface HTMLDocument extends Document {
      * element. In frameset documents, this returns the outermost 
      * <code>FRAMESET</code> element. 
      */
-    public HTMLElement getBody();
+    HTMLElement getBody();
     /**
      * The element that contains the content for the document. In documents 
      * with <code>BODY</code> contents, returns the <code>BODY</code> 
      * element. In frameset documents, this returns the outermost 
      * <code>FRAMESET</code> element. 
      */
-    public void setBody(HTMLElement body);
+    void setBody(HTMLElement body);
 
     /**
      * A collection of all the <code>IMG</code> elements in a document. The 
@@ -103,38 +95,19 @@ public interface HTMLDocument extends Document {
      * images in the document but <code>getElementsByTagName</code> with 
      * HTML 4.01 or <code>getElementsByTagNameNS</code> with XHTML 1.0.
      */
-    public HTMLCollection getImages();
-
-    /**
-     * A collection of all the <code>OBJECT</code> elements that include 
-     * applets and <code>APPLET</code> (deprecated) elements in a document. 
-     */
-    public HTMLCollection getApplets();
+    HTMLCollection getImages();
 
     /**
      * A collection of all <code>AREA</code> elements and anchor (
      * <code>A</code>) elements in a document with a value for the 
      * <code>href</code> attribute. 
      */
-    public HTMLCollection getLinks();
+    HTMLCollection getLinks();
 
     /**
      * A collection of all the forms of a document. 
      */
-    public HTMLCollection getForms();
-
-    /**
-     *  A collection of all the anchor (<code>A</code>) elements in a document 
-     * with a value for the <code>name</code> attribute. For reasons of 
-     * backward compatibility, the returned set of anchors only contains 
-     * those anchors created with the <code>name</code> attribute, not those 
-     * created with the <code>id</code> attribute. Note that in [<a href='http://www.w3.org/TR/2002/REC-xhtml1-20020801'>XHTML 1.0</a>], the 
-     * <code>name</code> attribute (see section 4.10) has no semantics and 
-     * is only present for legacy user agents: the <code>id</code> attribute 
-     * is used instead. Users should prefer the iterator mechanisms provided 
-     * by [<a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Traversal-Range-20001113'>DOM Level 2 Traversal</a>] instead. 
-     */
-    public HTMLCollection getAnchors();
+    HTMLCollection getForms();
 
     /**
      *  This mutable string attribute denotes persistent state information 
@@ -167,7 +140,7 @@ public interface HTMLDocument extends Document {
      * pairs.  The precise nature of a user agent session is not defined by 
      * this specification. 
      */
-    public String getCookie();
+    String getCookie();
     /**
      *  This mutable string attribute denotes persistent state information 
      * that (1) is associated with the current frame or document and (2) is 
@@ -202,7 +175,7 @@ public interface HTMLDocument extends Document {
      *    SYNTAX_ERR: If the new value does not adhere to the cookie syntax 
      *   specified by [<a href='http://www.ietf.org/rfc/rfc2965.txt'>IETF RFC 2965</a>]. 
      */
-    public void setCookie(String cookie)
+    void setCookie(String cookie)
                                       throws DOMException;
 
     /**
@@ -213,13 +186,13 @@ public interface HTMLDocument extends Document {
      * for providing similar functionality for both HTML and XML documents 
      * were being considered (see [<a href='http://www.w3.org/TR/2002/WD-DOM-Level-3-LS-20020725'>DOM Level 3 Load and Save</a>]).
      */
-    public void open();
+    void open();
 
     /**
      * Closes a document stream opened by <code>open()</code> and forces 
      * rendering.
      */
-    public void close();
+    void close();
 
     /**
      * Write a string of text to a document stream opened by 
@@ -229,29 +202,6 @@ public interface HTMLDocument extends Document {
      * @param text The string to be parsed into some structure in the 
      *   document structure model.
      */
-    public void write(String text);
-
-    /**
-     * Write a string of text followed by a newline character to a document 
-     * stream opened by <code>open()</code>. Note that the function will 
-     * produce a document which is not necessarily driven by a DTD and 
-     * therefore might be produce an invalid result in the context of the 
-     * document
-     * @param text The string to be parsed into some structure in the 
-     *   document structure model.
-     */
-    public void writeln(String text);
-
-    /**
-     *  With [<a href='http://www.w3.org/TR/1999/REC-html401-19991224'>HTML 4.01</a>] documents, this method returns the (possibly empty) collection 
-     * of elements whose <code>name</code> value is given by 
-     * <code>elementName</code>. In [<a href='http://www.w3.org/TR/2002/REC-xhtml1-20020801'>XHTML 1.0</a>] documents, this methods only return the 
-     * (possibly empty) collection of form controls with matching name. This 
-     * method is case sensitive. 
-     * @param elementName The <code>name</code> attribute value for an 
-     *   element.
-     * @return The matching elements.
-     */
-    public NodeList getElementsByName(String elementName);
+    void write(String text);
 
 }

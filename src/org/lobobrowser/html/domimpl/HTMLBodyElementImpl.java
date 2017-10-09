@@ -25,7 +25,6 @@ package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.style.BodyRenderState;
 import org.lobobrowser.html.style.RenderState;
-import org.mozilla.javascript.Function;
 import org.w3c.dom.Document;
 import org.w3c.dom.html2.HTMLBodyElement;
 import org.w3c.dom.html2.HTMLDocument;
@@ -102,20 +101,8 @@ public class HTMLBodyElementImpl extends HTMLAbstractUIElement implements
 		return new BodyRenderState(prevRenderState, this);
 	}
 
-	private void setOnload(Function onload) {
-		Object document = this.document;
-		if (document instanceof HTMLDocumentImpl) {
-			((HTMLDocumentImpl) document).setOnloadHandler(onload);
-		}
-	}
-
 	protected void assignAttributeField(String normalName, String value) {
-		if ("onload".equals(normalName)) {
-			Function onload = this.getEventFunction(null, normalName);
-			if (onload != null) {
-				this.setOnload(onload);
-			}
-		} else {
+		if (!"onload".equals(normalName)) {
 			super.assignAttributeField(normalName, value);
 		}
 	}
