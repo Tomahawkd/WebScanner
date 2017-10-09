@@ -33,11 +33,9 @@ class RListItem extends BaseRListElement {
 	private static final int BULLET_WIDTH = 5;
 	private static final int BULLET_HEIGHT = 5;
 	private static final int BULLET_RMARGIN = 5;
-	private static final int BULLET_SPACE_WIDTH = 36;
 
-	public RListItem(NodeImpl modelNode, int listNesting, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer parentContainer, RCollection parent) {
+	RListItem(NodeImpl modelNode, int listNesting, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer parentContainer) {
 		super(modelNode, listNesting, pcontext, rcontext, frameContext, parentContainer);
-		//this.defaultMarginInsets = new java.awt.Insets(0, BULLET_SPACE_WIDTH, 0, 0);
 	}
 
 	public int getViewportListNesting(int blockNesting) {
@@ -49,7 +47,7 @@ class RListItem extends BaseRListElement {
 		this.value = null;
 	}
 
-	private static final Integer UNSET = new Integer(Integer.MIN_VALUE);
+	private static final Integer UNSET = Integer.MIN_VALUE;
 	private Integer value = null;
 
 	private Integer getValue() {
@@ -75,13 +73,12 @@ class RListItem extends BaseRListElement {
 
 	public void doLayout(int availWidth, int availHeight, boolean expandWidth, boolean expandHeight, FloatingBoundsSource floatBoundsSource, int defaultOverflowX, int defaultOverflowY, boolean sizeOnly) {
 		super.doLayout(availWidth, availHeight, expandWidth, expandHeight, floatBoundsSource, defaultOverflowX, defaultOverflowY, sizeOnly);
-		//Note: Count must be calculated even if layout is valid.
 		RenderState renderState = this.modelNode.getRenderState();
 		Integer value = this.getValue();
 		if (value == UNSET) {
 			this.count = renderState.incrementCount(DEFAULT_COUNTER_NAME, this.listNesting);
 		} else {
-			int newCount = value.intValue();
+			int newCount = value;
 			this.count = newCount;
 			renderState.resetCount(DEFAULT_COUNTER_NAME, this.listNesting, newCount + 1);
 		}
@@ -144,8 +141,7 @@ class RListItem extends BaseRListElement {
 					if (numberText != null) {
 						FontMetrics fm = g.getFontMetrics();
 						int numberLeft = bulletRight - fm.stringWidth(numberText);
-						int numberY = bulletBottom;
-						g.drawString(numberText, numberLeft, numberY);
+						g.drawString(numberText, numberLeft, bulletBottom);
 					}
 				} finally {
 					g.setColor(prevColor);

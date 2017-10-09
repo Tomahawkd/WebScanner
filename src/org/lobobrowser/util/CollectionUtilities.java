@@ -23,6 +23,8 @@
  */
 package org.lobobrowser.util;
 
+import org.lobobrowser.html.renderer.Renderable;
+
 import java.util.*;
 
 /**
@@ -36,23 +38,15 @@ public class CollectionUtilities {
 		super();
 	}
 
-	public static Collection<?> reverse(Collection<?> collection) {
-		LinkedList<Object> newCollection = new LinkedList<>();
-		for (Object aCollection : collection) {
-			newCollection.addFirst(aCollection);
-		}
-		return newCollection;
-	}
-
-	public static Iterator singletonIterator(final Object item) {
-		return new Iterator() {
+	public static Iterator<Renderable> singletonIterator(final Renderable item) {
+		return new Iterator<>() {
 			private boolean gotItem = false;
 
 			public boolean hasNext() {
 				return !this.gotItem;
 			}
 
-			public Object next() {
+			public Renderable next() {
 				if (this.gotItem) {
 					throw new NoSuchElementException();
 				}

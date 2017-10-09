@@ -32,7 +32,7 @@ public class RRelative extends BaseRCollection {
 	private final int xoffset;
 	private final int yoffset;
 
-	public RRelative(RenderableContainer container, ModelNode modelNode, final RElement child, final int xoffset, final int yoffset) {
+	RRelative(RenderableContainer container, ModelNode modelNode, final RElement child, final int xoffset, final int yoffset) {
 		super(container, modelNode);
 		child.setOriginalParent(this);
 		child.setParent(this);
@@ -42,13 +42,13 @@ public class RRelative extends BaseRCollection {
 		this.yoffset = yoffset;
 	}
 
-	public void assignDimension() {
+	void assignDimension() {
 		RElement child = this.child;
 		this.width = child.getWidth();
 		this.height = child.getHeight();
 	}
 
-	public FloatingInfo getExportableFloatingInfo() {
+	FloatingInfo getExportableFloatingInfo() {
 		RElement child = this.child;
 		if (child instanceof RBlock) {
 			// There are no insets, and hence no shift.
@@ -60,14 +60,6 @@ public class RRelative extends BaseRCollection {
 
 	public RElement getElement() {
 		return this.child;
-	}
-
-	public int getXOffset() {
-		return xoffset;
-	}
-
-	public int getYOffset() {
-		return yoffset;
 	}
 
 	public Iterator<Renderable> getRenderables() {
