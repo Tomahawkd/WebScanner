@@ -21,9 +21,9 @@
 package org.lobobrowser.html.style;
 
 class FontInfo {
-	public String fontFamily;
-	public String fontStyle;
-	public String fontVariant;
-	public String fontWeight;
+	String fontFamily;
+	String fontStyle;
+	String fontVariant;
+	String fontWeight;
 	public String fontSize;
 }

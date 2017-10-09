@@ -48,10 +48,10 @@ public class FontNameRenderState extends RenderStateDelegator {
 
 	private FontMetrics iFontMetrics;
 
+	@SuppressWarnings("deprecation")
 	public FontMetrics getFontMetrics() {
 		FontMetrics fm = this.iFontMetrics;
 		if (fm == null) {
-			//TODO getFontMetrics deprecated. How to get text width?
 			fm = Toolkit.getDefaultToolkit().getFontMetrics(this.getFont());
 			this.iFontMetrics = fm;
 		}
@@ -68,17 +68,15 @@ public class FontNameRenderState extends RenderStateDelegator {
 		}
 	}
 
-	Map iWordInfoMap = null;
+	private Map<String, WordInfo> iWordInfoMap = null;
 
 	public final WordInfo getWordInfo(String word) {
-		// Expected to be called only in the GUI (rendering) thread.
-		// No synchronization necessary.
-		Map map = this.iWordInfoMap;
+		Map<String, WordInfo> map = this.iWordInfoMap;
 		if (map == null) {
-			map = new HashMap(1);
+			map = new HashMap<>(1);
 			this.iWordInfoMap = map;
 		}
-		WordInfo wi = (WordInfo) map.get(word);
+		WordInfo wi = map.get(word);
 		if (wi != null) {
 			return wi;
 		}

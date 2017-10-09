@@ -22,13 +22,24 @@ package org.lobobrowser.html.style;
 
 import org.lobobrowser.html.domimpl.HTMLElementImpl;
 
+import java.awt.*;
+
 public abstract class AbstractMarginRenderState extends BlockRenderState {
 	AbstractMarginRenderState(RenderState prevRenderState,
 	                          HTMLElementImpl element) {
 		super(prevRenderState, element);
 	}
 
-	protected abstract HtmlInsets getDefaultMarginInsets();
+	protected HtmlInsets getDefaultMarginInsets() {
+		HtmlInsets insets = new HtmlInsets();
+		RenderState prevRS = this.getPreviousRenderState();
+		FontMetrics fm = prevRS == null ? this.getFontMetrics() : prevRS.getFontMetrics();
+		insets.top = fm.getHeight();
+		insets.bottom = fm.getHeight();
+		insets.topType = HtmlInsets.TYPE_PIXELS;
+		insets.bottomType = HtmlInsets.TYPE_PIXELS;
+		return insets;
+	}
 
 	public HtmlInsets getMarginInsets() {
 		HtmlInsets insets = this.marginInsets;

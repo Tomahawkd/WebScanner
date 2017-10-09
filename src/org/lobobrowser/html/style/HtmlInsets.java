@@ -23,9 +23,9 @@ package org.lobobrowser.html.style;
 import java.awt.*;
 
 public class HtmlInsets {
-	public static final int TYPE_UNDEFINED = 0;
+	private static final int TYPE_UNDEFINED = 0;
 	public static final int TYPE_PIXELS = 1;
-	public static final int TYPE_AUTO = 2;
+	static final int TYPE_AUTO = 2;
 	public static final int TYPE_PERCENT = 3;
 
 	public int top, bottom, left, right;
@@ -82,22 +82,6 @@ public class HtmlInsets {
 
 	public void setBottomType(int bottomType) {
 		this.bottomType = bottomType;
-	}
-
-	public int getLeftType() {
-		return leftType;
-	}
-
-	public void setLeftType(int leftType) {
-		this.leftType = leftType;
-	}
-
-	public int getRightType() {
-		return rightType;
-	}
-
-	public void setRightType(int rightType) {
-		this.rightType = rightType;
 	}
 
 	public java.awt.Insets getAWTInsets(int defaultTop, int defaultLeft, int defaultBottom, int defaultRight, int availWidth, int availHeight, int autoX, int autoY) {
