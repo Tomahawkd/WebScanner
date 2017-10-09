@@ -27,9 +27,7 @@ package org.lobobrowser.util;
  * @author J. H. S.
  */
 public class Objects {
-	/**
-	 *
-	 */
+
 	private Objects() {
 	}
 

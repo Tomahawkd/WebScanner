@@ -60,10 +60,6 @@ public class Domains {
 	public static boolean isValidCookieDomain(String domain, String hostName) {
 		String plainDomain;
 		if (!domain.startsWith(".")) {
-			// Valid domains must start with a dot
-			// according to RFC 2109, but 
-			// RFC 2965 specifies a dot is prepended
-			// in the Set-Cookie2 header.
 			plainDomain = domain;
 			domain = "." + domain;
 		} else {
@@ -84,34 +80,6 @@ public class Domains {
 		} else {
 			return Strings.countChars(domain, '.') >= 3;
 		}
-	}
-
-	/**
-	 * @param host A host name in lower case.
-	 * @return boolean
-	 */
-	private static boolean endsWithGTLD(String host) {
-		for (String ending : gTLDs) {
-			if (host.endsWith(ending)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	static boolean isLikelyHostName(String name) {
-		String nameTL = name.toLowerCase();
-		if (nameTL.startsWith("www.")) {
-			return true;
-		}
-		if (endsWithGTLD(name)) {
-			return true;
-		}
-		int lastDotIdx = nameTL.lastIndexOf('.');
-		if (lastDotIdx == -1) {
-			return false;
-		}
-		return lastDotIdx == nameTL.length() - 3;
 	}
 
 }

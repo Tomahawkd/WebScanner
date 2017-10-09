@@ -51,14 +51,6 @@ public abstract class EventDispatch2 {
 		}
 	}
 
-	final void removeListener(EventListener listener) {
-		synchronized (this) {
-			if (this.listeners != null) {
-				this.listeners.remove(listener);
-			}
-		}
-	}
-
 	public final void fireEvent(EventObject event) {
 		EventListener[] larray;
 		synchronized (this) {
