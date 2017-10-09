@@ -253,9 +253,6 @@ public class StyleSheetRenderState implements RenderState {
 				fontWeight = "bold";
 			}
 		}
-		HTMLDocumentImpl document = this.document;
-		Set locales = document == null ? null : document.getLocales();
-
 		Integer superscript = null;
 		if (isSuper) {
 			superscript = 1;
@@ -265,7 +262,7 @@ public class StyleSheetRenderState implements RenderState {
 		if (superscript == null && prs != null) {
 			superscript = (Integer) prs.getFont().getAttributes().get(TextAttribute.SUPERSCRIPT);
 		}
-		f = FONT_FACTORY.getFont(fontFamily, fontStyle, fontVariant, fontWeight, fontSize, locales, superscript);
+		f = FONT_FACTORY.getFont(fontFamily, fontStyle, fontVariant, fontWeight, fontSize, null, superscript);
 		this.iFont = f;
 		return f;
 	}

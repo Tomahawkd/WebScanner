@@ -47,7 +47,6 @@ import org.xml.sax.SAXException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.AccessController;
@@ -61,7 +60,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 	private final ElementFactory factory;
 	private final HtmlRendererContext rcontext;
 	private final UserAgentContext ucontext;
-	private final Map elementsById = new WeakValueHashMap();
+	private final Map<String, Element> elementsById = new WeakValueHashMap();
 	private String documentURI;
 	private java.net.URL documentURL;
 
@@ -92,15 +91,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 		} catch (java.net.MalformedURLException ignored) {
 		}
 		this.document = this;
-	}
-
-	private Set locales;
-
-	/**
-	 * Gets an <i>immutable</i> set of locales previously set for this document.
-	 */
-	public Set getLocales() {
-		return locales;
 	}
 
 	/**
@@ -227,12 +217,6 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 	public void setCookie(final String cookie) throws DOMException {
 		SecurityManager sm = System.getSecurityManager();
 		if (sm != null) {
-			// Justification: A caller (e.g. Google Analytics script)
-// might want to set cookies on the parent document.
-// If the caller has access to the document, it appears
-// they should be able to set cookies on that document.
-// Note that this Document instance cannot be created
-// with an arbitrary URL.
 			AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
 				ucontext.setCookie(documentURL, cookie);
 				return null;
@@ -265,11 +249,11 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 	 * current instance of <code>HTMLDocumentImpl</code> was constructed.
 	 * It then closes the reader.
 	 */
-	public void load() throws IOException, SAXException, UnsupportedEncodingException {
+	public void load() throws IOException, SAXException {
 		this.load(true);
 	}
 
-	public void load(boolean closeReader) throws IOException, SAXException, UnsupportedEncodingException {
+	public void load(boolean closeReader) throws IOException, SAXException {
 		WritableLineReader reader;
 		synchronized (this.treeLock) {
 			this.removeAllChildrenImpl();
@@ -439,12 +423,10 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 	public Element getElementById(String elementId) {
 		Element element;
 		synchronized (this) {
-			element = (Element) this.elementsById.get(elementId);
+			element = this.elementsById.get(elementId);
 		}
 		return element;
 	}
-
-	private final Map<String, Element> elementsByName = new HashMap<>(0);
 
 	public String getInputEncoding() {
 		return "";
@@ -686,16 +668,14 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 	 * @param listener An instance of {@link DocumentNotificationListener}.
 	 */
 	public void addDocumentNotificationListener(DocumentNotificationListener listener) {
-		ArrayList<DocumentNotificationListener> listenersList = this.documentNotificationListeners;
-		synchronized (listenersList) {
-			listenersList.add(listener);
+		synchronized (this.documentNotificationListeners) {
+			this.documentNotificationListeners.add(listener);
 		}
 	}
 
 	public void removeDocumentNotificationListener(DocumentNotificationListener listener) {
-		ArrayList<DocumentNotificationListener> listenersList = this.documentNotificationListeners;
-		synchronized (listenersList) {
-			listenersList.remove(listener);
+		synchronized (this.documentNotificationListeners) {
+			this.documentNotificationListeners.remove(listener);
 		}
 	}
 
@@ -709,8 +689,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 			try {
 				DocumentNotificationListener dnl = listenersList.get(i);
 				dnl.sizeInvalidated(node);
-			} catch (IndexOutOfBoundsException iob) {
-				// ignore
+			} catch (IndexOutOfBoundsException ignored) {
 			}
 		}
 	}
@@ -752,8 +731,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 			try {
 				DocumentNotificationListener dnl = listenersList.get(i);
 				dnl.positionInvalidated(node);
-			} catch (IndexOutOfBoundsException iob) {
-				// ignore
+			} catch (IndexOutOfBoundsException ignored) {
 			}
 		}
 	}
@@ -792,8 +770,7 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 			try {
 				DocumentNotificationListener dnl = listenersList.get(i);
 				dnl.structureInvalidated(node);
-			} catch (IndexOutOfBoundsException iob) {
-				// ignore
+			} catch (IndexOutOfBoundsException ignored) {
 			}
 		}
 	}
@@ -804,16 +781,11 @@ public class HTMLDocumentImpl extends NodeImpl implements HTMLDocument, Document
 		synchronized (listenersList) {
 			size = listenersList.size();
 		}
-		// Traverse list outside synchronized block.
-		// (Shouldn't call listener methods in synchronized block.
-		// Deadlock is possible). But assume list could have
-		// been changed.
 		for (int i = 0; i < size; i++) {
 			try {
 				DocumentNotificationListener dnl = listenersList.get(i);
 				dnl.nodeLoaded(node);
-			} catch (IndexOutOfBoundsException iob) {
-				// ignore
+			} catch (IndexOutOfBoundsException ignored) {
 			}
 		}
 	}
