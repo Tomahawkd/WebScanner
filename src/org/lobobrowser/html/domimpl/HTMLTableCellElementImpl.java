@@ -27,8 +27,7 @@ import org.lobobrowser.html.style.RenderState;
 import org.lobobrowser.html.style.TableCellRenderState;
 import org.w3c.dom.html2.HTMLTableCellElement;
 
-public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
-		HTMLTableCellElement {
+public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements HTMLTableCellElement {
 	HTMLTableCellElementImpl(String name) {
 		super(name);
 	}
@@ -54,16 +53,7 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 	}
 
 	public int getColSpan() {
-		String colSpanText = this.getAttribute("colspan");
-		if (colSpanText == null) {
-			return 1;
-		} else {
-			try {
-				return Integer.parseInt(colSpanText);
-			} catch (NumberFormatException nfe) {
-				return 1;
-			}
-		}
+		return getSpanNumber(this.getAttribute("colspan"));
 	}
 
 	public String getHeaders() {
@@ -83,12 +73,15 @@ public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 	}
 
 	public int getRowSpan() {
-		String rowSpanText = this.getAttribute("rowspan");
-		if (rowSpanText == null) {
+		return getSpanNumber(this.getAttribute("rowspan"));
+	}
+
+	private int getSpanNumber(String spanText) {
+		if (spanText == null) {
 			return 1;
 		} else {
 			try {
-				return Integer.parseInt(rowSpanText);
+				return Integer.parseInt(spanText);
 			} catch (NumberFormatException nfe) {
 				return 1;
 			}

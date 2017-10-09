@@ -14,8 +14,7 @@ import org.w3c.dom.ProcessingInstruction;
  *
  * @author vitek
  */
-public class HTMLProcessingInstruction extends NodeImpl
-		implements ProcessingInstruction, Cloneable {
+public class HTMLProcessingInstruction extends NodeImpl implements ProcessingInstruction, Cloneable {
 	private String target;
 	private String data;
 

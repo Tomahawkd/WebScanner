@@ -359,24 +359,6 @@ public abstract class NodeImpl implements Node, ModelNode {
 		return newChild;
 	}
 
-	void insertAt(Node newChild, int idx)
-			throws DOMException {
-		synchronized (this.treeLock) {
-			ArrayList<Node> nl = this.nodeList;
-			if (nl == null) {
-				nl = new ArrayList<>();
-				this.nodeList = nl;
-			}
-			nl.add(idx, newChild);
-			if (newChild instanceof NodeImpl) {
-				((NodeImpl) newChild).setParentImpl(this);
-			}
-		}
-		if (!this.notificationsSuspended) {
-			this.informStructureInvalid();
-		}
-	}
-
 	public Node replaceChild(Node newChild, Node oldChild)
 			throws DOMException {
 		synchronized (this.treeLock) {
@@ -405,26 +387,6 @@ public abstract class NodeImpl implements Node, ModelNode {
 			this.informStructureInvalid();
 		}
 		return oldChild;
-	}
-
-	void removeChildAt(int index)
-			throws DOMException {
-		try {
-			synchronized (this.treeLock) {
-				ArrayList nl = this.nodeList;
-				if (nl == null) {
-					throw new DOMException(DOMException.INDEX_SIZE_ERR, "Empty list of children");
-				}
-				Node n = (Node) nl.remove(index);
-				if (n == null) {
-					throw new DOMException(DOMException.INDEX_SIZE_ERR, "No node with that index");
-				}
-			}
-		} finally {
-			if (!this.notificationsSuspended) {
-				this.informStructureInvalid();
-			}
-		}
 	}
 
 	public boolean hasChildNodes() {
@@ -626,15 +588,6 @@ public abstract class NodeImpl implements Node, ModelNode {
 				}
 				nl.add(t);
 			}
-		}
-		if (!this.notificationsSuspended) {
-			this.informStructureInvalid();
-		}
-	}
-
-	void removeChildren(NodeFilter filter) {
-		synchronized (this.treeLock) {
-			this.removeChildrenImpl(filter);
 		}
 		if (!this.notificationsSuspended) {
 			this.informStructureInvalid();
@@ -1018,14 +971,6 @@ public abstract class NodeImpl implements Node, ModelNode {
 				}
 			}
 		}
-	}
-
-	public String getInnerHTML() {
-		StringBuffer buffer = new StringBuffer();
-		synchronized (this) {
-			this.appendInnerHTMLImpl(buffer);
-		}
-		return buffer.toString();
 	}
 
 	void appendInnerHTMLImpl(StringBuffer buffer) {

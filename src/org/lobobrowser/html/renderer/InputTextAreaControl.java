@@ -138,25 +138,11 @@ class InputTextAreaControl extends BaseInputControl {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.BaseInputControl#getReadOnly()
-	 */
-	public boolean getReadOnly() {
-		return !this.widget.isEditable();
-	}
-
-	/* (non-Javadoc)
 	 * @see org.xamjwg.html.renderer.BaseInputControl#getValue()
 	 */
 	public String getValue() {
 		String text = this.widget.getText();
 		return org.lobobrowser.util.Strings.getCRLFString(text);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.BaseInputControl#setReadOnly(boolean)
-	 */
-	public void setReadOnly(boolean readOnly) {
-		this.widget.setEditable(readOnly);
 	}
 
 	/* (non-Javadoc)

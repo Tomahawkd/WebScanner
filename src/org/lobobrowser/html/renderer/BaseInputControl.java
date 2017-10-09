@@ -89,27 +89,6 @@ abstract class BaseInputControl extends BaseControl implements InputContext {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#getMaxLength()
-	 */
-	public int getMaxLength() {
-		return 0;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#getReadOnly()
-	 */
-	public boolean getReadOnly() {
-		return false;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#getTabIndex()
-	 */
-	public int getTabIndex() {
-		return 0;
-	}
-
-	/* (non-Javadoc)
 	 * @see org.xamjwg.html.domimpl.InputContext#getValue()
 	 */
 	public String getValue() {
@@ -131,28 +110,10 @@ abstract class BaseInputControl extends BaseControl implements InputContext {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#setChecked(boolean)
-	 */
-	public void setChecked(boolean checked) {
-	}
-
-	/* (non-Javadoc)
 	 * @see org.xamjwg.html.domimpl.InputContext#setDisabled(boolean)
 	 */
 	public void setDisabled(boolean disabled) {
 		this.setEnabled(!disabled);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#setMaxLength(int)
-	 */
-	public void setMaxLength(int maxLength) {
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#setReadOnly(boolean)
-	 */
-	public void setReadOnly(boolean readOnly) {
 	}
 
 	/* (non-Javadoc)
@@ -161,12 +122,6 @@ abstract class BaseInputControl extends BaseControl implements InputContext {
 	public void setControlSize(int size) {
 		this.size = size;
 		this.invalidate();
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#setTabIndex(int)
-	 */
-	public void setTabIndex(int tabIndex) {
 	}
 
 	/* (non-Javadoc)

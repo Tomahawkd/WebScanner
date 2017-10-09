@@ -37,8 +37,7 @@ import org.w3c.dom.html2.HTMLLinkElement;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements
-		HTMLLinkElement {
+public class HTMLLinkElementImpl extends HTMLAbstractUIElement implements HTMLLinkElement {
 	private CSSStyleSheet styleSheet;
 
 	HTMLLinkElementImpl(String name) {

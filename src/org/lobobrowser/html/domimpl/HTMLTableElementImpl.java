@@ -33,12 +33,6 @@ public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 		super(name);
 	}
 
-	private HTMLTableCaptionElement caption;
-
-	private HTMLTableSectionElement thead;
-
-	private HTMLTableSectionElement tfoot;
-
 	public HTMLCollection getRows() {
 		return new DescendentHTMLCollection(this, new ElementFilter("TR"), this.treeLock, false);
 	}

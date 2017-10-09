@@ -27,8 +27,7 @@ import org.lobobrowser.html.style.ListRenderState;
 import org.lobobrowser.html.style.RenderState;
 import org.w3c.dom.html2.HTMLOListElement;
 
-public class HTMLOListElementImpl extends HTMLAbstractUIElement implements
-		HTMLOListElement {
+public class HTMLOListElementImpl extends HTMLAbstractUIElement implements HTMLOListElement {
 	HTMLOListElementImpl(String name) {
 		super(name);
 	}

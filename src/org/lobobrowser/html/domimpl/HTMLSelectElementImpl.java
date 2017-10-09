@@ -8,8 +8,7 @@ import org.w3c.dom.html2.HTMLSelectElement;
 
 import java.util.ArrayList;
 
-public class HTMLSelectElementImpl extends HTMLBaseInputElement implements
-		HTMLSelectElement {
+public class HTMLSelectElementImpl extends HTMLBaseInputElement implements HTMLSelectElement {
 	HTMLSelectElementImpl(String name) {
 		super(name);
 	}

@@ -24,6 +24,5 @@
 package org.lobobrowser.html.domimpl;
 
 public interface NodeVisitor {
-
 	void visit(org.w3c.dom.Node node);
 }

@@ -31,8 +31,7 @@ import org.w3c.dom.UserDataHandler;
 import org.w3c.dom.css.CSSStyleSheet;
 import org.w3c.dom.html2.HTMLStyleElement;
 
-public class HTMLStyleElementImpl extends HTMLElementImpl implements
-		HTMLStyleElement {
+public class HTMLStyleElementImpl extends HTMLElementImpl implements HTMLStyleElement {
 	private CSSStyleSheet styleSheet;
 
 	HTMLStyleElementImpl(String name) {

@@ -36,8 +36,6 @@ public interface UINode {
 
 	Rectangle getBounds();
 
-	Rectangle getBoundsRelativeToBlock();
-
 	void focus();
 
 	void blur();

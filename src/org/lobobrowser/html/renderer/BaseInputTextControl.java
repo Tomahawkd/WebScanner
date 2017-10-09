@@ -68,20 +68,6 @@ abstract class BaseInputTextControl extends BaseInputControl {
 	private int maxLength = -1;
 
 	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#getMaxLength()
-	 */
-	public int getMaxLength() {
-		return this.maxLength;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#getReadOnly()
-	 */
-	public boolean getReadOnly() {
-		return !this.widget.isEditable();
-	}
-
-	/* (non-Javadoc)
 	 * @see org.xamjwg.html.domimpl.InputContext#getValue()
 	 */
 	public String getValue() {
@@ -101,20 +87,6 @@ abstract class BaseInputTextControl extends BaseInputControl {
 	public void setDisabled(boolean disabled) {
 		super.setDisabled(disabled);
 		this.widget.setEnabled(!disabled);
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#setMaxLength(int)
-	 */
-	public void setMaxLength(int maxLength) {
-		this.maxLength = maxLength;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#setReadOnly(boolean)
-	 */
-	public void setReadOnly(boolean readOnly) {
-		this.widget.setEditable(!readOnly);
 	}
 
 	/* (non-Javadoc)

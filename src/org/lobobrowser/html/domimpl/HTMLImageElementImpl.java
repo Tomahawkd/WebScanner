@@ -29,8 +29,7 @@ import org.w3c.dom.html2.HTMLImageElement;
 
 import java.util.ArrayList;
 
-public class HTMLImageElementImpl extends HTMLAbstractUIElement implements
-		HTMLImageElement {
+public class HTMLImageElementImpl extends HTMLAbstractUIElement implements HTMLImageElement {
 
 	HTMLImageElementImpl(String name) {
 		super(name);

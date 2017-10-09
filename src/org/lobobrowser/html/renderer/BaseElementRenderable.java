@@ -272,20 +272,6 @@ abstract class BaseElementRenderable extends BaseRCollection implements RElement
 		this.updateWidgetBounds(guiPoint.x, guiPoint.y);
 	}
 
-	public Rectangle getBoundsRelativeToBlock() {
-		RCollection parent = this;
-		int x = 0, y = 0;
-		while (parent != null) {
-			x += parent.getX();
-			y += parent.getY();
-			parent = parent.getParent();
-			if (parent instanceof RElement) {
-				break;
-			}
-		}
-		return new Rectangle(x, y, this.getWidth(), this.getHeight());
-	}
-
 	protected void clearStyle(boolean isRootBlock) {
 		this.borderInfo = null;
 		this.borderInsets = null;

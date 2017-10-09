@@ -5,8 +5,7 @@ import org.lobobrowser.html.style.IFrameRenderState;
 import org.lobobrowser.html.style.RenderState;
 import org.w3c.dom.html2.HTMLIFrameElement;
 
-public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
-		HTMLIFrameElement, FrameNode {
+public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements HTMLIFrameElement, FrameNode {
 	private volatile BrowserFrame browserFrame;
 
 	HTMLIFrameElementImpl(String name) {

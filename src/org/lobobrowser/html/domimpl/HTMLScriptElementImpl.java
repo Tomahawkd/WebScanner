@@ -25,8 +25,7 @@ package org.lobobrowser.html.domimpl;
 
 import org.w3c.dom.html2.HTMLScriptElement;
 
-public class HTMLScriptElementImpl extends HTMLElementImpl implements
-		HTMLScriptElement {
+public class HTMLScriptElementImpl extends HTMLElementImpl implements HTMLScriptElement {
 
 	HTMLScriptElementImpl(String name) {
 		super(name);
@@ -54,8 +53,6 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements
 	public void setEvent(String event) {
 		this.setAttribute("event", event);
 	}
-
-	private boolean defer;
 
 	public String getSrc() {
 		return this.getAttribute("src");

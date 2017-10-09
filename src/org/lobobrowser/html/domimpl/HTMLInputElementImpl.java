@@ -26,8 +26,7 @@ package org.lobobrowser.html.domimpl;
 import org.lobobrowser.html.FormInput;
 import org.w3c.dom.html2.HTMLInputElement;
 
-public class HTMLInputElementImpl extends HTMLBaseInputElement implements
-		HTMLInputElement {
+public class HTMLInputElementImpl extends HTMLBaseInputElement implements HTMLInputElement {
 	HTMLInputElementImpl(String name) {
 		super(name);
 	}

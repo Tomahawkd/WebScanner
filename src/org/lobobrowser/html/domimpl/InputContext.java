@@ -26,31 +26,17 @@ package org.lobobrowser.html.domimpl;
 public interface InputContext {
 	boolean getChecked();
 
-	void setChecked(boolean checked);
-
 	boolean getDisabled();
 
 	void setDisabled(boolean disabled);
-
-	int getMaxLength();
-
-	void setMaxLength(int maxLength);
 
 	String getName();
 
 	void setName(String name);
 
-	boolean getReadOnly();
-
-	void setReadOnly(boolean readOnly);
-
 	int getControlSize();
 
 	void setControlSize(int size);
-
-	int getTabIndex();
-
-	void setTabIndex(int tabIndex);
 
 	String getValue();
 

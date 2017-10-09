@@ -3,8 +3,7 @@ package org.lobobrowser.html.domimpl;
 import org.w3c.dom.html2.HTMLFormElement;
 import org.w3c.dom.html2.HTMLObjectElement;
 
-public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements
-		HTMLObjectElement {
+public class HTMLObjectElementImpl extends HTMLAbstractUIElement implements HTMLObjectElement {
 	HTMLObjectElementImpl(String name) {
 		super(name);
 	}

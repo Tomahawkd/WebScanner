@@ -23,12 +23,7 @@
  */
 package org.lobobrowser.html.domimpl;
 
-import org.w3c.dom.DOMException;
-import org.w3c.dom.Node;
-import org.w3c.dom.html2.HTMLElement;
 import org.w3c.dom.html2.HTMLTableRowElement;
-
-import java.util.ArrayList;
 
 public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTableRowElement {
 	HTMLTableRowElementImpl(String name) {
@@ -57,39 +52,6 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements HTMLTabl
 
 	public String getVAlign() {
 		return this.getAttribute("valign");
-	}
-
-	private HTMLElement insertCell(int index, String tagName) throws DOMException {
-		org.w3c.dom.Document doc = this.document;
-		if (doc == null) {
-			throw new DOMException(DOMException.WRONG_DOCUMENT_ERR, "Orphan element");
-		}
-		HTMLElement cellElement = (HTMLElement) doc.createElement(tagName);
-		synchronized (this.treeLock) {
-			if (index == -1) {
-				this.appendChild(cellElement);
-				return cellElement;
-			}
-			ArrayList<Node> nl = this.nodeList;
-			if (nl != null) {
-				int size = nl.size();
-				int trcount = 0;
-				for (int i = 0; i < size; i++) {
-					Node node = nl.get(i);
-					if (node instanceof org.w3c.dom.html2.HTMLTableCellElement) {
-						if (trcount == index) {
-							this.insertAt(cellElement, i);
-							return cellElement;
-						}
-						trcount++;
-					}
-				}
-			} else {
-				this.appendChild(cellElement);
-				return cellElement;
-			}
-		}
-		throw new DOMException(DOMException.INDEX_SIZE_ERR, "Index out of range");
 	}
 
 }

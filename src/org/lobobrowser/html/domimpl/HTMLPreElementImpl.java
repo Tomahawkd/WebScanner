@@ -27,8 +27,7 @@ import org.lobobrowser.html.style.PreRenderState;
 import org.lobobrowser.html.style.RenderState;
 import org.w3c.dom.html2.HTMLPreElement;
 
-public class HTMLPreElementImpl extends HTMLAbstractUIElement implements
-		HTMLPreElement {
+public class HTMLPreElementImpl extends HTMLAbstractUIElement implements HTMLPreElement {
 	HTMLPreElementImpl(String name) {
 		super(name);
 	}

@@ -65,13 +65,6 @@ class InputCheckboxControl extends BaseInputControl {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.xamjwg.html.domimpl.InputContext#setChecked(boolean)
-	 */
-	public void setChecked(boolean checked) {
-		this.widget.setSelected(checked);
-	}
-
-	/* (non-Javadoc)
 	 * @see org.xamjwg.html.domimpl.InputContext#setDisabled(boolean)
 	 */
 	public void setDisabled(boolean disabled) {

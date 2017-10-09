@@ -39,6 +39,4 @@ public class HTMLTitleElementImpl extends HTMLElementImpl {
 		}
 		return super.setUserData(key, data, handler);
 	}
-
-
 }
