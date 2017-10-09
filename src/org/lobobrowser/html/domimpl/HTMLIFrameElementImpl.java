@@ -10,7 +10,7 @@ public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
 		HTMLIFrameElement, FrameNode {
 	private volatile BrowserFrame browserFrame;
 
-	public HTMLIFrameElementImpl(String name) {
+	HTMLIFrameElementImpl(String name) {
 		super(name);
 	}
 
@@ -36,7 +36,6 @@ public class HTMLIFrameElementImpl extends HTMLAbstractUIElement implements
 	}
 
 	public Document getContentDocument() {
-		//TODO: Domain-based security
 		BrowserFrame frame = this.browserFrame;
 		if (frame == null) {
 			// Not loaded yet

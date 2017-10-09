@@ -25,7 +25,6 @@ package org.lobobrowser.html.domimpl;
 
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.HtmlRendererContext;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLCollection;
 import org.w3c.dom.html2.HTMLFormElement;
@@ -33,33 +32,12 @@ import org.w3c.dom.html2.HTMLFormElement;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
 		HTMLFormElement {
-	public HTMLFormElementImpl(String name) {
+	HTMLFormElementImpl(String name) {
 		super(name);
-	}
-
-	public HTMLFormElementImpl() {
-		super("FORM");
-	}
-
-	public Object namedItem(final String name) {
-		try {
-			//TODO: This could use document.namedItem.
-			this.visit(new NodeVisitor() {
-				public void visit(Node node) {
-					if (HTMLFormElementImpl.isInput(node)) {
-						if (name.equals(((Element) node).getAttribute("name"))) {
-							throw new StopVisitorException(node);
-						}
-					}
-				}
-			});
-		} catch (StopVisitorException sve) {
-			return sve.getTag();
-		}
-		return null;
 	}
 
 	public Object item(final int index) {
@@ -163,29 +141,24 @@ public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
 	public final void submit(final FormInput[] extraFormInputs) {
 		HtmlRendererContext context = this.getHtmlRendererContext();
 		if (context != null) {
-			final ArrayList formInputs = new ArrayList();
+			final ArrayList<FormInput> formInputs = new ArrayList<>();
 			if (extraFormInputs != null) {
-				for (int i = 0; i < extraFormInputs.length; i++) {
-					formInputs.add(extraFormInputs[i]);
-				}
+				Collections.addAll(formInputs, extraFormInputs);
 			}
-			this.visit(new NodeVisitor() {
-				public void visit(Node node) {
-					if (node instanceof HTMLElementImpl) {
-						FormInput[] fis = ((HTMLElementImpl) node).getFormInputs();
-						if (fis != null) {
-							for (int i = 0; i < fis.length; i++) {
-								FormInput fi = fis[i];
-								if (fi.getName() == null) {
-									throw new IllegalStateException("Form input does not have a name: " + node);
-								}
-								formInputs.add(fi);
+			this.visit(node -> {
+				if (node instanceof HTMLElementImpl) {
+					FormInput[] fis = ((HTMLElementImpl) node).getFormInputs();
+					if (fis != null) {
+						for (FormInput fi : fis) {
+							if (fi.getName() == null) {
+								throw new IllegalStateException("Form input does not have a name: " + node);
 							}
+							formInputs.add(fi);
 						}
 					}
 				}
 			});
-			FormInput[] fia = (FormInput[]) formInputs.toArray(FormInput.EMPTY_ARRAY);
+			FormInput[] fia = formInputs.toArray(FormInput.EMPTY_ARRAY);
 			String href = this.getAction();
 			if (href == null) {
 				href = this.getBaseURI();
@@ -199,16 +172,14 @@ public class HTMLFormElementImpl extends HTMLAbstractUIElement implements
 	}
 
 	public void reset() {
-		this.visit(new NodeVisitor() {
-			public void visit(Node node) {
-				if (node instanceof HTMLBaseInputElement) {
-					((HTMLBaseInputElement) node).resetInput();
-				}
+		this.visit(node -> {
+			if (node instanceof HTMLBaseInputElement) {
+				((HTMLBaseInputElement) node).resetInput();
 			}
 		});
 	}
 
-	static boolean isInput(Node node) {
+	private static boolean isInput(Node node) {
 		String name = node.getNodeName().toLowerCase();
 		return name.equals("input") || name.equals("textarea") || name.equals("select");
 	}

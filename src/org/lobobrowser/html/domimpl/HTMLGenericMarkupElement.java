@@ -1,7 +1,7 @@
 package org.lobobrowser.html.domimpl;
 
-public class HTMLGenericMarkupElement extends HTMLAbstractUIElement {
-	public HTMLGenericMarkupElement(String name) {
+class HTMLGenericMarkupElement extends HTMLAbstractUIElement {
+	HTMLGenericMarkupElement(String name) {
 		super(name);
 	}
 }

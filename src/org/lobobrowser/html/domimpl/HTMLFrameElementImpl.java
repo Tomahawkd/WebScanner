@@ -31,11 +31,7 @@ public class HTMLFrameElementImpl extends HTMLElementImpl implements
 		HTMLFrameElement, FrameNode {
 	private volatile BrowserFrame browserFrame;
 
-	public HTMLFrameElementImpl(String name, boolean noStyleSheet) {
-		super(name, noStyleSheet);
-	}
-
-	public HTMLFrameElementImpl(String name) {
+	HTMLFrameElementImpl(String name) {
 		super(name);
 	}
 

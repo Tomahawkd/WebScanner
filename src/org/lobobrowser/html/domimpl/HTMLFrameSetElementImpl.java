@@ -28,11 +28,7 @@ import org.w3c.dom.html2.HTMLFrameSetElement;
 public class HTMLFrameSetElementImpl extends HTMLElementImpl implements
 		HTMLFrameSetElement {
 
-	public HTMLFrameSetElementImpl(String name, boolean noStyleSheet) {
-		super(name, noStyleSheet);
-	}
-
-	public HTMLFrameSetElementImpl(String name) {
+	HTMLFrameSetElementImpl(String name) {
 		super(name);
 	}
 

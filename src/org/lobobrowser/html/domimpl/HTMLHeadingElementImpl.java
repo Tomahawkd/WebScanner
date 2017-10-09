@@ -26,9 +26,9 @@ import org.lobobrowser.html.style.HeadingRenderState;
 import org.lobobrowser.html.style.RenderState;
 import org.w3c.dom.html2.HTMLHeadingElement;
 
-public class HTMLHeadingElementImpl extends HTMLAbstractUIElement implements
-		HTMLHeadingElement {
-	public HTMLHeadingElementImpl(String name) {
+public class HTMLHeadingElementImpl extends HTMLAbstractUIElement implements HTMLHeadingElement {
+
+	HTMLHeadingElementImpl(String name) {
 		super(name);
 	}
 
@@ -40,7 +40,7 @@ public class HTMLHeadingElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("align", align);
 	}
 
-	private final float getHeadingFontSize() {
+	private float getHeadingFontSize() {
 		String tagName = this.getTagName();
 		try {
 			int lastCharValue = tagName.charAt(1) - '0';
@@ -63,7 +63,7 @@ public class HTMLHeadingElementImpl extends HTMLAbstractUIElement implements
 		return 14.0f;
 	}
 
-	private final String getHeadingFontSizeText() {
+	private String getHeadingFontSizeText() {
 		String tagName = this.getTagName();
 		try {
 			int lastCharValue = tagName.charAt(1) - '0';
@@ -87,9 +87,6 @@ public class HTMLHeadingElementImpl extends HTMLAbstractUIElement implements
 	}
 
 	protected RenderState createRenderState(RenderState prevRenderState) {
-		float fontSize = this.getHeadingFontSize();
-		//(can't put a RenderState in the middle - messes up "em" sizes).
-		//prevRenderState = new FontSizeRenderState(prevRenderState, fontSize, java.awt.Font.BOLD);
 		return new HeadingRenderState(prevRenderState, this);
 	}
 
