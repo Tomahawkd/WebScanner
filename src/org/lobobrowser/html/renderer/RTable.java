@@ -61,7 +61,6 @@ class RTable extends BaseElementRenderable {
 		}
 		try {
 			this.prePaint(g);
-			Dimension size = this.getSize();
 			this.tableMatrix.paint(g);
 			Collection<PositionedRenderable> prs = this.positionedRenderables;
 			if (prs != null) {

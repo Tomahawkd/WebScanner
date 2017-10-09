@@ -26,7 +26,6 @@ package org.lobobrowser.html.renderer;
 import org.lobobrowser.html.domimpl.HTMLBaseInputElement;
 import org.lobobrowser.html.domimpl.InputContext;
 
-import java.awt.*;
 import java.io.File;
 
 abstract class BaseInputControl extends BaseControl implements InputContext {
@@ -162,13 +161,6 @@ abstract class BaseInputControl extends BaseControl implements InputContext {
 	 * @see org.xamjwg.html.domimpl.InputContext#setRows(int)
 	 */
 	public void setRows(int rows) {
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.UIControl#paintSelection(java.awt.Graphics, boolean, org.xamjwg.html.renderer.RenderablePoint, org.xamjwg.html.renderer.RenderablePoint)
-	 */
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
-		return inSelection;
 	}
 
 	public boolean getMultiple() {

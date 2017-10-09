@@ -187,10 +187,6 @@ class InputImageControl extends BaseInputControl implements ImageListener {
 		});
 	}
 
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
-		return inSelection;
-	}
-
 	public void imageLoaded(ImageEvent event) {
 		// Implementation of ImageListener. Invoked in a request thread most likely.
 		Image image = event.image;

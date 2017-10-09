@@ -28,7 +28,7 @@ import org.lobobrowser.html.style.ListStyle;
 import org.lobobrowser.html.style.RenderState;
 
 class RList extends BaseRListElement {
-	public RList(NodeImpl modelNode, int listNesting, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer parentContainer, RCollection parent) {
+	RList(NodeImpl modelNode, int listNesting, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer parentContainer) {
 		super(modelNode, listNesting, pcontext, rcontext, frameContext, parentContainer);
 	}
 

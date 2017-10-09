@@ -59,7 +59,7 @@ class VirtualCell {
 	/**
 	 * @return Returns the row.
 	 */
-	public int getRow() {
+	int getRow() {
 		return row;
 	}
 
@@ -67,7 +67,7 @@ class VirtualCell {
 	/**
 	 * @param row The row to set.
 	 */
-	public void setRow(int row) {
+	void setRow(int row) {
 		this.row = row;
 	}
 

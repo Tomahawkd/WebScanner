@@ -586,7 +586,7 @@ public class RBlockViewport extends BaseRCollection {
 	private void layoutList(HTMLElementImpl markupElement) {
 		RList renderable = (RList) markupElement.getUINode();
 		if (renderable == null) {
-			renderable = new RList(markupElement, this.listNesting, this.userAgentContext, this.rendererContext, this.frameContext, this.container, null);
+			renderable = new RList(markupElement, this.listNesting, this.userAgentContext, this.rendererContext, this.frameContext, this.container);
 			markupElement.setUINode(renderable);
 		}
 		renderable.setOriginalParent(this);
