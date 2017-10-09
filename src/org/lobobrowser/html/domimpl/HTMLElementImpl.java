@@ -414,7 +414,7 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 			}
 			ihs.put(ancestor, hhs);
 		}
-		return hhs.booleanValue();
+		return hhs;
 	}
 
 	/**
@@ -423,18 +423,16 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 	 * <code>null</code> if there are no such
 	 * pseudo-elements.
 	 */
-	public Set getPseudoNames() {
-		Set pnset = null;
+	public Set<String> getPseudoNames() {
+		Set<String> pnset = null;
 		if (this.isMouseOver) {
-			if (pnset == null) {
-				pnset = new HashSet(1);
-			}
+			pnset = new HashSet<>(1);
 			pnset.add("hover");
 		}
 		return pnset;
 	}
 
-	protected final Collection findStyleDeclarations(String elementName, String id, String className, Set pseudoNames) {
+	private Collection<CSSStyleDeclaration> findStyleDeclarations(String elementName, String id, String className, Set pseudoNames) {
 		HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;
 		if (doc == null) {
 			return null;
@@ -449,7 +447,7 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 		super.informInvalid();
 	}
 
-	public void informInvalidAttibute(String normalName) {
+	private void informInvalidAttibute(String normalName) {
 		// This is called when an attribute changes while
 		// the element is allowing notifications.
 		if ("style".equals(normalName)) {

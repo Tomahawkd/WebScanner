@@ -35,31 +35,24 @@ import java.util.*;
  * Every time a new STYLE element is found, it is
  * added to the style sheet aggreagator by means
  * of the {@link #addStyleSheet(CSSStyleSheet)} method.
- * HTML elements have a <code>style</code> object
- * that has a list of <code>CSSStyleDeclaration</code>
- * instances. The instances inserted in that list
- * are obtained by means of the {@link #getStyleDeclarations(HTMLElementImpl, String, String, String)}
- * method.
  */
 public class StyleSheetAggregator {
 	private final HTMLDocumentImpl document;
-	private final Map classMapsByElement = new HashMap();
-	private final Map idMapsByElement = new HashMap();
-	private final Map rulesByElement = new HashMap();
+	private final Map<String, Map<String, Collection<StyleRuleInfo>>> classMapsByElement = new HashMap<>();
+	private final Map<String, Map<String, Collection<StyleRuleInfo>>> idMapsByElement = new HashMap<>();
+	private final Map<String, Collection<StyleRuleInfo>> rulesByElement = new HashMap<>();
 
 	public StyleSheetAggregator(HTMLDocumentImpl document) {
 		this.document = document;
 	}
 
-	public final void addStyleSheets(Collection styleSheets) throws MalformedURLException {
-		Iterator i = styleSheets.iterator();
-		while (i.hasNext()) {
-			CSSStyleSheet sheet = (CSSStyleSheet) i.next();
-			this.addStyleSheet(sheet);
+	public final void addStyleSheets(Collection<CSSStyleSheet> styleSheets) throws MalformedURLException {
+		for (CSSStyleSheet styleSheet : styleSheets) {
+			this.addStyleSheet(styleSheet);
 		}
 	}
 
-	private final void addStyleSheet(CSSStyleSheet styleSheet) throws MalformedURLException {
+	private void addStyleSheet(CSSStyleSheet styleSheet) throws MalformedURLException {
 		CSSRuleList ruleList = styleSheet.getCssRules();
 		int length = ruleList.getLength();
 		for (int i = 0; i < length; i++) {
@@ -68,7 +61,7 @@ public class StyleSheetAggregator {
 		}
 	}
 
-	private final void addRule(CSSStyleSheet styleSheet, CSSRule rule) throws MalformedURLException {
+	private void addRule(CSSStyleSheet styleSheet, CSSRule rule) throws MalformedURLException {
 		HTMLDocumentImpl document = this.document;
 		if (rule instanceof CSSStyleRule) {
 			CSSStyleRule sr = (CSSStyleRule) rule;
@@ -76,25 +69,24 @@ public class StyleSheetAggregator {
 			StringTokenizer commaTok = new StringTokenizer(selectorList, ",");
 			while (commaTok.hasMoreTokens()) {
 				String selectorPart = commaTok.nextToken().toLowerCase();
-				ArrayList simpleSelectors = null;
+				ArrayList<SimpleSelector> simpleSelectors = null;
 				String lastSelectorText = null;
 				StringTokenizer tok = new StringTokenizer(selectorPart, " \t\r\n");
 				if (tok.hasMoreTokens()) {
-					simpleSelectors = new ArrayList();
+					simpleSelectors = new ArrayList<>();
 					SimpleSelector prevSelector = null;
-					SELECTOR_FOR:
 					for (; ; ) {
 						String token = tok.nextToken();
 						if (">".equals(token)) {
 							if (prevSelector != null) {
 								prevSelector.setSelectorType(SimpleSelector.PARENT);
 							}
-							continue SELECTOR_FOR;
+							continue;
 						} else if ("+".equals(token)) {
 							if (prevSelector != null) {
 								prevSelector.setSelectorType(SimpleSelector.PRECEEDING_SIBLING);
 							}
-							continue SELECTOR_FOR;
+							continue;
 						}
 						int colonIdx = token.indexOf(':');
 						String simpleSelectorText = colonIdx == -1 ? token : token.substring(0, colonIdx);
@@ -120,13 +112,11 @@ public class StyleSheetAggregator {
 							String idtl = lastSelectorText.substring(poundIdx + 1);
 							this.addIdRule(elemtl, idtl, sr, simpleSelectors);
 						} else {
-							String elemtl = lastSelectorText;
-							this.addElementRule(elemtl, sr, simpleSelectors);
+							this.addElementRule(lastSelectorText, sr, simpleSelectors);
 						}
 					}
 				}
 			}
-			//TODO: Attribute selectors
 		} else if (rule instanceof CSSImportRule) {
 			UserAgentContext uacontext = document.getUserAgentContext();
 			if (uacontext.isExternalCSSEnabled()) {
@@ -155,70 +145,45 @@ public class StyleSheetAggregator {
 		}
 	}
 
-	private final void addClassRule(String elemtl, String classtl, CSSStyleRule styleRule, ArrayList ancestorSelectors) {
-		Map classMap = (Map) this.classMapsByElement.get(elemtl);
-		if (classMap == null) {
-			classMap = new HashMap();
-			this.classMapsByElement.put(elemtl, classMap);
-		}
-		Collection rules = (Collection) classMap.get(classtl);
-		if (rules == null) {
-			rules = new LinkedList();
-			classMap.put(classtl, rules);
-		}
+	private void addClassRule(String elemtl, String classtl, CSSStyleRule styleRule, ArrayList ancestorSelectors) {
+		Map<String, Collection<StyleRuleInfo>> classMap = this.classMapsByElement.computeIfAbsent(elemtl, k -> new HashMap<>());
+		Collection<StyleRuleInfo> rules = classMap.computeIfAbsent(classtl, k -> new LinkedList<>());
 		rules.add(new StyleRuleInfo(ancestorSelectors, styleRule));
 	}
 
-	private final void addIdRule(String elemtl, String idtl, CSSStyleRule styleRule, ArrayList ancestorSelectors) {
-		Map idsMap = (Map) this.idMapsByElement.get(elemtl);
-		if (idsMap == null) {
-			idsMap = new HashMap();
-			this.idMapsByElement.put(elemtl, idsMap);
-		}
-		Collection rules = (Collection) idsMap.get(idtl);
-		if (rules == null) {
-			rules = new LinkedList();
-			idsMap.put(idtl, rules);
-		}
+	private void addIdRule(String elemtl, String idtl, CSSStyleRule styleRule, ArrayList ancestorSelectors) {
+		Map<String, Collection<StyleRuleInfo>> idsMap = this.idMapsByElement.computeIfAbsent(elemtl, k -> new HashMap<>());
+		Collection<StyleRuleInfo> rules = idsMap.computeIfAbsent(idtl, k -> new LinkedList<>());
 		rules.add(new StyleRuleInfo(ancestorSelectors, styleRule));
 	}
 
-	private final void addElementRule(String elemtl, CSSStyleRule styleRule, ArrayList ancestorSelectors) {
-		Collection rules = (Collection) this.rulesByElement.get(elemtl);
-		if (rules == null) {
-			rules = new LinkedList();
-			this.rulesByElement.put(elemtl, rules);
-		}
+	private void addElementRule(String elemtl, CSSStyleRule styleRule, ArrayList ancestorSelectors) {
+		Collection<StyleRuleInfo> rules = this.rulesByElement.computeIfAbsent(elemtl, k -> new LinkedList<>());
 		rules.add(new StyleRuleInfo(ancestorSelectors, styleRule));
 	}
 
-	public final Collection getActiveStyleDeclarations(HTMLElementImpl element, String elementName, String elementId, String className, Set pseudoNames) {
-		Collection styleDeclarations = null;
+	public final Collection<CSSStyleDeclaration> getActiveStyleDeclarations(HTMLElementImpl element, String elementName, String elementId, String className, Set pseudoNames) {
+		Collection<CSSStyleDeclaration> styleDeclarations = null;
 		String elementTL = elementName.toLowerCase();
-		Collection elementRules = (Collection) this.rulesByElement.get(elementTL);
+		Collection<StyleRuleInfo> elementRules = this.rulesByElement.get(elementTL);
 		if (elementRules != null) {
-			Iterator i = elementRules.iterator();
-			while (i.hasNext()) {
-				StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
-				if (styleRuleInfo.isSelectorMatch(element, pseudoNames)) {
-					CSSStyleRule styleRule = styleRuleInfo.styleRule;
+			for (StyleRuleInfo elementRule : elementRules) {
+				if (elementRule.isSelectorMatch(element, pseudoNames)) {
+					CSSStyleRule styleRule = elementRule.styleRule;
 					CSSStyleSheet styleSheet = styleRule.getParentStyleSheet();
 					if (styleSheet != null && styleSheet.getDisabled()) {
 						continue;
 					}
 					if (styleDeclarations == null) {
-						styleDeclarations = new LinkedList();
+						styleDeclarations = new LinkedList<>();
 					}
 					styleDeclarations.add(styleRule.getStyle());
-				} else {
 				}
 			}
 		}
-		elementRules = (Collection) this.rulesByElement.get("*");
+		elementRules = this.rulesByElement.get("*");
 		if (elementRules != null) {
-			Iterator i = elementRules.iterator();
-			while (i.hasNext()) {
-				StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
+			for (StyleRuleInfo styleRuleInfo : elementRules) {
 				if (styleRuleInfo.isSelectorMatch(element, pseudoNames)) {
 					CSSStyleRule styleRule = styleRuleInfo.styleRule;
 					CSSStyleSheet styleSheet = styleRule.getParentStyleSheet();
@@ -226,7 +191,7 @@ public class StyleSheetAggregator {
 						continue;
 					}
 					if (styleDeclarations == null) {
-						styleDeclarations = new LinkedList();
+						styleDeclarations = new LinkedList<>();
 					}
 					styleDeclarations.add(styleRule.getStyle());
 				}
@@ -234,13 +199,11 @@ public class StyleSheetAggregator {
 		}
 		if (className != null) {
 			String classNameTL = className.toLowerCase();
-			Map classMaps = (Map) this.classMapsByElement.get(elementTL);
+			Map<String, Collection<StyleRuleInfo>> classMaps = this.classMapsByElement.get(elementTL);
 			if (classMaps != null) {
-				Collection classRules = (Collection) classMaps.get(classNameTL);
+				Collection<StyleRuleInfo> classRules = classMaps.get(classNameTL);
 				if (classRules != null) {
-					Iterator i = classRules.iterator();
-					while (i.hasNext()) {
-						StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
+					for (StyleRuleInfo styleRuleInfo : classRules) {
 						if (styleRuleInfo.isSelectorMatch(element, pseudoNames)) {
 							CSSStyleRule styleRule = styleRuleInfo.styleRule;
 							CSSStyleSheet styleSheet = styleRule.getParentStyleSheet();
@@ -248,28 +211,26 @@ public class StyleSheetAggregator {
 								continue;
 							}
 							if (styleDeclarations == null) {
-								styleDeclarations = new LinkedList();
+								styleDeclarations = new LinkedList<>();
 							}
 							styleDeclarations.add(styleRule.getStyle());
 						}
 					}
 				}
 			}
-			classMaps = (Map) this.classMapsByElement.get("*");
+			classMaps = this.classMapsByElement.get("*");
 			if (classMaps != null) {
-				Collection classRules = (Collection) classMaps.get(classNameTL);
+				Collection<StyleRuleInfo> classRules = classMaps.get(classNameTL);
 				if (classRules != null) {
-					Iterator i = classRules.iterator();
-					while (i.hasNext()) {
-						StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
-						if (styleRuleInfo.isSelectorMatch(element, pseudoNames)) {
-							CSSStyleRule styleRule = styleRuleInfo.styleRule;
+					for (StyleRuleInfo classRule : classRules) {
+						if (classRule.isSelectorMatch(element, pseudoNames)) {
+							CSSStyleRule styleRule = classRule.styleRule;
 							CSSStyleSheet styleSheet = styleRule.getParentStyleSheet();
 							if (styleSheet != null && styleSheet.getDisabled()) {
 								continue;
 							}
 							if (styleDeclarations == null) {
-								styleDeclarations = new LinkedList();
+								styleDeclarations = new LinkedList<>();
 							}
 							styleDeclarations.add(styleRule.getStyle());
 						}
@@ -278,36 +239,32 @@ public class StyleSheetAggregator {
 			}
 		}
 		if (elementId != null) {
-			Map idMaps = (Map) this.idMapsByElement.get(elementTL);
+			Map<String, Collection<StyleRuleInfo>> idMaps = this.idMapsByElement.get(elementTL);
 			if (idMaps != null) {
 				String elementIdTL = elementId.toLowerCase();
-				Collection idRules = (Collection) idMaps.get(elementIdTL);
+				Collection<StyleRuleInfo> idRules = idMaps.get(elementIdTL);
 				if (idRules != null) {
-					Iterator i = idRules.iterator();
-					while (i.hasNext()) {
-						StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
-						if (styleRuleInfo.isSelectorMatch(element, pseudoNames)) {
-							CSSStyleRule styleRule = styleRuleInfo.styleRule;
+					for (StyleRuleInfo idRule : idRules) {
+						if (idRule.isSelectorMatch(element, pseudoNames)) {
+							CSSStyleRule styleRule = idRule.styleRule;
 							CSSStyleSheet styleSheet = styleRule.getParentStyleSheet();
 							if (styleSheet != null && styleSheet.getDisabled()) {
 								continue;
 							}
 							if (styleDeclarations == null) {
-								styleDeclarations = new LinkedList();
+								styleDeclarations = new LinkedList<>();
 							}
 							styleDeclarations.add(styleRule.getStyle());
 						}
 					}
 				}
 			}
-			idMaps = (Map) this.idMapsByElement.get("*");
+			idMaps = this.idMapsByElement.get("*");
 			if (idMaps != null) {
 				String elementIdTL = elementId.toLowerCase();
-				Collection idRules = (Collection) idMaps.get(elementIdTL);
+				Collection<StyleRuleInfo> idRules = idMaps.get(elementIdTL);
 				if (idRules != null) {
-					Iterator i = idRules.iterator();
-					while (i.hasNext()) {
-						StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
+					for (StyleRuleInfo styleRuleInfo : idRules) {
 						if (styleRuleInfo.isSelectorMatch(element, pseudoNames)) {
 							CSSStyleRule styleRule = styleRuleInfo.styleRule;
 							CSSStyleSheet styleSheet = styleRule.getParentStyleSheet();
@@ -315,7 +272,7 @@ public class StyleSheetAggregator {
 								continue;
 							}
 							if (styleDeclarations == null) {
-								styleDeclarations = new LinkedList();
+								styleDeclarations = new LinkedList<>();
 							}
 							styleDeclarations.add(styleRule.getStyle());
 						}
@@ -328,11 +285,9 @@ public class StyleSheetAggregator {
 
 	public final boolean affectedByPseudoNameInAncestor(HTMLElementImpl element, HTMLElementImpl ancestor, String elementName, String elementId, String[] classArray, String pseudoName) {
 		String elementTL = elementName.toLowerCase();
-		Collection elementRules = (Collection) this.rulesByElement.get(elementTL);
+		Collection<StyleRuleInfo> elementRules = this.rulesByElement.get(elementTL);
 		if (elementRules != null) {
-			Iterator i = elementRules.iterator();
-			while (i.hasNext()) {
-				StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
+			for (StyleRuleInfo styleRuleInfo : elementRules) {
 				CSSStyleSheet styleSheet = styleRuleInfo.styleRule.getParentStyleSheet();
 				if (styleSheet != null && styleSheet.getDisabled()) {
 					continue;
@@ -342,11 +297,9 @@ public class StyleSheetAggregator {
 				}
 			}
 		}
-		elementRules = (Collection) this.rulesByElement.get("*");
+		elementRules = this.rulesByElement.get("*");
 		if (elementRules != null) {
-			Iterator i = elementRules.iterator();
-			while (i.hasNext()) {
-				StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
+			for (StyleRuleInfo styleRuleInfo : elementRules) {
 				CSSStyleSheet styleSheet = styleRuleInfo.styleRule.getParentStyleSheet();
 				if (styleSheet != null && styleSheet.getDisabled()) {
 					continue;
@@ -357,16 +310,13 @@ public class StyleSheetAggregator {
 			}
 		}
 		if (classArray != null) {
-			for (int cidx = 0; cidx < classArray.length; cidx++) {
-				String className = classArray[cidx];
+			for (String className : classArray) {
 				String classNameTL = className.toLowerCase();
-				Map classMaps = (Map) this.classMapsByElement.get(elementTL);
+				Map<String, Collection<StyleRuleInfo>> classMaps = this.classMapsByElement.get(elementTL);
 				if (classMaps != null) {
-					Collection classRules = (Collection) classMaps.get(classNameTL);
+					Collection<StyleRuleInfo> classRules = classMaps.get(classNameTL);
 					if (classRules != null) {
-						Iterator i = classRules.iterator();
-						while (i.hasNext()) {
-							StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
+						for (StyleRuleInfo styleRuleInfo : classRules) {
 							CSSStyleSheet styleSheet = styleRuleInfo.styleRule.getParentStyleSheet();
 							if (styleSheet != null && styleSheet.getDisabled()) {
 								continue;
@@ -377,13 +327,11 @@ public class StyleSheetAggregator {
 						}
 					}
 				}
-				classMaps = (Map) this.classMapsByElement.get("*");
+				classMaps = this.classMapsByElement.get("*");
 				if (classMaps != null) {
-					Collection classRules = (Collection) classMaps.get(classNameTL);
+					Collection<StyleRuleInfo> classRules = classMaps.get(classNameTL);
 					if (classRules != null) {
-						Iterator i = classRules.iterator();
-						while (i.hasNext()) {
-							StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
+						for (StyleRuleInfo styleRuleInfo : classRules) {
 							CSSStyleSheet styleSheet = styleRuleInfo.styleRule.getParentStyleSheet();
 							if (styleSheet != null && styleSheet.getDisabled()) {
 								continue;
@@ -397,32 +345,28 @@ public class StyleSheetAggregator {
 			}
 		}
 		if (elementId != null) {
-			Map idMaps = (Map) this.idMapsByElement.get(elementTL);
+			Map<String, Collection<StyleRuleInfo>> idMaps = this.idMapsByElement.get(elementTL);
 			if (idMaps != null) {
 				String elementIdTL = elementId.toLowerCase();
-				Collection idRules = (Collection) idMaps.get(elementIdTL);
+				Collection<StyleRuleInfo> idRules = idMaps.get(elementIdTL);
 				if (idRules != null) {
-					Iterator i = idRules.iterator();
-					while (i.hasNext()) {
-						StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
-						CSSStyleSheet styleSheet = styleRuleInfo.styleRule.getParentStyleSheet();
+					for (StyleRuleInfo idRule : idRules) {
+						CSSStyleSheet styleSheet = idRule.styleRule.getParentStyleSheet();
 						if (styleSheet != null && styleSheet.getDisabled()) {
 							continue;
 						}
-						if (styleRuleInfo.affectedByPseudoNameInAncestor(element, ancestor, pseudoName)) {
+						if (idRule.affectedByPseudoNameInAncestor(element, ancestor, pseudoName)) {
 							return true;
 						}
 					}
 				}
 			}
-			idMaps = (Map) this.idMapsByElement.get("*");
+			idMaps = this.idMapsByElement.get("*");
 			if (idMaps != null) {
 				String elementIdTL = elementId.toLowerCase();
-				Collection idRules = (Collection) idMaps.get(elementIdTL);
+				Collection<StyleRuleInfo> idRules = idMaps.get(elementIdTL);
 				if (idRules != null) {
-					Iterator i = idRules.iterator();
-					while (i.hasNext()) {
-						StyleRuleInfo styleRuleInfo = (StyleRuleInfo) i.next();
+					for (StyleRuleInfo styleRuleInfo : idRules) {
 						CSSStyleSheet styleSheet = styleRuleInfo.styleRule.getParentStyleSheet();
 						if (styleSheet != null && styleSheet.getDisabled()) {
 							continue;
@@ -441,17 +385,13 @@ public class StyleSheetAggregator {
 		private final CSSStyleRule styleRule;
 		private final ArrayList ancestorSelectors;
 
-		/**
-		 * @param selectors A collection of SimpleSelector's.
-		 * @param rule      A CSS rule.
-		 */
-		public StyleRuleInfo(ArrayList simpleSelectors, CSSStyleRule rule) {
+		StyleRuleInfo(ArrayList simpleSelectors, CSSStyleRule rule) {
 			super();
 			ancestorSelectors = simpleSelectors;
 			styleRule = rule;
 		}
 
-		public final boolean affectedByPseudoNameInAncestor(HTMLElementImpl element, HTMLElementImpl ancestor, String pseudoName) {
+		final boolean affectedByPseudoNameInAncestor(HTMLElementImpl element, HTMLElementImpl ancestor, String pseudoName) {
 			ArrayList as = this.ancestorSelectors;
 			HTMLElementImpl currentElement = element;
 			int size = as.size();
@@ -479,8 +419,7 @@ public class StyleSheetAggregator {
 						String idtl = selectorText.substring(poundIdx + 1);
 						newElement = currentElement.getAncestorWithId(elemtl, idtl);
 					} else {
-						String elemtl = selectorText;
-						newElement = currentElement.getAncestor(elemtl);
+						newElement = currentElement.getAncestor(selectorText);
 					}
 				}
 				if (newElement == null) {
@@ -498,7 +437,7 @@ public class StyleSheetAggregator {
 		 * @param element     The element to test for a match.
 		 * @param pseudoNames A set of pseudo-names in lowercase.
 		 */
-		private final boolean isSelectorMatch(HTMLElementImpl element, Set pseudoNames) {
+		private boolean isSelectorMatch(HTMLElementImpl element, Set pseudoNames) {
 			ArrayList as = this.ancestorSelectors;
 			HTMLElementImpl currentElement = element;
 			int size = as.size();
@@ -543,13 +482,12 @@ public class StyleSheetAggregator {
 							throw new IllegalStateException("selectorType=" + selectorType);
 						}
 					} else {
-						String elemtl = selectorText;
 						if (selectorType == SimpleSelector.ANCESTOR) {
-							priorElement = currentElement.getAncestor(elemtl);
+							priorElement = currentElement.getAncestor(selectorText);
 						} else if (selectorType == SimpleSelector.PARENT) {
-							priorElement = currentElement.getParent(elemtl);
+							priorElement = currentElement.getParent(selectorText);
 						} else if (selectorType == SimpleSelector.PRECEEDING_SIBLING) {
-							priorElement = currentElement.getPreceedingSibling(elemtl);
+							priorElement = currentElement.getPreceedingSibling(selectorText);
 						} else {
 							throw new IllegalStateException("selectorType=" + selectorType);
 						}
@@ -568,13 +506,13 @@ public class StyleSheetAggregator {
 	}
 
 	static class SimpleSelector {
-		public static final int ANCESTOR = 0;
-		public static final int PARENT = 1;
-		public static final int PRECEEDING_SIBLING = 2;
+		static final int ANCESTOR = 0;
+		static final int PARENT = 1;
+		static final int PRECEEDING_SIBLING = 2;
 
-		public final String simpleSelectorText;
-		public final String pseudoElement;
-		public int selectorType;
+		final String simpleSelectorText;
+		final String pseudoElement;
+		int selectorType;
 
 		/**
 		 * @param simpleSelectorText Simple selector text in lower case.
@@ -587,7 +525,7 @@ public class StyleSheetAggregator {
 			this.selectorType = ANCESTOR;
 		}
 
-		public final boolean matches(HTMLElementImpl element) {
+		final boolean matches(HTMLElementImpl element) {
 			Set names = element.getPseudoNames();
 			if (names == null) {
 				return this.pseudoElement == null;
@@ -597,7 +535,7 @@ public class StyleSheetAggregator {
 			}
 		}
 
-		public final boolean matches(Set names) {
+		final boolean matches(Set names) {
 			if (names == null) {
 				return this.pseudoElement == null;
 			} else {
@@ -606,24 +544,11 @@ public class StyleSheetAggregator {
 			}
 		}
 
-		public final boolean matches(String pseudoName) {
-			if (pseudoName == null) {
-				return this.pseudoElement == null;
-			} else {
-				String pe = this.pseudoElement;
-				return pe == null || pseudoName.equals(pe);
-			}
-		}
-
-		public final boolean hasPseudoName(String pseudoName) {
+		final boolean hasPseudoName(String pseudoName) {
 			return pseudoName.equals(this.pseudoElement);
 		}
 
-		public int getSelectorType() {
-			return selectorType;
-		}
-
-		public void setSelectorType(int selectorType) {
+		void setSelectorType(int selectorType) {
 			this.selectorType = selectorType;
 		}
 	}

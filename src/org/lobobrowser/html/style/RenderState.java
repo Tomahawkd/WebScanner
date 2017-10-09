@@ -29,112 +29,110 @@ import java.awt.*;
  * @author J. H. S.
  */
 public interface RenderState {
-	public static final int MASK_TEXTDECORATION_UNDERLINE = 1;
-	public static final int MASK_TEXTDECORATION_OVERLINE = 2;
-	public static final int MASK_TEXTDECORATION_LINE_THROUGH = 4;
-	public static final int MASK_TEXTDECORATION_BLINK = 8;
+	int MASK_TEXTDECORATION_UNDERLINE = 1;
+	int MASK_TEXTDECORATION_OVERLINE = 2;
+	int MASK_TEXTDECORATION_LINE_THROUGH = 4;
+	int MASK_TEXTDECORATION_BLINK = 8;
 
-	public static final int TEXTTRANSFORM_NONE = 0;
-	public static final int TEXTTRANSFORM_CAPITALIZE = 1;
-	public static final int TEXTTRANSFORM_UPPERCASE = 2;
-	public static final int TEXTTRANSFORM_LOWERCASE = 4;
-//	TODO how to handle style cascading?	
-//	public static final int TEXTTRANSFORM_INHERIT = 8;
+	int TEXTTRANSFORM_NONE = 0;
+	int TEXTTRANSFORM_CAPITALIZE = 1;
+	int TEXTTRANSFORM_UPPERCASE = 2;
+	int TEXTTRANSFORM_LOWERCASE = 4;
 
-	public static final int DISPLAY_NONE = 0;
-	public static final int DISPLAY_INLINE = 1;
-	public static final int DISPLAY_BLOCK = 2;
-	public static final int DISPLAY_LIST_ITEM = 3;
-	public static final int DISPLAY_TABLE_ROW = 4;
-	public static final int DISPLAY_TABLE_CELL = 5;
-	public static final int DISPLAY_TABLE = 6;
+	int DISPLAY_NONE = 0;
+	int DISPLAY_INLINE = 1;
+	int DISPLAY_BLOCK = 2;
+	int DISPLAY_LIST_ITEM = 3;
+	int DISPLAY_TABLE_ROW = 4;
+	int DISPLAY_TABLE_CELL = 5;
+	int DISPLAY_TABLE = 6;
 
-	public static final int WS_NORMAL = 0;
-	public static final int WS_PRE = 1;
-	public static final int WS_NOWRAP = 2;
+	int WS_NORMAL = 0;
+	int WS_PRE = 1;
+	int WS_NOWRAP = 2;
 
-	public static final int VISIBILITY_VISIBLE = 0;
-	public static final int VISIBILITY_HIDDEN = 1;
-	public static final int VISIBILITY_COLLAPSE = 2;
+	int VISIBILITY_VISIBLE = 0;
+	int VISIBILITY_HIDDEN = 1;
+	int VISIBILITY_COLLAPSE = 2;
 
-	public static final int POSITION_STATIC = 0;
-	public static final int POSITION_ABSOLUTE = 1;
-	public static final int POSITION_RELATIVE = 2;
-	public static final int POSITION_FIXED = 3;
+	int POSITION_STATIC = 0;
+	int POSITION_ABSOLUTE = 1;
+	int POSITION_RELATIVE = 2;
+	int POSITION_FIXED = 3;
 
-	public static final int FLOAT_NONE = 0;
-	public static final int FLOAT_LEFT = 1;
-	public static final int FLOAT_RIGHT = 2;
+	int FLOAT_NONE = 0;
+	int FLOAT_LEFT = 1;
+	int FLOAT_RIGHT = 2;
 
-	public static final int OVERFLOW_NONE = 0;
-	public static final int OVERFLOW_SCROLL = 1;
-	public static final int OVERFLOW_AUTO = 2;
-	public static final int OVERFLOW_HIDDEN = 3;
-	public static final int OVERFLOW_VISIBLE = 4;
+	int OVERFLOW_NONE = 0;
+	int OVERFLOW_SCROLL = 1;
+	int OVERFLOW_AUTO = 2;
+	int OVERFLOW_HIDDEN = 3;
+	int OVERFLOW_VISIBLE = 4;
 
-	public int getPosition();
+	int getPosition();
 
-	public int getFloat();
+	int getFloat();
 
-	public int getVisibility();
+	int getVisibility();
 
-	public Font getFont();
+	Font getFont();
 
-	public int getFontBase();
+	int getFontBase();
 
-	public WordInfo getWordInfo(String word);
+	WordInfo getWordInfo(String word);
 
-	public Color getColor();
+	Color getColor();
 
-	public Color getBackgroundColor();
+	Color getBackgroundColor();
 
-	public Color getTextBackgroundColor();
+	Color getTextBackgroundColor();
 
-	public BackgroundInfo getBackgroundInfo();
+	BackgroundInfo getBackgroundInfo();
 
-	public Color getOverlayColor();
+	Color getOverlayColor();
 
-	public int getTextTransform();
+	int getTextTransform();
 
-	public int getTextDecorationMask();
+	int getTextDecorationMask();
 
-	public FontMetrics getFontMetrics();
+	FontMetrics getFontMetrics();
 
-	public int getBlankWidth();
+	int getBlankWidth();
 
-	public boolean isHighlight();
+	boolean isHighlight();
 
-	public void setHighlight(boolean highlight);
+	void setHighlight(boolean highlight);
 
-	public RenderState getPreviousRenderState();
+	RenderState getPreviousRenderState();
 
-	public int getAlignXPercent();
+	int getAlignXPercent();
 
-	public int getAlignYPercent();
+	int getAlignYPercent();
 
-	public int getCount(String counter, int nesting);
+	int getCount(String counter, int nesting);
 
-	public int getDisplay();
+	int getDisplay();
 
-	public void resetCount(String counter, int nesting, int value);
+	void resetCount(String counter, int nesting, int value);
 
-	public int incrementCount(String counter, int nesting);
+	int incrementCount(String counter, int nesting);
 
-	public int getTextIndent(int availWidth);
+	int getTextIndent(int availWidth);
 
-	public String getTextIndentText();
+	String getTextIndentText();
 
-	public int getWhiteSpace();
+	int getWhiteSpace();
 
-	public HtmlInsets getMarginInsets();
+	HtmlInsets getMarginInsets();
 
-	public HtmlInsets getPaddingInsets();
+	HtmlInsets getPaddingInsets();
 
-	public int getOverflowX();
+	int getOverflowX();
 
-	public int getOverflowY();
+	int getOverflowY();
 
-	public void invalidate();
+	void invalidate();
 
-	public BorderInfo getBorderInfo();
+	BorderInfo getBorderInfo();
 }

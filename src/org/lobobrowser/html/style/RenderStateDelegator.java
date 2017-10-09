@@ -24,9 +24,9 @@ import java.awt.*;
 
 
 public abstract class RenderStateDelegator implements RenderState {
-	protected final RenderState delegate;
+	final RenderState delegate;
 
-	public RenderStateDelegator(final RenderState delegate) {
+	RenderStateDelegator(final RenderState delegate) {
 		super();
 		this.delegate = delegate;
 	}
