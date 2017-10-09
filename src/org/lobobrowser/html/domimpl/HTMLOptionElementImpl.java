@@ -1,11 +1,10 @@
 package org.lobobrowser.html.domimpl;
 
-import org.w3c.dom.html2.HTMLFormElement;
 import org.w3c.dom.html2.HTMLOptionElement;
 import org.w3c.dom.html2.HTMLSelectElement;
 
 public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOptionElement {
-	public HTMLOptionElementImpl(String name) {
+	HTMLOptionElementImpl(String name) {
 		super(name, true);
 	}
 
@@ -15,10 +14,6 @@ public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOption
 
 	public boolean getDisabled() {
 		return false;
-	}
-
-	public HTMLFormElement getForm() {
-		return this.getForm();
 	}
 
 	public int getIndex() {
@@ -51,12 +46,7 @@ public class HTMLOptionElementImpl extends HTMLElementImpl implements HTMLOption
 		return this.getAttribute("value");
 	}
 
-	public void setDefaultSelected(boolean defaultSelected) {
-		this.setAttribute("selected", defaultSelected ? "selected" : null);
-	}
-
 	public void setDisabled(boolean disabled) {
-		//TODO Unsupported
 	}
 
 	public void setLabel(String label) {

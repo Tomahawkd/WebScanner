@@ -950,7 +950,7 @@ public abstract class NodeImpl implements Node, ModelNode {
 		}
 	}
 
-	void informLayoutInvalid() {
+	public void informLayoutInvalid() {
 		// This is called by the style properties object.
 		this.forgetRenderState();
 		HTMLDocumentImpl doc = (HTMLDocumentImpl) this.document;

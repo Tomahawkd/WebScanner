@@ -27,7 +27,7 @@ import org.lobobrowser.html.style.RenderState;
  * Element used for B and STRONG.
  */
 public class HTMLStrongElementImpl extends HTMLAbstractUIElement {
-	public HTMLStrongElementImpl(String name) {
+	HTMLStrongElementImpl(String name) {
 		super(name);
 	}
 

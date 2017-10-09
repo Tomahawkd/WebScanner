@@ -50,58 +50,39 @@ public interface HTMLElement extends Element {
     /**
      * The element's identifier. See the id attribute definition in HTML 4.01.
      */
-    public String getId();
+    String getId();
     /**
      * The element's identifier. See the id attribute definition in HTML 4.01.
      */
-    public void setId(String id);
+    void setId(String id);
 
     /**
      * The element's advisory title. See the title attribute definition in 
      * HTML 4.01.
      */
-    public String getTitle();
+    String getTitle();
     /**
      * The element's advisory title. See the title attribute definition in 
      * HTML 4.01.
      */
-    public void setTitle(String title);
+    void setTitle(String title);
 
     /**
      * Language code defined in RFC 1766. See the lang attribute definition in 
      * HTML 4.01.
      */
-    public String getLang();
+    String getLang();
     /**
      * Language code defined in RFC 1766. See the lang attribute definition in 
      * HTML 4.01.
      */
-    public void setLang(String lang);
-
-    /**
-     * Specifies the base direction of directionally neutral text and the 
-     * directionality of tables. See the dir attribute definition in HTML 
-     * 4.01.
-     */
-    public String getDir();
-    /**
-     * Specifies the base direction of directionally neutral text and the 
-     * directionality of tables. See the dir attribute definition in HTML 
-     * 4.01.
-     */
-    public void setDir(String dir);
+    void setLang(String lang);
 
     /**
      * The class attribute of the element. This attribute has been renamed due 
      * to conflicts with the "class" keyword exposed by many languages. See 
      * the class attribute definition in HTML 4.01.
      */
-    public String getClassName();
-    /**
-     * The class attribute of the element. This attribute has been renamed due 
-     * to conflicts with the "class" keyword exposed by many languages. See 
-     * the class attribute definition in HTML 4.01.
-     */
-    public void setClassName(String className);
+    String getClassName();
 
 }

@@ -29,12 +29,11 @@ import org.w3c.dom.html2.HTMLTableCellElement;
 
 public class HTMLTableCellElementImpl extends HTMLAbstractUIElement implements
 		HTMLTableCellElement {
-	public HTMLTableCellElementImpl(String name) {
+	HTMLTableCellElementImpl(String name) {
 		super(name);
 	}
 
 	public int getCellIndex() {
-		// TODO Cell index in row
 		return 0;
 	}
 

@@ -35,11 +35,7 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements
 		HTMLStyleElement {
 	private CSSStyleSheet styleSheet;
 
-	public HTMLStyleElementImpl() {
-		super("STYLE", true);
-	}
-
-	public HTMLStyleElementImpl(String name) {
+	HTMLStyleElementImpl(String name) {
 		super(name, true);
 	}
 
@@ -82,7 +78,7 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements
 		return super.setUserData(key, data, handler);
 	}
 
-	protected void processStyle() {
+	private void processStyle() {
 		this.styleSheet = null;
 		if (CSSUtilities.matchesMedia(this.getMedia(), this.getUserAgentContext())) {
 			String text = this.getRawInnerText(true);
@@ -98,12 +94,7 @@ public class HTMLStyleElementImpl extends HTMLElementImpl implements
 					sheet.setHref(baseURI);
 					doc.addStyleSheet(sheet);
 					this.styleSheet = sheet;
-					if (sheet instanceof CSSStyleSheetImpl) {
-						CSSStyleSheetImpl sheetImpl = (CSSStyleSheetImpl) sheet;
-						sheetImpl.setDisabledOnly(this.disabled);
-					} else {
-						sheet.setDisabled(this.disabled);
-					}
+					sheet.setDisabledOnly(this.disabled);
 				} catch (Throwable ignored) {
 				}
 			}

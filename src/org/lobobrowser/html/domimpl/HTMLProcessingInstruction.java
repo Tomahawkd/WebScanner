@@ -16,10 +16,10 @@ import org.w3c.dom.ProcessingInstruction;
  */
 public class HTMLProcessingInstruction extends NodeImpl
 		implements ProcessingInstruction, Cloneable {
-	String target;
-	String data;
+	private String target;
+	private String data;
 
-	public HTMLProcessingInstruction(String target, String data) {
+	HTMLProcessingInstruction(String target, String data) {
 		this.target = target;
 		this.data = data;
 	}
@@ -62,7 +62,7 @@ public class HTMLProcessingInstruction extends NodeImpl
 
 	public Object clone() {
 		try {
-			return (HTMLProcessingInstruction) super.clone();
+			return super.clone();
 		} catch (CloneNotSupportedException e) {
 			throw new IllegalStateException(e);
 		}

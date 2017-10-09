@@ -109,14 +109,6 @@ public class ElementImpl extends NodeImpl implements Element {
 		this.setAttribute("lang", lang);
 	}
 
-	public String getDir() {
-		return this.getAttribute("dir");
-	}
-
-	public void setDir(String dir) {
-		this.setAttribute("dir", dir);
-	}
-
 	public final String getAttribute(String name) {
 		String normalName = this.normalizeAttributeName(name);
 		synchronized (this) {

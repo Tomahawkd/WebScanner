@@ -27,18 +27,15 @@ import org.w3c.dom.DOMException;
 import org.w3c.dom.Node;
 import org.w3c.dom.html2.HTMLCollection;
 import org.w3c.dom.html2.HTMLElement;
+import org.w3c.dom.html2.HTMLTableCellElement;
 import org.w3c.dom.html2.HTMLTableRowElement;
 
 import java.util.ArrayList;
 
 public class HTMLTableRowElementImpl extends HTMLElementImpl implements
 		HTMLTableRowElement {
-	public HTMLTableRowElementImpl(String name) {
+	HTMLTableRowElementImpl(String name) {
 		super(name, true);
-	}
-
-	public HTMLTableRowElementImpl() {
-		super("TR", true);
 	}
 
 	public int getRowIndex() {
@@ -53,29 +50,24 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements
 				public void visit(Node node) {
 					if (node instanceof HTMLTableRowElementImpl) {
 						if (HTMLTableRowElementImpl.this == node) {
-							throw new StopVisitorException(new Integer(this.count));
+							throw new StopVisitorException(this.count);
 						}
 						this.count++;
 					}
 				}
 			});
 		} catch (StopVisitorException sve) {
-			return ((Integer) sve.getTag()).intValue();
+			return (Integer) sve.getTag();
 		}
 		return -1;
 	}
 
 	public int getSectionRowIndex() {
-		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	public HTMLCollection getCells() {
-		NodeFilter filter = new NodeFilter() {
-			public boolean accept(Node node) {
-				return node instanceof HTMLTableCellElementImpl;
-			}
-		};
+		NodeFilter filter = node -> node instanceof HTMLTableCellElementImpl;
 		return new DescendentHTMLCollection(this, filter, this.treeLock, false);
 	}
 
@@ -119,19 +111,6 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements
 		this.setAttribute("valign", vAlign);
 	}
 
-	/**
-	 * Inserts a TH element at the specified index.
-	 * <p>
-	 * Note: This method is non-standard.
-	 *
-	 * @param index The cell index to insert at.
-	 * @return The element that was inserted.
-	 * @throws DOMException When the index is out of range.
-	 */
-	public HTMLElement insertHeader(int index) throws DOMException {
-		return this.insertCell(index, "TH");
-	}
-
 	public HTMLElement insertCell(int index) throws DOMException {
 		return this.insertCell(index, "TD");
 	}
@@ -147,12 +126,12 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements
 				this.appendChild(cellElement);
 				return cellElement;
 			}
-			ArrayList nl = this.nodeList;
+			ArrayList<Node> nl = this.nodeList;
 			if (nl != null) {
 				int size = nl.size();
 				int trcount = 0;
 				for (int i = 0; i < size; i++) {
-					Node node = (Node) nl.get(i);
+					Node node = nl.get(i);
 					if (node instanceof org.w3c.dom.html2.HTMLTableCellElement) {
 						if (trcount == index) {
 							this.insertAt(cellElement, i);
@@ -171,13 +150,11 @@ public class HTMLTableRowElementImpl extends HTMLElementImpl implements
 
 	public void deleteCell(int index) throws DOMException {
 		synchronized (this.treeLock) {
-			ArrayList nl = this.nodeList;
+			ArrayList<Node> nl = this.nodeList;
 			if (nl != null) {
-				int size = nl.size();
 				int trcount = 0;
-				for (int i = 0; i < size; i++) {
-					Node node = (Node) nl.get(i);
-					if (node instanceof org.w3c.dom.html2.HTMLTableCellElement) {
+				for (Node aNl : nl) {
+					if (aNl instanceof HTMLTableCellElement) {
 						if (trcount == index) {
 							this.removeChildAt(index);
 						}

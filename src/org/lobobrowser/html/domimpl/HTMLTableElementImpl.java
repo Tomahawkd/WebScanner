@@ -33,11 +33,7 @@ import java.util.ArrayList;
 public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 		HTMLTableElement {
 
-	public HTMLTableElementImpl() {
-		super("TABLE");
-	}
-
-	public HTMLTableElementImpl(String name) {
+	HTMLTableElementImpl(String name) {
 		super(name);
 	}
 
@@ -151,40 +147,6 @@ public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 		this.setAttribute("width", width);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.RenderableContext#getHeightLength()
-	 */
-	public HtmlLength getHeightLength(int availHeight) {
-		try {
-			AbstractCSS2Properties props = this.getCurrentStyle();
-			String heightText = props == null ? null : props.getHeight();
-			if (heightText == null) {
-				return new HtmlLength(this.getAttribute("height"));
-			} else {
-				return new HtmlLength(HtmlValues.getPixelSize(heightText, this.getRenderState(), 0, availHeight));
-			}
-		} catch (Exception err) {
-			return null;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.RenderableContext#getWidthLength()
-	 */
-	public HtmlLength getWidthLength(int availWidth) {
-		try {
-			AbstractCSS2Properties props = this.getCurrentStyle();
-			String widthText = props == null ? null : props.getWidth();
-			if (widthText == null) {
-				return new HtmlLength(this.getAttribute("width"));
-			} else {
-				return new HtmlLength(HtmlValues.getPixelSize(widthText, this.getRenderState(), 0, availWidth));
-			}
-		} catch (Exception err) {
-			return null;
-		}
-	}
-
 	public HTMLElement createTHead() {
 		org.w3c.dom.Document doc = this.document;
 		return doc == null ? null : (HTMLElement) doc.createElement("thead");
@@ -227,12 +189,12 @@ public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 				this.appendChild(rowElement);
 				return rowElement;
 			}
-			ArrayList nl = this.nodeList;
+			ArrayList<Node> nl = this.nodeList;
 			if (nl != null) {
 				int size = nl.size();
 				int trcount = 0;
 				for (int i = 0; i < size; i++) {
-					Node node = (Node) nl.get(i);
+					Node node = nl.get(i);
 					if ("TR".equalsIgnoreCase(node.getNodeName())) {
 						if (trcount == index) {
 							this.insertAt(rowElement, i);
@@ -251,12 +213,12 @@ public class HTMLTableElementImpl extends HTMLAbstractUIElement implements
 
 	public void deleteRow(int index) throws DOMException {
 		synchronized (this.treeLock) {
-			ArrayList nl = this.nodeList;
+			ArrayList<Node> nl = this.nodeList;
 			if (nl != null) {
 				int size = nl.size();
 				int trcount = 0;
 				for (int i = 0; i < size; i++) {
-					Node node = (Node) nl.get(i);
+					Node node = nl.get(i);
 					if ("TR".equalsIgnoreCase(node.getNodeName())) {
 						if (trcount == index) {
 							this.removeChildAt(i);

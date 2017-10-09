@@ -6,7 +6,7 @@ import org.w3c.dom.html2.HTMLParagraphElement;
 
 public class HTMLPElementImpl extends HTMLAbstractUIElement implements
 		HTMLParagraphElement {
-	public HTMLPElementImpl(String name) {
+	HTMLPElementImpl(String name) {
 		super(name);
 	}
 

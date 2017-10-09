@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NamedNodeMapImpl implements NamedNodeMap {
-	//Note: class must be public for reflection to work.
 	private final Map<String, Node> attributes = new HashMap<>();
 	private final ArrayList<Node> attributeList = new ArrayList<>();
 

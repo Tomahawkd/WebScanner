@@ -29,7 +29,7 @@ import org.w3c.dom.html2.HTMLPreElement;
 
 public class HTMLPreElementImpl extends HTMLAbstractUIElement implements
 		HTMLPreElement {
-	public HTMLPreElementImpl(String name) {
+	HTMLPreElementImpl(String name) {
 		super(name);
 	}
 

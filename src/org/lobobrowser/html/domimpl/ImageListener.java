@@ -21,7 +21,7 @@
 package org.lobobrowser.html.domimpl;
 
 public interface ImageListener extends java.util.EventListener {
-	public static final ImageListener[] EMPTY_ARRAY = new ImageListener[0];
+	ImageListener[] EMPTY_ARRAY = new ImageListener[0];
 
-	public void imageLoaded(ImageEvent event);
+	void imageLoaded(ImageEvent event);
 }

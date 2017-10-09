@@ -35,22 +35,19 @@ public interface ModelNode {
 	//There shouldn't be any references to GUI components here.
 	//Events are processed by controller in renderer package.
 
-	public java.net.URL getFullURL(String spec) throws MalformedURLException;
+	java.net.URL getFullURL(String spec) throws MalformedURLException;
 
-	public boolean isEqualOrDescendentOf(ModelNode otherNode);
+	boolean isEqualOrDescendentOf(ModelNode otherNode);
 
-	public ModelNode getParentModelNode();
+	ModelNode getParentModelNode();
 
-	public RenderState getRenderState();
+	RenderState getRenderState();
 
 	/**
 	 * Sets a document item. A radio button, for example,
 	 * can use this to set button group state.
-	 *
-	 * @param name
-	 * @param value
 	 */
-	public void setDocumentItem(String name, Object value);
+	void setDocumentItem(String name, Object value);
 
-	public Object getDocumentItem(String name);
+	Object getDocumentItem(String name);
 }

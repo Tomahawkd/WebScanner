@@ -27,7 +27,7 @@ import org.lobobrowser.html.style.TextDecorationRenderState;
  * Element used for STRIKE.
  */
 public class HTMLStrikeElementImpl extends HTMLAbstractUIElement {
-	public HTMLStrikeElementImpl(String name) {
+	HTMLStrikeElementImpl(String name) {
 		super(name);
 	}
 

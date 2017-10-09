@@ -27,7 +27,7 @@ import org.lobobrowser.html.style.TextDecorationRenderState;
  * Element used for U.
  */
 public class HTMLUnderlineElementImpl extends HTMLAbstractUIElement {
-	public HTMLUnderlineElementImpl(String name) {
+	HTMLUnderlineElementImpl(String name) {
 		super(name);
 	}
 

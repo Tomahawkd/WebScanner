@@ -25,8 +25,8 @@ package org.lobobrowser.html.domimpl;
 
 import org.w3c.dom.html2.HTMLElement;
 
-public class HTMLSpanElementImpl extends HTMLAbstractUIElement implements HTMLElement {
-	public HTMLSpanElementImpl(String name) {
+class HTMLSpanElementImpl extends HTMLAbstractUIElement implements HTMLElement {
+	HTMLSpanElementImpl(String name) {
 		super(name);
 	}
 }

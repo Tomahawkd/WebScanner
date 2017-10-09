@@ -29,7 +29,7 @@ import org.w3c.dom.html2.HTMLUListElement;
 
 public class HTMLUListElementImpl extends HTMLAbstractUIElement implements
 		HTMLUListElement {
-	public HTMLUListElementImpl(String name) {
+	HTMLUListElementImpl(String name) {
 		super(name);
 	}
 

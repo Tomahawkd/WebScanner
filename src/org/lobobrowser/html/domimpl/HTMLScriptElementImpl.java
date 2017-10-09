@@ -23,17 +23,12 @@
  */
 package org.lobobrowser.html.domimpl;
 
-import org.w3c.dom.UserDataHandler;
 import org.w3c.dom.html2.HTMLScriptElement;
 
 public class HTMLScriptElementImpl extends HTMLElementImpl implements
 		HTMLScriptElement {
 
-	public HTMLScriptElementImpl() {
-		super("SCRIPT", true);
-	}
-
-	public HTMLScriptElementImpl(String name) {
+	HTMLScriptElementImpl(String name) {
 		super(name, true);
 	}
 
@@ -94,20 +89,6 @@ public class HTMLScriptElementImpl extends HTMLElementImpl implements
 		this.setAttribute("type", type);
 	}
 
-	public Object setUserData(String key, Object data, UserDataHandler handler) {
-		if (org.lobobrowser.html.parser.HtmlParser.MODIFYING_KEY.equals(key) && data != Boolean.TRUE) {
-			this.processScript();
-		}
-		return super.setUserData(key, data, handler);
-	}
-
-	protected final void processScript() {
-		if (this.getUserAgentContext() == null) {
-			throw new IllegalStateException("No user agent context.");
-		}
-	}
-
 	protected void appendInnerTextImpl(StringBuffer buffer) {
-		// nop
 	}
 }

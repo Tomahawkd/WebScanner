@@ -217,10 +217,6 @@ public class HTMLElementImpl extends ElementImpl implements HTMLElement, CSS2Pro
 		return className == null ? "" : className;
 	}
 
-	public void setClassName(String className) {
-		this.setAttribute("class", className);
-	}
-
 	public String getCharset() {
 		return this.getAttribute("charset");
 	}

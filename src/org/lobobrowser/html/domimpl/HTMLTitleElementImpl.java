@@ -24,7 +24,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.UserDataHandler;
 
 public class HTMLTitleElementImpl extends HTMLElementImpl {
-	public HTMLTitleElementImpl(String name) {
+	HTMLTitleElementImpl(String name) {
 		super(name, true);
 	}
 

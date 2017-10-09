@@ -26,5 +26,5 @@ package org.lobobrowser.html.domimpl;
 import org.w3c.dom.Node;
 
 public interface NodeFilter {
-	public boolean accept(Node node);
+	boolean accept(Node node);
 }

@@ -28,12 +28,8 @@ import org.w3c.dom.html2.HTMLTextAreaElement;
 
 public class HTMLTextAreaElementImpl extends HTMLBaseInputElement implements
 		HTMLTextAreaElement {
-	public HTMLTextAreaElementImpl(String name) {
+	HTMLTextAreaElementImpl(String name) {
 		super(name);
-	}
-
-	public HTMLTextAreaElementImpl() {
-		super("TEXTAREA");
 	}
 
 	protected FormInput[] getFormInputs() {

@@ -6,9 +6,9 @@ import org.w3c.dom.html2.HTMLOptionElement;
 import org.w3c.dom.html2.HTMLOptionsCollection;
 
 public class HTMLOptionsCollectionImpl extends DescendentHTMLCollection implements HTMLOptionsCollection {
-	public static final NodeFilter OPTION_FILTER = new OptionFilter();
+	private static final NodeFilter OPTION_FILTER = new OptionFilter();
 
-	public HTMLOptionsCollectionImpl(HTMLElementImpl selectElement) {
+	HTMLOptionsCollectionImpl(HTMLElementImpl selectElement) {
 		super(selectElement, OPTION_FILTER, selectElement.treeLock, false);
 	}
 
