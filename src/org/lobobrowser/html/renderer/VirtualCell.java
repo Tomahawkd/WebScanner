@@ -31,15 +31,12 @@ class VirtualCell {
 	private int column;
 	private int row;
 
-	/**
-	 * @param cell
-	 */
-	public VirtualCell(RTableCell cell, boolean isTopLeft) {
+	VirtualCell(RTableCell cell, boolean isTopLeft) {
 		actualCell = cell;
 		this.isTopLeft = isTopLeft;
 	}
 
-	public boolean isTopLeft() {
+	boolean isTopLeft() {
 		return this.isTopLeft;
 	}
 
@@ -78,12 +75,11 @@ class VirtualCell {
 	/**
 	 * @return Returns the actualCell.
 	 */
-	public RTableCell getActualCell() {
+	RTableCell getActualCell() {
 		return actualCell;
 	}
 
-	public HtmlLength getHeightLength() {
-		//TODO: Does not consider cellpadding and border
+	HtmlLength getHeightLength() {
 		RTableCell cell = this.actualCell;
 		String heightText = cell.getHeightText();
 		HtmlLength length;
@@ -98,7 +94,7 @@ class VirtualCell {
 		return length;
 	}
 
-	public HtmlLength getWidthLength() {
+	HtmlLength getWidthLength() {
 		RTableCell cell = this.actualCell;
 		String widthText = cell.getWidthText();
 		HtmlLength length;
@@ -112,28 +108,4 @@ class VirtualCell {
 		}
 		return length;
 	}
-
-//	public Dimension layoutMinWidth() {
-//
-//		ActualCell cell = this.actualCell;
-//
-//		Dimension ad = cell.layoutMinWidth();
-//
-//		int colspan = cell.getColSpan();
-//
-//		int rowspan = cell.getRowSpan();
-//
-//		if(colspan == 1 && rowspan == 1) {
-//
-//			return ad;
-//
-//		}
-//
-//		else {
-//
-//			return new Dimension(ad.width / colspan, ad.height / rowspan);
-//
-//		}
-//
-//	}
 }

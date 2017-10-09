@@ -25,8 +25,8 @@ package org.lobobrowser.html.renderer;
 
 import java.awt.*;
 
-abstract interface UIControl {
-	public void setRUIControl(RUIControl ruicontrol);
+interface UIControl {
+	void setRUIControl(RUIControl ruicontrol);
 
 	/**
 	 * Called as the control is layed out, either
@@ -35,20 +35,19 @@ abstract interface UIControl {
 	 * its state assuming the element has changed,
 	 * and change its preferred size if appropriate.
 	 */
-	public void reset(int availWidth, int availHeight);
+	void reset(int availWidth, int availHeight);
 
-	public Dimension getPreferredSize();
+	Dimension getPreferredSize();
 
-	public int getVAlign();
+	int getVAlign();
 
-	public void setBounds(int x, int y, int width, int height);
+	void setBounds(int x, int y, int width, int height);
 
-	public void invalidate();
+	void invalidate();
 
-	public Color getBackgroundColor();
+	Color getBackgroundColor();
 
-	//	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint);
-	public void paint(Graphics g);
+	void paint(Graphics g);
 
-	public java.awt.Component getComponent();
+	java.awt.Component getComponent();
 }

@@ -8,7 +8,7 @@ class UIControlWrapper implements UIControl {
 	private final Component component;
 	private final HtmlObject htmlObject;
 
-	public UIControlWrapper(HtmlObject ho) {
+	UIControlWrapper(HtmlObject ho) {
 		this.htmlObject = ho;
 		Component c;
 		if (ho == null) {
@@ -42,12 +42,6 @@ class UIControlWrapper implements UIControl {
 	public void invalidate() {
 		// Calls its AWT parent's invalidate, but I guess that's OK.
 		this.component.invalidate();
-	}
-
-	public boolean paintSelection(Graphics g, boolean inSelection,
-	                              RenderableSpot startPoint, RenderableSpot endPoint) {
-		// Does not paint selection
-		return inSelection;
 	}
 
 	public void setBounds(int x, int y, int width, int height) {

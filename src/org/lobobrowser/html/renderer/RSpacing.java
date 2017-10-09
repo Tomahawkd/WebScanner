@@ -32,7 +32,7 @@ import java.awt.event.MouseEvent;
  * This is used when there's padding or margins in inline elements.
  */
 final class RSpacing extends BaseBoundableRenderable {
-	public RSpacing(ModelNode me, RenderableContainer container, int width, int height) {
+	RSpacing(ModelNode me, RenderableContainer container, int width, int height) {
 		super(container, me);
 		// Dimensions set when constructed.
 		this.width = width;
@@ -44,47 +44,27 @@ final class RSpacing extends BaseBoundableRenderable {
 
 	public boolean onMouseClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseClick(me, event);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseClick(me, event);
 	}
 
 	public boolean onDoubleClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onDoubleClick(me, event);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onDoubleClick(me, event);
 	}
 
 	public boolean onMousePressed(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseDown(me);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseDown(me);
 	}
 
 	public boolean onMouseReleased(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseUp(me);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseUp(me);
 	}
 
 	public boolean onMouseDisarmed(java.awt.event.MouseEvent event) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseDisarmed(me);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseDisarmed(me);
 	}
 
 	/* (non-Javadoc)
@@ -92,35 +72,6 @@ final class RSpacing extends BaseBoundableRenderable {
 	 */
 	public final void paint(Graphics g) {
 		// Nothing to paint in spacing.
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.BoundableRenderable#paintSelection(java.awt.Graphics, boolean, org.xamjwg.html.renderer.RenderablePoint, org.xamjwg.html.renderer.RenderablePoint)
-	 */
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
-		if (this == startPoint.renderable || this == endPoint.renderable) {
-			if (inSelection) {
-				return false;
-			}
-		} else if (!inSelection) {
-			return false;
-		}
-		g.setColor(SELECTION_COLOR);
-		g.setXORMode(SELECTION_XOR);
-		g.fillRect(0, 0, this.width, this.height);
-		g.setPaintMode();
-		return true;
-	}
-
-	public boolean extractSelectionText(StringBuffer buffer, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
-		if (this == startPoint.renderable || this == endPoint.renderable) {
-			if (inSelection) {
-				return false;
-			}
-		} else if (!inSelection) {
-			return false;
-		}
-		return true;
 	}
 
 	/* (non-Javadoc)
@@ -136,10 +87,6 @@ final class RSpacing extends BaseBoundableRenderable {
 
 	public boolean onRightClick(MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onContextMenu(me, event);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onContextMenu(me, event);
 	}
 }

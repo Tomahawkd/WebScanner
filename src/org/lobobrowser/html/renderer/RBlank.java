@@ -113,24 +113,6 @@ final class RBlank extends BaseBoundableRenderable {
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.BoundableRenderable#paintSelection(java.awt.Graphics, boolean, org.xamjwg.html.renderer.RenderablePoint, org.xamjwg.html.renderer.RenderablePoint)
-	 */
-	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
-		if (this == startPoint.renderable || this == endPoint.renderable) {
-			if (inSelection) {
-				return false;
-			}
-		} else if (!inSelection) {
-			return false;
-		}
-		g.setColor(SELECTION_COLOR);
-		g.setXORMode(SELECTION_XOR);
-		g.fillRect(0, 0, this.width, this.height);
-		g.setPaintMode();
-		return true;
-	}
-
 	public boolean extractSelectionText(StringBuffer buffer, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
 		if (this == startPoint.renderable || this == endPoint.renderable) {
 			if (inSelection) {

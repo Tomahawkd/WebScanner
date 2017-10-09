@@ -33,12 +33,8 @@ import java.awt.*;
 class RTableCell extends RBlock {
 	private final HTMLTableCellElementImpl cellElement;
 	private VirtualCell topLeftVirtualCell;
-	//private int cellPadding;
 
-	/**
-	 * @param element
-	 */
-	public RTableCell(HTMLTableCellElementImpl element, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer tableAsContainer) {
+	RTableCell(HTMLTableCellElementImpl element, UserAgentContext pcontext, HtmlRendererContext rcontext, FrameContext frameContext, RenderableContainer tableAsContainer) {
 		super(element, 0, pcontext, rcontext, frameContext, tableAsContainer);
 		this.cellElement = element;
 	}
@@ -47,7 +43,7 @@ class RTableCell extends RBlock {
 	 * @param width  The width available, including insets.
 	 * @param height The height available, including insets.
 	 */
-	protected Dimension doCellLayout(int width, int height, boolean expandWidth, boolean expandHeight, boolean sizeOnly) {
+	Dimension doCellLayout(int width, int height, boolean expandWidth, boolean expandHeight, boolean sizeOnly) {
 		try {
 			this.layout(width, height, expandWidth, expandHeight, null, sizeOnly);
 			return new Dimension(this.width, this.height);
@@ -56,10 +52,6 @@ class RTableCell extends RBlock {
 			this.layoutDeepCanBeInvalidated = true;
 		}
 	}
-
-//	public void setCellPadding(int value) {
-//		this.cellPadding = value;
-//	}
 
 	protected Integer getDeclaredHeight(RenderState renderState, int availHeight) {
 		// Overridden since height declaration is handled by table.
@@ -71,16 +63,8 @@ class RTableCell extends RBlock {
 		return null;
 	}
 
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-
-	public void setTopLeftVirtualCell(VirtualCell vc) {
+	void setTopLeftVirtualCell(VirtualCell vc) {
 		this.topLeftVirtualCell = vc;
-	}
-
-	public VirtualCell getTopLeftVirtualCell() {
-		return this.topLeftVirtualCell;
 	}
 
 	private int colSpan = -1;
@@ -89,7 +73,7 @@ class RTableCell extends RBlock {
 	/**
 	 * @return Returns the virtualColumn.
 	 */
-	public int getVirtualColumn() {
+	int getVirtualColumn() {
 		VirtualCell vc = this.topLeftVirtualCell;
 		return vc == null ? 0 : vc.getColumn();
 	}
@@ -97,12 +81,12 @@ class RTableCell extends RBlock {
 	/**
 	 * @return Returns the virtualRow.
 	 */
-	public int getVirtualRow() {
+	int getVirtualRow() {
 		VirtualCell vc = this.topLeftVirtualCell;
 		return vc == null ? 0 : vc.getRow();
 	}
 
-	public int getColSpan() {
+	int getColSpan() {
 		int cs = this.colSpan;
 		if (cs == -1) {
 			cs = this.cellElement.getColSpan();
@@ -114,7 +98,7 @@ class RTableCell extends RBlock {
 		return cs;
 	}
 
-	public int getRowSpan() {
+	int getRowSpan() {
 		int rs = this.rowSpan;
 		if (rs == -1) {
 			rs = this.cellElement.getRowSpan();
@@ -126,28 +110,19 @@ class RTableCell extends RBlock {
 		return rs;
 	}
 
-	public void setRowSpan(int rowSpan) {
+	void setRowSpan(int rowSpan) {
 		this.rowSpan = rowSpan;
 	}
 
-	public String getHeightText() {
+	String getHeightText() {
 		return this.cellElement.getHeight();
 	}
 
-	public String getWidthText() {
+	String getWidthText() {
 		return this.cellElement.getWidth();
 	}
 
-
-	//	public Dimension layoutMinWidth() {
-//		
-//		return this.panel.layoutMinWidth();
-//		
-//	}
-//
-//	
-
-	public void setCellBounds(TableMatrix.SizeInfo[] colSizes, TableMatrix.SizeInfo[] rowSizes, int hasBorder, int cellSpacingX, int cellSpacingY) {
+	void setCellBounds(TableMatrix.SizeInfo[] colSizes, TableMatrix.SizeInfo[] rowSizes, int hasBorder, int cellSpacingX, int cellSpacingY) {
 		int vcol = this.getVirtualColumn();
 		int vrow = this.getVirtualRow();
 		TableMatrix.SizeInfo colSize = colSizes[vcol];

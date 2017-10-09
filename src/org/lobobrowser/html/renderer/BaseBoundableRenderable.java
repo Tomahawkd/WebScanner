@@ -35,7 +35,6 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 	static final Color SELECTION_COLOR = Color.BLUE;
 	static final Color SELECTION_XOR = Color.LIGHT_GRAY;
 
-	//protected final Rectangle bounds = new Rectangle();
 	protected final RenderableContainer container;
 	protected final ModelNode modelNode;
 
@@ -112,13 +111,6 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 		return this.modelNode;
 	}
 
-	//	/* (non-Javadoc)
-//	 * @see net.sourceforge.xamj.domimpl.markup.Renderable#getBounds()
-//	 */
-//	public Rectangle getBounds() {
-//		return this.bounds;
-//	}
-//
 	public void setBounds(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
@@ -300,5 +292,31 @@ abstract class BaseBoundableRenderable extends BaseRenderable implements Boundab
 			y += parent.getY();
 			parent = parent.getParent();
 		}
+	}
+
+	public boolean paintSelection(Graphics g, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
+		if (this == startPoint.renderable || this == endPoint.renderable) {
+			if (inSelection) {
+				return false;
+			}
+		} else if (!inSelection) {
+			return false;
+		}
+		g.setColor(SELECTION_COLOR);
+		g.setXORMode(SELECTION_XOR);
+		g.fillRect(0, 0, this.width, this.height);
+		g.setPaintMode();
+		return true;
+	}
+
+	public boolean extractSelectionText(StringBuffer buffer, boolean inSelection, RenderableSpot startPoint, RenderableSpot endPoint) {
+		if (this == startPoint.renderable || this == endPoint.renderable) {
+			if (inSelection) {
+				return false;
+			}
+		} else if (!inSelection) {
+			return false;
+		}
+		return true;
 	}
 }

@@ -34,10 +34,9 @@ class ShiftedFloatingBounds implements FloatingBounds {
 	 * shifts.
 	 *
 	 * @param prevBounds The baseline floating bounds.
-	 * @param shiftX     How much the original bounds have shifted in the X axis.
 	 * @param shiftY     How much the original bounds have shifted in the Y axis.
 	 */
-	public ShiftedFloatingBounds(final FloatingBounds prevBounds, final int shiftLeft, final int shiftRight, final int shiftY) {
+	ShiftedFloatingBounds(final FloatingBounds prevBounds, final int shiftLeft, final int shiftRight, final int shiftY) {
 		super();
 		this.prevBounds = prevBounds;
 		this.shiftLeft = shiftLeft;

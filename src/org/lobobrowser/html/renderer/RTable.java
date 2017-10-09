@@ -62,7 +62,7 @@ class RTable extends BaseElementRenderable {
 		try {
 			this.prePaint(g);
 			Dimension size = this.getSize();
-			this.tableMatrix.paint(g, size);
+			this.tableMatrix.paint(g);
 			Collection<PositionedRenderable> prs = this.positionedRenderables;
 			if (prs != null) {
 				for (PositionedRenderable pr : prs) {
@@ -102,7 +102,7 @@ class RTable extends BaseElementRenderable {
 			this.applyStyle(availWidth, availHeight);
 			TableMatrix tm = this.tableMatrix;
 			Insets insets = this.getInsets(false, false);
-			tm.reset(insets, availWidth, availHeight);
+			tm.reset(insets, availWidth);
 			tm.build(availWidth, availHeight, sizeOnly);
 			tm.doLayout(insets);
 

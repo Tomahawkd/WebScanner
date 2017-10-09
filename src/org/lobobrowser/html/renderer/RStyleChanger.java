@@ -40,14 +40,13 @@ final class RStyleChanger extends BaseRenderable implements Renderable {
 	/**
 	 *
 	 */
-	public RStyleChanger(ModelNode modelNode) {
+	RStyleChanger(ModelNode modelNode) {
 		this.modelNode = modelNode;
 	}
 
 	public ModelNode getModelNode() {
 		return this.modelNode;
 	}
-
 
 	/* (non-Javadoc)
 	 * @see net.sourceforge.xamj.domimpl.markup.Renderable#paint(java.awt.Graphics)
@@ -56,23 +55,5 @@ final class RStyleChanger extends BaseRenderable implements Renderable {
 		RenderState rs = this.modelNode.getRenderState();
 		g.setColor(rs.getColor());
 		g.setFont(rs.getFont());
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.Renderable#invalidate()
-	 */
-	public void invalidateLayoutUpTree() {
-	}
-
-	public void onMouseClick(java.awt.event.MouseEvent event, int x, int y) {
-		throw new UnsupportedOperationException("unexpected");
-	}
-
-	public void onMousePressed(java.awt.event.MouseEvent event, int x, int y) {
-		throw new UnsupportedOperationException("unexpected");
-	}
-
-	public void onMouseReleased(java.awt.event.MouseEvent event, int x, int y) {
-		throw new UnsupportedOperationException("unexpected");
 	}
 }

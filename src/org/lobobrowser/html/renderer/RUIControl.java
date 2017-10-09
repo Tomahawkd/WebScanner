@@ -72,7 +72,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 		return this.widget.getVAlign();
 	}
 
-	public boolean hasBackground() {
+	boolean hasBackground() {
 		return this.backgroundColor != null || this.backgroundImage != null || this.lastBackgroundImageUri != null;
 	}
 
@@ -98,54 +98,27 @@ class RUIControl extends BaseElementRenderable implements RElement {
 
 	public boolean onMouseClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseClick(me, event);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseClick(me, event);
 	}
 
 	public boolean onDoubleClick(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onDoubleClick(me, event);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onDoubleClick(me, event);
 	}
 
 	public boolean onMousePressed(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseDown(me);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseDown(me);
 	}
 
 	public boolean onMouseReleased(java.awt.event.MouseEvent event, int x, int y) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseUp(me);
-		} else {
-			return true;
-		}
+		return me == null || HtmlController.getInstance().onMouseUp(me);
 	}
 
 	public boolean onMouseDisarmed(java.awt.event.MouseEvent event) {
 		ModelNode me = this.modelNode;
-		if (me != null) {
-			return HtmlController.getInstance().onMouseDisarmed(me);
-		} else {
-			return true;
-		}
-	}
-
-	/* (non-Javadoc)
-	 * @see org.xamjwg.html.renderer.BoundableRenderable#invalidateState(org.xamjwg.html.renderer.RenderableContext)
-	 */
-	public void invalidateRenderStyle() {
-		//NOP - No RenderStyle below this node.
+		return me == null || HtmlController.getInstance().onMouseDisarmed(me);
 	}
 
 	/* (non-Javadoc)
@@ -174,14 +147,12 @@ class RUIControl extends BaseElementRenderable implements RElement {
 		inSelection = super.paintSelection(g, inSelection, startPoint, endPoint);
 		if (inSelection) {
 			Color over = new Color(0, 0, 255, 50);
-			if (over != null) {
-				Color oldColor = g.getColor();
-				try {
-					g.setColor(over);
-					g.fillRect(0, 0, this.width, this.height);
-				} finally {
-					g.setColor(oldColor);
-				}
+			Color oldColor = g.getColor();
+			try {
+				g.setColor(over);
+				g.fillRect(0, 0, this.width, this.height);
+			} finally {
+				g.setColor(oldColor);
 			}
 		}
 		return inSelection;
@@ -201,17 +172,17 @@ class RUIControl extends BaseElementRenderable implements RElement {
 	private int declaredHeight = -1;
 	private LayoutKey lastLayoutKey = null;
 	private LayoutValue lastLayoutValue = null;
-	private final Map cachedLayout = new HashMap(5);
+	private final Map<LayoutKey, LayoutValue> cachedLayout = new HashMap<>(5);
 
 	public void doLayout(int availWidth, int availHeight, boolean sizeOnly) {
-		Map cachedLayout = this.cachedLayout;
+		Map<LayoutKey, LayoutValue> cachedLayout = this.cachedLayout;
 		RenderState rs = this.modelNode.getRenderState();
 		int whitespace = rs == null ? RenderState.WS_NORMAL : rs.getWhiteSpace();
 		Font font = rs == null ? null : rs.getFont();
 		LayoutKey layoutKey = new LayoutKey(availWidth, availHeight, whitespace, font);
 		LayoutValue layoutValue;
 		if (sizeOnly) {
-			layoutValue = (LayoutValue) cachedLayout.get(layoutKey);
+			layoutValue = cachedLayout.get(layoutKey);
 		} else {
 			if (Objects.equals(this.lastLayoutKey, layoutKey)) {
 				layoutValue = this.lastLayoutValue;
@@ -238,8 +209,8 @@ class RUIControl extends BaseElementRenderable implements RElement {
 			int actualAvailHeight = availHeight - paddingInsets.top - paddingInsets.bottom - borderInsets.top - borderInsets.bottom - marginInsets.top - marginInsets.bottom;
 			Integer dw = this.getDeclaredWidth(renderState, actualAvailWidth);
 			Integer dh = this.getDeclaredHeight(renderState, actualAvailHeight);
-			int declaredWidth = dw == null ? -1 : dw.intValue();
-			int declaredHeight = dh == null ? -1 : dh.intValue();
+			int declaredWidth = dw == null ? -1 : dw;
+			int declaredHeight = dh == null ? -1 : dh;
 			this.declaredWidth = declaredWidth;
 			this.declaredHeight = declaredHeight;
 
@@ -260,7 +231,6 @@ class RUIControl extends BaseElementRenderable implements RElement {
 			layoutValue = new LayoutValue(finalWidth, finalHeight);
 			if (sizeOnly) {
 				if (cachedLayout.size() > MAX_CACHE_SIZE) {
-					// Unlikely, but we should ensure it's bounded.
 					cachedLayout.clear();
 				}
 				cachedLayout.put(layoutKey, layoutValue);
@@ -282,7 +252,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 	 * This method must be called
 	 * in the GUI thread.
 	 */
-	public final void preferredSizeInvalidated() {
+	final void preferredSizeInvalidated() {
 		int dw = RUIControl.this.declaredWidth;
 		int dh = RUIControl.this.declaredHeight;
 		if (dw == -1 || dh == -1) {
@@ -301,7 +271,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 		return this.container.getPaintedBackgroundColor();
 	}
 
-	public Color getForegroundColor() {
+	Color getForegroundColor() {
 		RenderState rs = this.modelNode.getRenderState();
 		return rs == null ? null : rs.getColor();
 	}
@@ -312,7 +282,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 		public final int whitespace;
 		public final Font font;
 
-		public LayoutKey(int availWidth, int availHeight, int whitespace, Font font) {
+		LayoutKey(int availWidth, int availHeight, int whitespace, Font font) {
 			this.availWidth = availWidth;
 			this.availHeight = availHeight;
 			this.whitespace = whitespace;
@@ -343,7 +313,7 @@ class RUIControl extends BaseElementRenderable implements RElement {
 		public final int width;
 		public final int height;
 
-		public LayoutValue(int width, int height) {
+		LayoutValue(int width, int height) {
 			this.width = width;
 			this.height = height;
 		}
