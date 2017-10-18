@@ -18,8 +18,8 @@ class PositionPane extends JPanel {
 	private JTextArea requestPositionMarkerTextArea;
 	private JLabel lblMarkCount;
 
-	private final String mark = "¶";
 	private int positionCounter = 0;
+	public final static String mark = "¶";
 
 	PositionPane() {
 		setLayout(new BorderLayout(0, 0));
