@@ -40,8 +40,7 @@ public class IssueInfoFile {
 		return builder.toString();
 	}
 
-	private String getLabel(String content, String htmlLabel)
-			throws IndexOutOfBoundsException {
+	private String getLabel(String content, String htmlLabel) throws IndexOutOfBoundsException {
 		int s = content.indexOf(htmlLabel) + htmlLabel.length();
 		content = content.substring(s);
 		int e = content.indexOf("<h1>");
