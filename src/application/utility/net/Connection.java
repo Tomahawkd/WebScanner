@@ -21,6 +21,7 @@ public class Connection {
 				dataHandler.getResponseContext(), url);
 	}
 
+	@Deprecated
 	public Connection(String urlStr) throws MalformedURLException {
 		dataHandler = new DataHandler();
 		httpurlConnection = new HTTPURLConnection(dataHandler.getRequestContext(),
@@ -39,6 +40,7 @@ public class Connection {
 		httpurlConnection.setURL(url);
 	}
 
+	@Deprecated
 	public void setURL(String urlStr) throws MalformedURLException {
 		httpurlConnection.setURL(urlStr);
 	}
