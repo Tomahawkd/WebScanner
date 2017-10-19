@@ -1,6 +1,9 @@
 package application.scanner;
 
+import application.alertHandler.AlertHandler;
+
 import java.io.File;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 public class IssuesLoader {
@@ -15,14 +18,17 @@ public class IssuesLoader {
 	}
 
 	private IssuesLoader() {
-		File fileHandler = new File("src/application/scanner/issues");
+		File fileHandler = Paths.get("src","application", "scanner", "issues").toFile();
+		System.out.println(fileHandler.getAbsolutePath());
 		this.issueInfoFiles = new ArrayList<>();
 		File[] files = fileHandler.listFiles();
 		if (files != null) {
 			for (File file : files) {
 				try {
 					this.issueInfoFiles.add(new IssueInfoFile(file.getPath()));
-				} catch (Exception ignored) {
+				} catch (Exception e) {
+					AlertHandler.getInstance().addAlert("Scanner",
+							"Issues infomation file is missing");
 				}
 
 			}
