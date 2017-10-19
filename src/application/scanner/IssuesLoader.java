@@ -19,7 +19,6 @@ public class IssuesLoader {
 
 	private IssuesLoader() {
 		File fileHandler = Paths.get("src","application", "scanner", "issues").toFile();
-		System.out.println(fileHandler.getAbsolutePath());
 		this.issueInfoFiles = new ArrayList<>();
 		File[] files = fileHandler.listFiles();
 		if (files != null) {

@@ -87,7 +87,7 @@ class MainFrame {
 		tabbedPane.addTab("Decoder", null, decoderPanel, null);
 
 		//Extension
-		JPanel extensionPanel = ExtensionPanelController.getInstance();
+		JTabbedPane extensionPanel = ExtensionPanelController.getInstance();
 		tabbedPane.addTab("Extension", null, extensionPanel, null);
 
 		//Alerts
