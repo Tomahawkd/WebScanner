@@ -11,10 +11,8 @@ class ExtensionPanel extends JTabbedPane {
 
 	ExtensionPanel() {
 
-		JPanel sqlmapPanel = new SqlMapPane();
+		SqlMapPane sqlmapPanel = new SqlMapPane();
 		addTab("sqlmap", null, sqlmapPanel, null);
 
 	}
-
-
 }
