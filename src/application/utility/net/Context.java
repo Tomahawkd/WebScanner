@@ -6,20 +6,20 @@ import java.io.UnsupportedEncodingException;
 
 public class Context {
 
-	private HTTPHeaderMap<HTTPHeader, String> header;
+	private HTTPHeaderMap header;
 	private String data;
 
 	Context(int type) {
-		this.header = new HTTPHeaderMap<>(type);
+		this.header = new HTTPHeaderMap(type);
 		this.data = "";
 	}
 
-	public Context(HTTPHeaderMap<HTTPHeader, String> header, byte[] data) {
+	public Context(HTTPHeaderMap header, byte[] data) {
 		this.header = header;
 		setData(data);
 	}
 
-	public HTTPHeaderMap<HTTPHeader, String> getHeader() {
+	public HTTPHeaderMap getHeader() {
 		return header;
 	}
 
