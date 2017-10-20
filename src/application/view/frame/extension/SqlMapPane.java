@@ -1,5 +1,8 @@
 package application.view.frame.extension;
 
+import application.extension.sqlmap.CommandLineListener;
+import application.extension.sqlmap.SqlmapHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -46,13 +49,27 @@ class SqlMapPane extends JPanel {
 		JTextField commandTextField = new JTextField();
 		commandTextField.setColumns(75);
 
+		Runnable execRunnable = () -> {
+			CommandLineListener.getInstance().setExitValue(SqlmapHandler.getController().exec());
+			resultTextArea.append("\nexit: " + CommandLineListener.getInstance().getExitValue() + "\n");
+			resultTextArea.append("> python sqlmap ");
+		};
+
 		JButton btnEnter = new JButton("Enter");
 		btnEnter.addActionListener(e -> {
-			//TODO
-			if (resultTextArea.getText().charAt(resultTextArea.getCaretPosition() -1) == '\n') {
-				resultTextArea.append("> python sqlmap ");
+			String[] lines = resultTextArea.getText().split("\n");
+			String lastLine = lines[lines.length -1];
+			if (lastLine.equals("> python sqlmap ")) {
+				if (!resultTextArea.getText().equals("> python sqlmap ")) {
+					resultTextArea.append("> python sqlmap ");
+				}
+				SqlmapHandler.getController().setCommand(commandTextField.getText().split(" "));
+				resultTextArea.append(commandTextField.getText());
+				new Thread(execRunnable, "Sqlmap Main Thread").start();
+			} else {
+				CommandLineListener.getInstance().setCommand(commandTextField.getText());
+				resultTextArea.append(CommandLineListener.getInstance().getCommand());
 			}
-			resultTextArea.append(commandTextField.getText());
 			resultTextArea.append("\n");
 			commandTextField.setText("");
 		});
@@ -77,6 +94,7 @@ class SqlMapPane extends JPanel {
 		// add it after text field
 		commandPanel.add(btnEnter);
 
+
 		//Center panel
 		JScrollPane scrollPane = new JScrollPane();
 		add(scrollPane, BorderLayout.CENTER);
@@ -84,6 +102,8 @@ class SqlMapPane extends JPanel {
 		resultTextArea = new JTextArea();
 		resultTextArea.setText("> python sqlmap ");
 		resultTextArea.setEditable(false);
+		resultTextArea.setLineWrap(true);
+		SqlmapHandler.getController().setOutput(resultTextArea);
 		scrollPane.setViewportView(resultTextArea);
 	}
 }

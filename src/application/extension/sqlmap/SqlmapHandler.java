@@ -1,10 +1,10 @@
 package application.extension.sqlmap;
 
-public class Handler {
+public class SqlmapHandler {
 
-	private SqlmapController controller;
+	private static SqlmapController controller;
 
-	public SqlmapController getController() {
+	public static SqlmapController getController() {
 		if (controller == null) controller = new SqlmapController();
 		return controller;
 	}

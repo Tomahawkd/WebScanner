@@ -5,13 +5,11 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
 
-class SqlmapController {
+public class SqlmapController {
 
 	private ArrayList<String> cmd = new ArrayList<>();
 	private JTextArea outputTextArea;
-	private JTextField inputTextField;
 
 	SqlmapController() {
 		cmd.add("python");
@@ -35,8 +33,8 @@ class SqlmapController {
 	}
 
 	public int exec() {
-		if (outputTextArea == null || inputTextField == null)
-			throw new IllegalArgumentException("I/O field is not set");
+		if (outputTextArea == null)
+			throw new IllegalArgumentException("output field is not set");
 		int exitValue;
 		try {
 			String[] cmd = new String[this.cmd.size()];
@@ -46,7 +44,7 @@ class SqlmapController {
 			OutputStream out = pro.getOutputStream();
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
 
-			Runnable runnable = () -> {
+			Thread executeThread = new Thread(() -> {
 				try {
 					int charNum;
 					StringBuilder sb = new StringBuilder();
@@ -64,19 +62,26 @@ class SqlmapController {
 							sb = new StringBuilder();
 
 							//TODO
-							Scanner scanner = new Scanner(System.in);
-							String input = scanner.next();
+							while(CommandLineListener.getInstance().isContinue()) {
+								Thread.sleep(10L);
+							}
+							String input = CommandLineListener.getInstance().getCommand();
+							CommandLineListener.getInstance().suspendThread();
 							out.write((input.equalsIgnoreCase("y") ? "y\n" : "n\n")
 									.getBytes(Charset.defaultCharset()));
 							out.flush();
 						}
 					}
-				} catch (IOException e) {
+				} catch (IOException | InterruptedException e) {
 					pro.destroy();
+					CommandLineListener.getInstance().setThreadError();
 				}
-			};
-			Thread executeThread = new Thread(runnable);
+			}, "sqlmap Excution Thread");
+			executeThread.start();
 
+			if (CommandLineListener.getInstance().getThreadStatus() == 2) {
+				throw new IOException("Exception catched in thread");
+			}
 			pro.waitFor();
 			exitValue = pro.exitValue();
 		} catch (IOException | InterruptedException e) {
