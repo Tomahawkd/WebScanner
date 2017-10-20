@@ -60,8 +60,6 @@ public class SqlmapController {
 								sb.toString().endsWith("[y/N] ")) {
 							outputTextArea.append(sb.toString());
 							sb = new StringBuilder();
-
-							//TODO
 							while(CommandLineListener.getInstance().isContinue()) {
 								Thread.sleep(10L);
 							}
