@@ -86,7 +86,7 @@ public class SpiderController {
 			Map<String, Boolean> newURLMap = new LinkedHashMap<>();
 
 			try {
-				threadPool = new ThreadPool(3);
+//				threadPool = new ThreadPool(3);
 				for (Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
 
 					// Check if is already accessed
@@ -96,10 +96,16 @@ public class SpiderController {
 						// Set to already accessed
 						urlMap.replace(url, false, true);
 
-						threadPool.execute(() -> {
+//						threadPool.execute(() -> {
 							try {
 								URL link = new URL(url);
-								SpiderConnection conn = new SpiderConnection(link);
+
+								SpiderConnection conn;
+								try {
+									conn = new SpiderConnection(link);
+								} catch (StringIndexOutOfBoundsException ignored) {
+									continue;
+								}
 								synchronized (cookie) {
 									conn.connectWithCookie(cookie);
 								}
@@ -112,9 +118,9 @@ public class SpiderController {
 
 								for (String urlStr : HTMLParser.getParser().getLink(doc)) {
 									if (!urlStr.equals("") && !urlMap.containsKey(urlStr)) {
-										synchronized (newURLMap) {
+//										synchronized (newURLMap) {
 											if (!newURLMap.containsKey(urlStr)) newURLMap.put(urlStr, false);
-										}
+//										}
 									}
 								}
 							} catch (MalformedURLException e) {
@@ -122,18 +128,17 @@ public class SpiderController {
 										"MalformedURLException: URL " + url + " is not valid");
 							} catch (IOException ignored) {
 							}
-						});
+//						});
 					}
 				}
-				threadPool.waitFor();
+//				threadPool.waitFor();
 			} catch (ConcurrentModificationException ignored) {
-			} catch (InterruptedException e) {
-				threadPool.close();
+//			} catch (InterruptedException e) {
+//				threadPool.close();
 			}
 
 			// if the new queue map is not empty then rescue
 			if (!newURLMap.isEmpty()) {
-
 				// Save URLs to queue map
 				urlMap.putAll(newURLMap);
 

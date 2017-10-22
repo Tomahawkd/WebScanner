@@ -22,6 +22,8 @@ public class ThreadPool extends ThreadGroup {
 
 	private LinkedList<Runnable> workQueue;
 
+	private int activeCount;
+
 	/**
 	 * Thread pool ID
 	 */
@@ -73,7 +75,7 @@ public class ThreadPool extends ThreadGroup {
 	}
 
 	public void waitFor() throws InterruptedException {
-		while (workQueue.size() > 0) {
+		while (activeCount > 0) {
 		}
 	}
 
@@ -130,8 +132,11 @@ public class ThreadPool extends ThreadGroup {
 					return;
 
 				try {
+					activeCount++;
 					task.run();
+					activeCount--;
 				} catch (Throwable ignored) {
+					activeCount--;
 				}
 			}
 		}

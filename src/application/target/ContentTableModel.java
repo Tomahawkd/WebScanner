@@ -4,7 +4,7 @@ import application.utility.net.Exceptions.IllegalHeaderDataException;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class ContentTableModel implements TableModel {
 
@@ -22,7 +22,7 @@ public class ContentTableModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return treeNode.getChildCount();
+		return treeNode.getLeafCount();
 	}
 
 	@Override
@@ -57,22 +57,28 @@ public class ContentTableModel implements TableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		TreeNode childNode = treeNode.getChildAt(rowIndex);
-		if (childNode instanceof DataNode) {
+		DefaultMutableTreeNode leafNode = treeNode;
+		for (int i = 0; i < rowIndex ; i++) {
+			leafNode = leafNode.getNextLeaf();
+		}
+		if (leafNode != null && leafNode instanceof DataNode) {
 			try {
 				switch (columnIndex) {
 					case 0:
 						return TargetTreeModel.getDefaultModel().getRoot().getName();
 					case 1:
-						return ((DataNode) childNode).getData().getHeader().getMethod();
+						return ((DataNode) leafNode).getData().getHeader().getMethod();
 					case 2:
-						return ((DataNode) childNode).getName();
+						//TODO
+						return ((DataNode) leafNode).getName()
+								.equals(TargetTreeModel.getDefaultModel().getRoot().getName()) ?
+								"/" : ((DataNode) leafNode).getName();
 					case 3:
-						return ((DataNode) childNode).getData().getHeader().get("Status", "Code");
+						return ((DataNode) leafNode).getData().getHeader().get("Status", "Code");
 					case 4:
-						return ((DataNode) childNode).getData().getHeader().get("Content", "Content-Type");
+						return ((DataNode) leafNode).getData().getHeader().get("Content", "Content-Type");
 					case 5:
-						return ((DataNode) childNode).getData().getData().length();
+						return ((DataNode) leafNode).getData().getData().length();
 					default:
 						return null;
 				}

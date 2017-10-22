@@ -7,11 +7,12 @@ import javax.swing.tree.TreeNode;
 
 public class DataNode extends DefaultMutableTreeNode {
 
-
+	private String name;
 	private Context data;
 
 	DataNode(String name, Context data) {
 		super(name);
+		this.name = name;
 		this.data = data;
 	}
 
@@ -24,7 +25,7 @@ public class DataNode extends DefaultMutableTreeNode {
 	}
 
 	public String getName() {
-		return this.userObject.toString();
+		return name;
 	}
 
 	int getIndex(String name) {
