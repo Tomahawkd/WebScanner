@@ -3,6 +3,8 @@ package application.utility.net;
 import application.utility.net.Exceptions.IllegalHeaderDataException;
 
 import java.io.UnsupportedEncodingException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class Context {
 
@@ -47,6 +49,14 @@ public class Context {
 	public String getContext() throws IllegalHeaderDataException {
 		if (header.isEmpty()) return "";
 		return HTTPHeaderBuilder.buildHeader(header) + data;
+	}
+
+	public Map<String, String> getCookie() {
+		LinkedHashMap<String, String> cookies = new LinkedHashMap<>();
+		for (Map.Entry<HTTPHeader, String> entry : header.get("Set-Cookie")) {
+			cookies.put(entry.getKey().getName(), entry.getValue());
+		}
+		return cookies;
 	}
 
 	public void clear() {

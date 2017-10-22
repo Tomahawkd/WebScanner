@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-class HTTPHeaderMap extends LinkedHashMap<HTTPHeader, String> {
+public class HTTPHeaderMap extends LinkedHashMap<HTTPHeader, String> {
 
 	private int type;
 
@@ -27,7 +27,7 @@ class HTTPHeaderMap extends LinkedHashMap<HTTPHeader, String> {
 		setType(type);
 	}
 
-	String get(String type, String name) throws IllegalHeaderDataException {
+	public String get(String type, String name) throws IllegalHeaderDataException {
 		for (Map.Entry<HTTPHeader, String> mapping : this.entrySet()) {
 			if (mapping.getKey().equals(type, name)) return mapping.getValue();
 		}
@@ -35,7 +35,7 @@ class HTTPHeaderMap extends LinkedHashMap<HTTPHeader, String> {
 		throw new IllegalHeaderDataException("Data( " + type + ", " + name + " ) not found");
 	}
 
-	ArrayList<Map.Entry<HTTPHeader, String>> get(String type) {
+	public ArrayList<Map.Entry<HTTPHeader, String>> get(String type) {
 		ArrayList<Map.Entry<HTTPHeader, String>> list = new ArrayList<>();
 		for (Map.Entry<HTTPHeader, String> mapping : this.entrySet()) {
 			if (mapping.getKey().equals(type)) list.add(mapping);
@@ -55,7 +55,7 @@ class HTTPHeaderMap extends LinkedHashMap<HTTPHeader, String> {
 		throw new IllegalHeaderDataException("Data( " + key + " ) not found");
 	}
 
-	String getMethod() throws IllegalHeaderDataException {
+	public String getMethod() throws IllegalHeaderDataException {
 		try {
 			return get("Method", "MethodType");
 		} catch (IllegalHeaderDataException e) {

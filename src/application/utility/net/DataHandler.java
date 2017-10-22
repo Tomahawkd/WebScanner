@@ -70,7 +70,7 @@ public class DataHandler {
 		return request;
 	}
 
-	Context getResponseContext() {
+	public Context getResponseContext() {
 		return response;
 	}
 }
