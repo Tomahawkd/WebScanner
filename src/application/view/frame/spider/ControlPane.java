@@ -1,5 +1,7 @@
 package application.view.frame.spider;
 
+import application.spider.SpiderHandler;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,6 +11,8 @@ class ControlPane extends JScrollPane {
 	 *
 	 */
 	private static final long serialVersionUID = 2533591031210694796L;
+	private JLabel requestQueueCounter;
+	private JLabel requestMadeCounter;
 
 	ControlPane() {
 
@@ -33,16 +37,25 @@ class ControlPane extends JScrollPane {
 		tglbtnSpiderControl.addActionListener(e -> {
 			if (tglbtnSpiderControl.getText().equals("Spider Paused")) {
 				tglbtnSpiderControl.setText("Spider Running");
-				//TODO action
+
+				new Thread(() -> {
+					if (SpiderHandler.getInstance().isFirstExecution()) {
+						SpiderHandler.getInstance().start();
+
+					} else {
+						SpiderHandler.getInstance().resume();
+					}
+				}, "Spider Main Control Thread").start();
 			} else {
 				tglbtnSpiderControl.setText("Spider Paused");
-				//TODO action
+				SpiderHandler.getInstance().suspend();
 			}
 
 		});
 		buttonPanel.add(tglbtnSpiderControl);
 
 		JButton btnClear = new JButton("Clear Queue");
+		btnClear.addActionListener(e -> SpiderHandler.getInstance().clearQueue());
 		buttonPanel.add(btnClear);
 
 		JLabel lblRequestMade = new JLabel("Requests made:");
@@ -53,14 +66,20 @@ class ControlPane extends JScrollPane {
 		lblRequestsQueued.setBounds(24, 111, 121, 16);
 		contentPane.add(lblRequestsQueued);
 
-		JLabel requestMadeCounter = new JLabel("0");
+		requestMadeCounter = new JLabel("0");
 		requestMadeCounter.setBounds(147, 83, 36, 16);
 		contentPane.add(requestMadeCounter);
 
-		JLabel requestQueueCounter = new JLabel("0");
+		requestQueueCounter = new JLabel("0");
 		requestQueueCounter.setBounds(147, 111, 36, 16);
 		contentPane.add(requestQueueCounter);
-
 	}
 
+	void updateRequestCounter(int requestCount) {
+		requestMadeCounter.setText(String.valueOf(requestCount));
+	}
+
+	void updateQueueCounter(int queueCount) {
+		requestQueueCounter.setText(String.valueOf(queueCount));
+	}
 }

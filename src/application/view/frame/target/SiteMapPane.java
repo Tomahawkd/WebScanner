@@ -1,7 +1,15 @@
 package application.view.frame.target;
 
+import application.target.ContentTableModel;
+import application.target.DataNode;
+import application.target.TargetTreeModel;
+
 import javax.swing.*;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 class SiteMapPane extends JPanel {
 
@@ -50,9 +58,21 @@ class SiteMapPane extends JPanel {
 		add(splitPane, BorderLayout.CENTER);
 
 		{
-			//TODO Data Source
-			siteMapTree = new JTree();
-			splitPane.setLeftComponent(siteMapTree);
+			siteMapTree = new JTree(new DefaultTreeModel(TargetTreeModel.getDefaultModel().getRoot()));
+			siteMapTree.setEditable(false);
+			siteMapTree.setRootVisible(false);
+			siteMapTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+			siteMapTree.addTreeSelectionListener(tsl -> {
+				Object node = siteMapTree.getLastSelectedPathComponent();
+				if (node != null && node instanceof DataNode) {
+					ContentTableModel.getDefaultModel().updateContent((DataNode) node);
+					contentTable.updateUI();
+				}
+			});
+
+			JScrollPane treeScrollPane = new JScrollPane();
+			treeScrollPane.setViewportView(siteMapTree);
+			splitPane.setLeftComponent(treeScrollPane);
 
 			JSplitPane chileSplitPane = new JSplitPane();
 			chileSplitPane.setDividerLocation(500);
@@ -86,8 +106,17 @@ class SiteMapPane extends JPanel {
 					gbc_lblContents.gridy = 0;
 					labelPanel.add(lblContents, gbc_lblContents);
 
-					contentTable = new JTable();
-					contentPanel.add(contentTable, BorderLayout.CENTER);
+					contentTable = new JTable(ContentTableModel.getDefaultModel());
+					contentTable.addMouseListener(new MouseAdapter() {
+						@Override
+						public void mouseClicked(MouseEvent e) {
+							//TODo
+						}
+					});
+
+					JScrollPane tableScrollPane = new JScrollPane();
+					tableScrollPane.setViewportView(contentTable);
+					contentPanel.add(tableScrollPane, BorderLayout.CENTER);
 				}
 
 				JPanel IssuePanel = new JPanel();
@@ -122,6 +151,10 @@ class SiteMapPane extends JPanel {
 				}
 			}
 		}
+	}
+
+	void updateMapData() {
+		siteMapTree.setModel(new DefaultTreeModel(TargetTreeModel.getDefaultModel().getRoot()));
 	}
 
 }

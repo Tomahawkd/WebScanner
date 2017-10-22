@@ -44,7 +44,7 @@ public class ThreadPool extends ThreadGroup {
 	public ThreadPool(int poolSize) {
 		super("ThreadPool-" + (threadPoolID++));
 		setDaemon(true);
-		workQueue = new LinkedList<Runnable>();
+		workQueue = new LinkedList<>();
 
 		// Initialize active thread
 		for (int i = 0; i < poolSize; i++) {
@@ -74,7 +74,6 @@ public class ThreadPool extends ThreadGroup {
 
 	public void waitFor() throws InterruptedException {
 		while (workQueue.size() > 0) {
-			wait();
 		}
 	}
 

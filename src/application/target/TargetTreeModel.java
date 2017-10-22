@@ -1,32 +1,35 @@
-package application.spider;
+package application.target;
 
 import application.utility.net.Context;
+import application.view.frame.target.TargetPanelController;
 
 import java.net.URL;
 
-public class SpiderDataModel {
+public class TargetTreeModel {
 
-	private SpiderDataNode root;
+	private DataNode root;
+	private static TargetTreeModel treeModel;
 
-	public SpiderDataModel() {
-		root = new SpiderDataNode("", null);
+	public static TargetTreeModel getDefaultModel() {
+		if (treeModel == null) treeModel = new TargetTreeModel();
+		return treeModel;
 	}
 
-	public SpiderDataModel(String name, Context data) {
-		setRoot(name, data);
+	private TargetTreeModel() {
+		root = new DataNode("", null);
 	}
 
-	void setRoot(String name, Context data) {
-		root = new SpiderDataNode(name, data);
+	public void setRoot(String name, Context data) {
+		root = new DataNode(name, data);
 	}
 
-	public SpiderDataNode getRoot() {
+	public DataNode getRoot() {
 		return root;
 	}
 
 	public synchronized void add(URL path, Context data) {
 
-		SpiderDataNode currentNode = root;
+		DataNode currentNode = root;
 
 		// Loop path array to locate the file
 		for (String aPath : toPathArray(path)) {
@@ -36,19 +39,20 @@ public class SpiderDataModel {
 			if (childIndex == -1) {
 
 				// Create new node
-				SpiderDataNode newChild = new SpiderDataNode(aPath, null);
+				DataNode newChild = new DataNode(aPath, null);
 				currentNode.add(newChild);
 				currentNode = newChild;
 
 			} else {
 
 				// Get child node
-				currentNode = (SpiderDataNode) currentNode.getChildAt(childIndex);
+				currentNode = (DataNode) currentNode.getChildAt(childIndex);
 			}
 		}
 
 		// Add data
 		currentNode.setData(data);
+		TargetPanelController.getInstance().updateMapData();
 	}
 
 	private String[] toPathArray(URL url) {

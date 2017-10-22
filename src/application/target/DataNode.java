@@ -1,15 +1,16 @@
-package application.spider;
+package application.target;
 
 import application.utility.net.Context;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
-class SpiderDataNode extends DefaultMutableTreeNode {
+public class DataNode extends DefaultMutableTreeNode {
+
 
 	private Context data;
 
-	SpiderDataNode(String name, Context data) {
+	DataNode(String name, Context data) {
 		super(name);
 		this.data = data;
 	}
@@ -20,6 +21,10 @@ class SpiderDataNode extends DefaultMutableTreeNode {
 
 	void setData(Context data) {
 		this.data = data;
+	}
+
+	public String getName() {
+		return this.userObject.toString();
 	}
 
 	int getIndex(String name) {

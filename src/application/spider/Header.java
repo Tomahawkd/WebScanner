@@ -13,12 +13,14 @@ public class Header {
 	}
 
 	Header(URL url) {
+		headers = new ArrayList<>();
 		setHeader(url);
 	}
 
 	void setHeader(URL url) {
 		this.headers.add("GET " +
-				url.toString().substring((url.getProtocol() + "://" + url.getHost()).length()) +
+				url.toExternalForm()
+						.substring((url.getProtocol() + "://" + url.getHost() + ":" + url.getPort()).length()) +
 				" HTTP/1.1");
 		this.headers.add("Host: " + url.getHost());
 		this.headers.add("Connection: close");
@@ -29,7 +31,6 @@ public class Header {
 		for (String header : headers) {
 			headerBuilder.append(header).append("\r\n");
 		}
-		headerBuilder.append("\r\n");
 		return headerBuilder.toString();
 	}
 

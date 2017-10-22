@@ -59,7 +59,7 @@ public class Context {
 		return cookies;
 	}
 
-	public void clear() {
+	void clear() {
 		header.clear();
 		data = "";
 	}
