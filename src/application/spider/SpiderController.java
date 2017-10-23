@@ -4,7 +4,6 @@ import application.alertHandler.AlertHandler;
 import application.repeater.RepeaterData;
 import application.target.TargetTreeModel;
 import application.utility.parser.html.HTMLParser;
-import application.utility.thread.ThreadPool;
 import application.view.frame.spider.SpiderPanelController;
 import org.jsoup.nodes.Document;
 
@@ -12,9 +11,12 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ConcurrentModificationException;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class SpiderController {
 
@@ -23,13 +25,15 @@ public class SpiderController {
 	private boolean firstExecution = true;
 
 	//Thread control
-	private int threadNum = 3;
-	private ThreadPool threadPool;
+	private int threadNum = 10;
 
 	//Data control
 	private final Cookie cookie = new Cookie();
 	private final SpiderQueue queue = new SpiderQueue();
 	private final TargetTreeModel dataModel = TargetTreeModel.getDefaultModel();
+
+	//Scope control
+	//Regex
 
 	public void start() {
 		URL baseURL = RepeaterData.getInstance().getURL();
@@ -67,16 +71,14 @@ public class SpiderController {
 		return firstExecution;
 	}
 
-	public void setThreadNum(int threadNum) {
+
+	public void setThreadNum(int threadNum) throws IllegalArgumentException {
+		if (threadNum < 0) throw new IllegalArgumentException();
 		this.threadNum = threadNum;
 	}
 
 	public int getThreadNum() {
 		return threadNum;
-	}
-
-	public TargetTreeModel getDataModel() {
-		return dataModel;
 	}
 
 	private SpiderQueue crawlLinks(SpiderQueue urlMap) {
@@ -85,56 +87,28 @@ public class SpiderController {
 			// New URLs queue map
 			Map<String, Boolean> newURLMap = new LinkedHashMap<>();
 
-			try {
-//				threadPool = new ThreadPool(3);
-				for (Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
+			ExecutorService executor = Executors.newScheduledThreadPool(threadNum);
+			for (Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
 
-					// Check if is already accessed
-					if (!mapping.getValue()) {
-						String url = mapping.getKey();
+				// Check if is already accessed
+				if (!mapping.getValue()) {
+					String url = mapping.getKey();
 
-						// Set to already accessed
-						urlMap.replace(url, false, true);
+					// Set to already accessed
+					urlMap.replace(url, false, true);
 
-//						threadPool.execute(() -> {
-							try {
-								URL link = new URL(url);
-
-								SpiderConnection conn;
-								try {
-									conn = new SpiderConnection(link);
-								} catch (StringIndexOutOfBoundsException ignored) {
-									continue;
-								}
-								synchronized (cookie) {
-									conn.connectWithCookie(cookie);
-								}
-
-								SpiderQueue.decreaseCountBy(1);
-								dataModel.add(link, conn.getContext());
-
-								String host = link.getProtocol() + "://" + link.getHost();
-								Document doc = HTMLParser.getParser().parse(conn.getContext().getData(), host);
-
-								for (String urlStr : HTMLParser.getParser().getLink(doc)) {
-									if (!urlStr.equals("") && !urlMap.containsKey(urlStr)) {
-//										synchronized (newURLMap) {
-											if (!newURLMap.containsKey(urlStr)) newURLMap.put(urlStr, false);
-//										}
-									}
-								}
-							} catch (MalformedURLException e) {
-								AlertHandler.getInstance().addAlert("Spider",
-										"MalformedURLException: URL " + url + " is not valid");
-							} catch (IOException ignored) {
-							}
-//						});
+					try {
+						executor.execute(getTask(url, newURLMap, urlMap));
+					} catch (RejectedExecutionException e) {
+						new Thread(getTask(url, newURLMap, urlMap)).start();
 					}
 				}
-//				threadPool.waitFor();
-			} catch (ConcurrentModificationException ignored) {
-//			} catch (InterruptedException e) {
-//				threadPool.close();
+			}
+			executor.shutdown();
+			try {
+				boolean suspendFlag;
+				do suspendFlag = !executor.awaitTermination(60, TimeUnit.SECONDS); while (suspendFlag);
+			} catch (InterruptedException ignored) {
 			}
 
 			// if the new queue map is not empty then rescue
@@ -148,6 +122,42 @@ public class SpiderController {
 			}
 		}
 		return urlMap;
+	}
 
+	private Runnable getTask(String url, Map<String, Boolean> newURLMap, SpiderQueue urlMap) {
+		return () -> {
+			try {
+				URL link = new URL(url);
+
+				try {
+					SpiderConnection conn = new SpiderConnection(link);
+
+					synchronized (cookie) {
+						conn.connectWithCookie(cookie);
+					}
+
+					dataModel.add(link, conn.getContext());
+
+					String host = link.getProtocol() + "://" + link.getHost();
+					Document doc = HTMLParser.getParser().parse(conn.getContext().getData(), host);
+
+					Map<String, Boolean> newCrawledURLMap = new LinkedHashMap<>();
+					for (String urlStr : HTMLParser.getParser().getLink(doc)) {
+						if (!urlStr.equals("") && !urlMap.containsKey(urlStr)) {
+							if (!newCrawledURLMap.containsKey(urlStr)) newCrawledURLMap.put(urlStr, false);
+						}
+					}
+					newURLMap.putAll(newCrawledURLMap);
+
+				} catch (StringIndexOutOfBoundsException ignored) {
+				}
+			} catch (MalformedURLException e) {
+				AlertHandler.getInstance().addAlert("Spider",
+						"MalformedURLException: URL " + url + " is not valid");
+			} catch (IOException e) {
+				AlertHandler.getInstance().addAlert("Spider",
+						e.getClass().getName() + ": " + (e.getMessage() == null ? "" : e.getMessage()));
+			}
+		};
 	}
 }
