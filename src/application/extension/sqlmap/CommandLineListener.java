@@ -1,5 +1,7 @@
 package application.extension.sqlmap;
 
+import application.alertHandler.AlertHandler;
+
 public class CommandLineListener {
 
 	private boolean continueThread = true;
@@ -15,7 +17,7 @@ public class CommandLineListener {
 
 	public void setCommand(String command) {
 		if (!command.equals("")) {
-			this.command = command;
+			this.command = command + "\n";
 			continueThread();
 		}
 	}
@@ -50,6 +52,8 @@ public class CommandLineListener {
 
 	void setThreadError() {
 		this.threadStatus = 2;
+		AlertHandler.getInstance().addAlert("Extension.SQLmap",
+				"SQL map process exited unexpectedly");
 	}
 
 

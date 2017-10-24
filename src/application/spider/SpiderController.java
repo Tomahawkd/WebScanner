@@ -136,7 +136,7 @@ public class SpiderController {
 						conn.connectWithCookie(cookie);
 					}
 
-					dataModel.add(link, conn.getContext());
+					dataModel.add(link, "GET", conn.getContext());
 
 					String host = link.getProtocol() + "://" + link.getHost();
 					Document doc = HTMLParser.getParser().parse(conn.getContext().getData(), host);

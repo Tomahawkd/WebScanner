@@ -16,18 +16,18 @@ public class TargetTreeModel {
 	}
 
 	private TargetTreeModel() {
-		root = new DataNode("", null);
+		root = new DataNode("", "", null);
 	}
 
 	public void setRoot(String name, Context data) {
-		root = new DataNode(name, data);
+		root = new DataNode(name, "", data);
 	}
 
 	public DataNode getRoot() {
 		return root;
 	}
 
-	public synchronized void add(URL path, Context data) {
+	public synchronized void add(URL path, String method, Context data) {
 
 		DataNode currentNode = root;
 
@@ -39,7 +39,7 @@ public class TargetTreeModel {
 			if (childIndex == -1) {
 
 				// Create new node
-				DataNode newChild = new DataNode(aPath, null);
+				DataNode newChild = new DataNode(aPath, method, null);
 				currentNode.add(newChild);
 				currentNode = newChild;
 
@@ -51,6 +51,7 @@ public class TargetTreeModel {
 		}
 
 		// Add data
+		currentNode.setMethod(method);
 		currentNode.setData(data);
 		TargetPanelController.getInstance().updateMapData();
 	}

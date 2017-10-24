@@ -58,8 +58,10 @@ public class ContentTableModel implements TableModel {
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
 		DefaultMutableTreeNode leafNode = treeNode;
-		for (int i = 0; i < rowIndex ; i++) {
-			leafNode = leafNode.getNextLeaf();
+		for (int i = 0; i < rowIndex; i++) {
+			if (leafNode != null) {
+				leafNode = leafNode.getNextLeaf();
+			} else return "";
 		}
 		if (leafNode != null && leafNode instanceof DataNode) {
 			try {
@@ -67,7 +69,7 @@ public class ContentTableModel implements TableModel {
 					case 0:
 						return TargetTreeModel.getDefaultModel().getRoot().getName();
 					case 1:
-						return ((DataNode) leafNode).getData().getHeader().getMethod();
+						return ((DataNode) leafNode).getMethod();
 					case 2:
 						//TODO
 						return ((DataNode) leafNode).getName()

@@ -8,12 +8,22 @@ import javax.swing.tree.TreeNode;
 public class DataNode extends DefaultMutableTreeNode {
 
 	private String name;
+	private String method;
 	private Context data;
 
-	DataNode(String name, Context data) {
+	DataNode(String name, String method, Context data) {
 		super(name);
 		this.name = name;
+		this.method = method;
 		this.data = data;
+	}
+
+	public String getMethod() {
+		return method;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
 	}
 
 	public Context getData() {

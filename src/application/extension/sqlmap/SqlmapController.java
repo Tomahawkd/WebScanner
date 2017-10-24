@@ -65,8 +65,7 @@ public class SqlmapController {
 							}
 							String input = CommandLineListener.getInstance().getCommand();
 							CommandLineListener.getInstance().suspendThread();
-							out.write((input.equalsIgnoreCase("y") ? "y\n" : "n\n")
-									.getBytes(Charset.defaultCharset()));
+							out.write((input).getBytes(Charset.defaultCharset()));
 							out.flush();
 						}
 					}
