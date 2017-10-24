@@ -11,9 +11,9 @@ public class SqlmapController {
 	private ArrayList<String> cmd = new ArrayList<>();
 	private JTextArea outputTextArea;
 
-	SqlmapController() {
+	SqlmapController(String path) {
 		cmd.add("python");
-		cmd.add(this.getClass().getResource("/extension/sqlmap/sqlmap.py").getPath());
+		cmd.add(path + "sqlmap.py");
 	}
 
 	public void setCommand(String... cmd) {
@@ -44,7 +44,7 @@ public class SqlmapController {
 			OutputStream out = pro.getOutputStream();
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
 
-			Thread executeThread = new Thread(() -> {
+			new Thread(() -> {
 				try {
 					int charNum;
 					StringBuilder sb = new StringBuilder();
@@ -73,8 +73,7 @@ public class SqlmapController {
 					pro.destroy();
 					CommandLineListener.getInstance().setThreadError();
 				}
-			}, "sqlmap Excution Thread");
-			executeThread.start();
+			}, "sqlmap Excution Thread").start();
 
 			if (CommandLineListener.getInstance().getThreadStatus() == 2) {
 				throw new IOException("Exception catched in thread");
