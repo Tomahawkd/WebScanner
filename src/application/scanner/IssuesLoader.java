@@ -2,8 +2,9 @@ package application.scanner;
 
 import application.alertHandler.AlertHandler;
 
-import java.io.File;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class IssuesLoader {
@@ -18,22 +19,62 @@ public class IssuesLoader {
 	}
 
 	private IssuesLoader() {
-		File fileHandler = Paths.get("src","application", "scanner", "issues").toFile();
+		String directory = "/application/scanner/issues/";
+		String listFile = "/application/scanner/issues/issuesFile.txt";
 		this.issueInfoFiles = new ArrayList<>();
-		File[] files = fileHandler.listFiles();
-		if (files != null) {
-			for (File file : files) {
+
+		InputStreamReader input = new InputStreamReader(this.getClass().getResourceAsStream(listFile));
+
+		BufferedReader bufferedReader = new BufferedReader(input);
+		String fileName;
+		try {
+			while ((fileName = bufferedReader.readLine()) != null) {
 				try {
-					this.issueInfoFiles.add(new IssueInfoFile(file.getPath()));
+					this.issueInfoFiles.add(new IssueInfoFile(directory + fileName));
 				} catch (Exception e) {
 					AlertHandler.getInstance().addAlert("Scanner",
 							"Issues infomation file is missing");
 				}
-
 			}
-
-			issuesSourceTableModel = new IssuesSourceTableModel(issueInfoFiles);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+
+		issuesSourceTableModel = new IssuesSourceTableModel(issueInfoFiles);
+
+		//for fresh list
+//		File fileHandler = new File("src/application/scanner/issues");
+//		File[] files = fileHandler.listFiles();
+//		File file1 = new File("src/application/scanner/issues/issuesFile.txt");
+//		FileOutputStream out = null;
+//		try {
+//			file1.createNewFile();
+//			out = new FileOutputStream(file1);
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//
+//		if (files != null) {
+//			for (File file : files) {
+//				try {
+//
+//					//for refresh list
+//					if (out != null) {
+//						out.write((file.getName() + "\n").getBytes());
+//						out.flush();
+//					}
+//				} catch (Exception ignored) {
+//				}
+//			}
+//
+//			try {
+//				if (out != null) {
+//					out.close();
+//				}
+//			} catch (IOException e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	public IssueInfoFile getAtIndex(int index) throws IndexOutOfBoundsException {

@@ -13,7 +13,7 @@ public class SqlmapController {
 
 	SqlmapController() {
 		cmd.add("python");
-		cmd.add("src/extension/sqlmap/sqlmap.py");
+		cmd.add(this.getClass().getResource("/extension/sqlmap/sqlmap.py").getPath());
 	}
 
 	public void setCommand(String... cmd) {

@@ -28,7 +28,7 @@ public class IssueInfoFile {
 
 	public String getContent() throws IOException {
 
-		InputStreamReader input = new InputStreamReader(new FileInputStream(new File(filePath)));
+		InputStreamReader input = new InputStreamReader(this.getClass().getResourceAsStream(filePath));
 		StringBuilder builder = new StringBuilder();
 
 		BufferedReader bufferedReader = new BufferedReader(input);
