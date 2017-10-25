@@ -35,7 +35,7 @@ class MainFrame {
 		 */
 
 		frmWebScanner = new JFrame();
-		frmWebScanner.setTitle("Web Scanner");
+		frmWebScanner.setTitle("Infiltrator");
 		frmWebScanner.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
