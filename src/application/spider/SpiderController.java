@@ -4,7 +4,6 @@ import application.alertHandler.AlertHandler;
 import application.repeater.RepeaterData;
 import application.target.TargetTreeModel;
 import application.utility.parser.html.HTMLParser;
-import application.view.frame.spider.SpiderPanelController;
 import org.jsoup.nodes.Document;
 
 import javax.swing.*;
@@ -20,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 public class SpiderController {
 
-	//Excution control
+	//Execution control
 	private boolean suspendFlag = false;
 	private boolean firstExecution = true;
 
@@ -29,7 +28,7 @@ public class SpiderController {
 
 	//Data control
 	private final Cookie cookie = new Cookie();
-	private final SpiderQueue queue = new SpiderQueue();
+	private final SpiderQueue queue = SpiderQueue.getQueue();
 	private final TargetTreeModel dataModel = TargetTreeModel.getDefaultModel();
 
 	//Scope control
@@ -64,7 +63,6 @@ public class SpiderController {
 
 	public void clearQueue() {
 		queue.clear();
-		SpiderPanelController.getInstance().updateQueueCounter(0);
 	}
 
 	public boolean isFirstExecution() {

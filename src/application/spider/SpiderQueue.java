@@ -5,9 +5,17 @@ import application.view.frame.spider.SpiderPanelController;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-class SpiderQueue extends LinkedHashMap<String, Boolean> {
+public class SpiderQueue extends LinkedHashMap<String, Boolean> {
 
 	private static int queueCount = 0;
+	private static SpiderQueue queue;
+
+	public static SpiderQueue getQueue() {
+		if (queue == null) queue = new SpiderQueue();
+		return queue;
+	}
+
+	private SpiderQueue() {}
 
 	@Override
 	public Boolean put(String key, Boolean value) {
@@ -37,5 +45,10 @@ class SpiderQueue extends LinkedHashMap<String, Boolean> {
 		return super.replace(key, oldValue, newValue);
 	}
 
-
+	@Override
+	public void clear() {
+		queueCount = 0;
+		SpiderPanelController.getInstance().updateQueueCounter(0);
+		super.clear();
+	}
 }
