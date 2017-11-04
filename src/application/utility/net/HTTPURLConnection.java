@@ -19,21 +19,21 @@ public class HTTPURLConnection {
 	 *
 	 */
 	private URL url;
-	private Context request;
-	private Context response;
+	private ContextImpl request;
+	private ContextImpl response;
 	private int timeout = 30000;
 
-	HTTPURLConnection(Context request, Context response) {
+	HTTPURLConnection(ContextImpl request, ContextImpl response) {
 		this.request = request;
 		this.response = response;
 	}
 
-	HTTPURLConnection(Context request, Context response, URL url) {
+	HTTPURLConnection(ContextImpl request, ContextImpl response, URL url) {
 		this(request, response);
 		this.url = url;
 	}
 
-	HTTPURLConnection(Context request, Context response, String urlStr) throws MalformedURLException {
+	HTTPURLConnection(ContextImpl request, ContextImpl response, String urlStr) throws MalformedURLException {
 		this(request, response, new URL(urlStr));
 	}
 

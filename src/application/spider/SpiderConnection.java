@@ -1,7 +1,7 @@
 package application.spider;
 
 import application.utility.net.Connection;
-import application.utility.net.Context;
+import application.utility.net.ContextImpl;
 import application.view.frame.spider.SpiderPanelController;
 
 import java.io.IOException;
@@ -37,7 +37,7 @@ public class SpiderConnection {
 		cookie.addCookie(connection.getDataHandler().getResponseContext().getCookie());
 	}
 
-	public Context getContext() {
+	public ContextImpl getContext() {
 		return connection.getDataHandler().getResponseContext();
 	}
 }

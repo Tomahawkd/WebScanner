@@ -6,9 +6,9 @@ import java.util.Map;
 
 class HTTPDataTableModel implements TableModel {
 
-	private HTTPHeaderMap headerMap;
+	private HTTPHeaderMapImpl headerMap;
 
-	HTTPDataTableModel(HTTPHeaderMap headerMap) {
+	HTTPDataTableModel(HTTPHeaderMapImpl headerMap) {
 		this.headerMap = headerMap;
 	}
 

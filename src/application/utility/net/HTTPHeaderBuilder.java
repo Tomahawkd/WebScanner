@@ -8,7 +8,7 @@ class HTTPHeaderBuilder {
 
 	private static final String CRLF = "\r\n";
 
-	static String buildHeader(HTTPHeaderMap container)
+	static String buildHeader(HTTPHeaderMapImpl container)
 			throws IllegalHeaderDataException {
 
 		switch (container.getType()) {
@@ -21,7 +21,7 @@ class HTTPHeaderBuilder {
 		}
 	}
 
-	private static String buildRequestHeader(HTTPHeaderMap container)
+	private static String buildRequestHeader(HTTPHeaderMapImpl container)
 			throws IllegalHeaderDataException {
 		StringBuilder builder = new StringBuilder();
 
@@ -73,7 +73,7 @@ class HTTPHeaderBuilder {
 		return builder.toString();
 	}
 
-	private static String buildResponseHeader(HTTPHeaderMap container)
+	private static String buildResponseHeader(HTTPHeaderMapImpl container)
 			throws IllegalHeaderDataException {
 		StringBuilder builder = new StringBuilder();
 

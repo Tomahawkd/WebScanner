@@ -2,65 +2,34 @@ package application.utility.net;
 
 import application.utility.net.Exceptions.IllegalHeaderDataException;
 
-import java.io.UnsupportedEncodingException;
-import java.util.LinkedHashMap;
+import java.io.Serializable;
+import java.net.URL;
 import java.util.Map;
 
-public class Context {
+public interface Context extends Serializable {
 
-	private HTTPHeaderMap header;
-	private String data;
+	URL getURL();
 
-	Context(int type) {
-		this.header = new HTTPHeaderMap(type);
-		this.data = "";
-	}
+	/*
+	 * Status
+	 */
+	String getVersion();
 
-	public Context(HTTPHeaderMap header, byte[] data) {
-		this.header = header;
-		setData(data);
-	}
+	// Request Header
+	String getMethod();
 
-	public HTTPHeaderMap getHeader() {
-		return header;
-	}
+	//Response Header
+	String getStatusCode();
+	String getStatusMessage();
 
-	void addHeader(String line) throws IndexOutOfBoundsException, IllegalHeaderDataException {
-		line = line.trim();
-		HTTPHeaderParser.parseHeader(this.header, line);
-	}
+	/*
+	 * Data
+	 */
+	HTTPHeaderMap getHeader();
 
-	public String getData() {
-		return data;
-	}
+	Map<String, String> getCookie();
 
-	public void setData(byte[] data) {
-		try {
-			String[] contentType = header.get("Content", "Content-Type").split(";");
-			String charset = contentType[1].split("charset=")[1].trim();
-			this.data = new String(data, charset);
-		} catch (IllegalHeaderDataException e) {
-			this.data = "";
-		} catch (IndexOutOfBoundsException | UnsupportedEncodingException e) {
-			this.data = new String(data);
-		}
-	}
+	String getData();
 
-	public String getContext() throws IllegalHeaderDataException {
-		if (header.isEmpty()) return "";
-		return HTTPHeaderBuilder.buildHeader(header) + data;
-	}
-
-	public Map<String, String> getCookie() {
-		LinkedHashMap<String, String> cookies = new LinkedHashMap<>();
-		for (Map.Entry<HTTPHeader, String> entry : header.get("Set-Cookie")) {
-			cookies.put(entry.getKey().getName(), entry.getValue());
-		}
-		return cookies;
-	}
-
-	void clear() {
-		header.clear();
-		data = "";
-	}
+	String toContextString() throws IllegalHeaderDataException;
 }

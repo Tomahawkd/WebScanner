@@ -9,7 +9,7 @@ class HTTPHeaderParser {
 	};
 
 
-	static void parseHeader(HTTPHeaderMap container, String line)
+	static void parseHeader(HTTPHeaderMapImpl container, String line)
 			throws IndexOutOfBoundsException, IllegalHeaderDataException, IllegalArgumentException {
 		switch (container.getType()) {
 			case HTTPHeaderMap.REQUEST:
@@ -25,7 +25,7 @@ class HTTPHeaderParser {
 		}
 	}
 
-	private static void parseRequestHeader(HTTPHeaderMap container, String line)
+	private static void parseRequestHeader(HTTPHeaderMapImpl container, String line)
 			throws IndexOutOfBoundsException, IllegalHeaderDataException {
 
 		if (line.contains(": ")) {
@@ -64,7 +64,7 @@ class HTTPHeaderParser {
 		throw new IllegalHeaderDataException("The request data " + line + " is invalid");
 	}
 
-	private static void parseResponseHeader(HTTPHeaderMap container, String line)
+	private static void parseResponseHeader(HTTPHeaderMapImpl container, String line)
 			throws IndexOutOfBoundsException, IllegalHeaderDataException {
 
 		if (line.contains(": ")) {

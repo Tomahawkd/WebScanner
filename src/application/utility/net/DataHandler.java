@@ -4,15 +4,15 @@ import application.utility.net.Exceptions.IllegalHeaderDataException;
 
 public class DataHandler {
 
-	private Context request;
-	private Context response;
+	private ContextImpl request;
+	private ContextImpl response;
 	private HTTPDataTableModel requestModel;
 	private HTTPDataTableModel responseModel;
 
 	DataHandler() {
-		request = new Context(HTTPHeaderMap.REQUEST);
+		request = new ContextImpl(HTTPHeaderMap.REQUEST);
 		requestModel = new HTTPDataTableModel(request.getHeader());
-		response = new Context(HTTPHeaderMap.RESPONSE);
+		response = new ContextImpl(HTTPHeaderMap.RESPONSE);
 		responseModel = new HTTPDataTableModel(response.getHeader());
 	}
 
@@ -43,11 +43,11 @@ public class DataHandler {
 	}
 
 	public String getRequest() throws IllegalHeaderDataException {
-		return request.getContext();
+		return request.toContextString();
 	}
 
 	public String getResponse() throws IllegalHeaderDataException {
-		return response.getContext();
+		return response.toContextString();
 	}
 
 	public HTTPDataTableModel getRequestModel() {
@@ -66,11 +66,11 @@ public class DataHandler {
 		return response.getData();
 	}
 
-	Context getRequestContext() {
+	ContextImpl getRequestContext() {
 		return request;
 	}
 
-	public Context getResponseContext() {
+	public ContextImpl getResponseContext() {
 		return response;
 	}
 }
