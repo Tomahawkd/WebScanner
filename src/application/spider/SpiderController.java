@@ -10,12 +10,8 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class SpiderController {
 
@@ -83,7 +79,7 @@ public class SpiderController {
 
 		if (!suspendFlag) {
 			// New URLs queue map
-			Map<String, Boolean> newURLMap = new LinkedHashMap<>();
+			Map<String, Boolean> newURLMap = new ConcurrentHashMap<>();
 
 			ExecutorService executor = Executors.newScheduledThreadPool(threadNum);
 			for (Map.Entry<String, Boolean> mapping : urlMap.entrySet()) {
@@ -139,7 +135,7 @@ public class SpiderController {
 					String host = link.getProtocol() + "://" + link.getHost();
 					Document doc = HTMLParser.getParser().parse(conn.getContext().getData(), host);
 
-					Map<String, Boolean> newCrawledURLMap = new LinkedHashMap<>();
+					Map<String, Boolean> newCrawledURLMap = new ConcurrentHashMap<>();
 					for (String urlStr : HTMLParser.getParser().getLink(doc)) {
 						if (!urlStr.equals("") && !urlMap.containsKey(urlStr)) {
 							if (!newCrawledURLMap.containsKey(urlStr)) newCrawledURLMap.put(urlStr, false);

@@ -2,10 +2,10 @@ package application.spider;
 
 import application.view.frame.spider.SpiderPanelController;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class SpiderQueue extends LinkedHashMap<String, Boolean> {
+public class SpiderQueue extends ConcurrentHashMap<String, Boolean> {
 
 	private static int queueCount = 0;
 	private static SpiderQueue queue;
@@ -20,35 +20,39 @@ public class SpiderQueue extends LinkedHashMap<String, Boolean> {
 	@Override
 	public Boolean put(String key, Boolean value) {
 		queueCount++;
-		SpiderPanelController.getInstance().updateQueueCounter(queueCount);
+		updateQueue();
 		return super.put(key, value);
 	}
 
 	@Override
 	public void putAll(Map<? extends String, ? extends Boolean> m) {
 		queueCount += m.size();
-		SpiderPanelController.getInstance().updateQueueCounter(queueCount);
+		updateQueue();
 		super.putAll(m);
 	}
 
 	@Override
 	public Boolean replace(String key, Boolean value) {
 		queueCount--;
-		SpiderPanelController.getInstance().updateQueueCounter(queueCount);
+		updateQueue();
 		return super.replace(key, value);
 	}
 
 	@Override
 	public boolean replace(String key, Boolean oldValue, Boolean newValue) {
 		queueCount--;
-		SpiderPanelController.getInstance().updateQueueCounter(queueCount);
+		updateQueue();
 		return super.replace(key, oldValue, newValue);
 	}
 
 	@Override
 	public void clear() {
 		queueCount = 0;
-		SpiderPanelController.getInstance().updateQueueCounter(0);
+		updateQueue();
 		super.clear();
+	}
+
+	private void updateQueue() {
+		SpiderPanelController.getInstance().updateQueueCounter(queueCount);
 	}
 }
