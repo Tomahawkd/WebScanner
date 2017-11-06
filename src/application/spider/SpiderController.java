@@ -23,7 +23,6 @@ public class SpiderController {
 	private int threadNum = 10;
 
 	//Data control
-	private final Cookie cookie = new Cookie();
 	private final SpiderQueue queue = SpiderQueue.getQueue();
 	private final TargetTreeModel dataModel = TargetTreeModel.getDefaultModel();
 
@@ -125,10 +124,7 @@ public class SpiderController {
 
 				try {
 					SpiderConnection conn = new SpiderConnection(link);
-
-					synchronized (cookie) {
-						conn.connectWithCookie(cookie);
-					}
+					conn.connectWithCookie();
 
 					dataModel.add(link, "GET", conn.getContext());
 

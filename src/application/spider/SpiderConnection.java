@@ -1,7 +1,7 @@
 package application.spider;
 
 import application.utility.net.Connection;
-import application.utility.net.ContextImpl;
+import application.utility.net.data.EditableContext;
 import application.view.frame.spider.SpiderPanelController;
 
 import java.io.IOException;
@@ -28,16 +28,14 @@ public class SpiderConnection {
 		header.setHeader(url);
 	}
 
-	void connectWithCookie(Cookie cookie) throws IOException {
-		header.setCookie(cookie.getCookie());
-		connection.getDataHandler().setRequest(header.getHeader());
+	void connectWithCookie() throws IOException {
+		connection.getCoreData().setRequest(header.getHeader());
 		connection.connect();
 		requestCount++;
 		SpiderPanelController.getInstance().updateRequestCounter(requestCount);
-		cookie.addCookie(connection.getDataHandler().getResponseContext().getCookie());
 	}
 
-	public ContextImpl getContext() {
-		return connection.getDataHandler().getResponseContext();
+	public EditableContext getContext() {
+		return connection.getCoreData().getResponseContext();
 	}
 }

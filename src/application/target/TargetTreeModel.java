@@ -1,6 +1,6 @@
 package application.target;
 
-import application.utility.net.ContextImpl;
+import application.utility.net.data.Context;
 import application.view.frame.target.TargetPanelController;
 
 import java.net.URL;
@@ -19,7 +19,7 @@ public class TargetTreeModel {
 		root = new DataNode("", "", null);
 	}
 
-	public void setRoot(String name, ContextImpl data) {
+	public void setRoot(String name, Context data) {
 		root = new DataNode(name, "", data);
 	}
 
@@ -27,7 +27,7 @@ public class TargetTreeModel {
 		return root;
 	}
 
-	public synchronized void add(URL path, String method, ContextImpl data) {
+	public synchronized void add(URL path, String method, Context data) {
 
 		DataNode currentNode = root;
 

@@ -1,42 +1,46 @@
 package application.utility.net;
 
+import application.utility.net.data.CoreData;
+
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class Connection {
 
-	private DataHandler dataHandler;
+	private CoreData coreData;
 	private HTTPURLConnection httpurlConnection;
 
 	public Connection() {
-		dataHandler = new DataHandler();
-		httpurlConnection = new HTTPURLConnection(dataHandler.getRequestContext(),
-				dataHandler.getResponseContext());
+		coreData = new CoreData();
+		httpurlConnection = new HTTPURLConnection(coreData.getRequestContext(),
+				coreData.getResponseContext());
 	}
 
 	public Connection(URL url) {
-		dataHandler = new DataHandler();
-		httpurlConnection = new HTTPURLConnection(dataHandler.getRequestContext(),
-				dataHandler.getResponseContext(), url);
+		coreData = new CoreData();
+		coreData.setURL(url);
+		httpurlConnection = new HTTPURLConnection(coreData.getRequestContext(),
+				coreData.getResponseContext(), url);
 	}
 
 	@Deprecated
 	public Connection(String urlStr) throws MalformedURLException {
-		dataHandler = new DataHandler();
-		httpurlConnection = new HTTPURLConnection(dataHandler.getRequestContext(),
-				dataHandler.getResponseContext(), urlStr);
+		coreData = new CoreData();
+		httpurlConnection = new HTTPURLConnection(coreData.getRequestContext(),
+				coreData.getResponseContext(), urlStr);
 	}
 
 	public void connect() throws IndexOutOfBoundsException, IOException {
 		httpurlConnection.openConnection();
 	}
 
-	public DataHandler getDataHandler() {
-		return dataHandler;
+	public CoreData getCoreData() {
+		return coreData;
 	}
 
 	public void setURL(URL url) {
+		coreData.setURL(url);
 		httpurlConnection.setURL(url);
 	}
 

@@ -2,6 +2,8 @@ package application.utility.net;
 
 import application.utility.coding.GZip;
 import application.utility.net.Exceptions.IllegalHeaderDataException;
+import application.utility.net.data.EditableContext;
+import application.utility.net.data.Header;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.ByteArrayOutputStream;
@@ -19,21 +21,23 @@ public class HTTPURLConnection {
 	 *
 	 */
 	private URL url;
-	private ContextImpl request;
-	private ContextImpl response;
+	private EditableContext request;
+	private EditableContext response;
 	private int timeout = 30000;
 
-	HTTPURLConnection(ContextImpl request, ContextImpl response) {
+	HTTPURLConnection(EditableContext request, EditableContext response) {
 		this.request = request;
 		this.response = response;
 	}
 
-	HTTPURLConnection(ContextImpl request, ContextImpl response, URL url) {
+	HTTPURLConnection(EditableContext request, EditableContext response, URL url) {
 		this(request, response);
 		this.url = url;
 	}
 
-	HTTPURLConnection(ContextImpl request, ContextImpl response, String urlStr) throws MalformedURLException {
+	@Deprecated
+	HTTPURLConnection(EditableContext request, EditableContext response, String urlStr)
+			throws MalformedURLException {
 		this(request, response, new URL(urlStr));
 	}
 
@@ -67,7 +71,7 @@ public class HTTPURLConnection {
 
 			// Send HTTP request
 			out = socket.getOutputStream();
-			out.write(request.getContext().getBytes());
+			out.write(request.toFormString().getBytes());
 
 			// Accept HTTP response
 			in = socket.getInputStream();
@@ -82,30 +86,31 @@ public class HTTPURLConnection {
 					String str = new String(bytesOut.toByteArray()).trim();
 					bytesOut.reset();
 					if ("".equals(str)) break;
-					response.addHeader(str);
+					response.addHeaderLine(str);
 				}
 			}
 
 			//body
 			int count;
 			String transferEncoding = "";
-			try {
-				transferEncoding = this.response.getHeader().get("Header", "Transfer-Encoding");
-			} catch (IllegalHeaderDataException ignored) {
-			}
+			Header transferEncodingHeader = this.response.getHeader().get("Transfer-Encoding");
+			if (transferEncodingHeader != null) transferEncoding = transferEncodingHeader.toString();
+
 			if ("chunked".equals(transferEncoding)) {
 				bytesOut = parseChunk(in);
 			} else {
 				try {
-					int contentLength = Integer.valueOf(this.response.getHeader()
-							.get("Header", "Content-Length"));
-					byte[] buf = new byte[1024];
-					int countNum = 0;
-					while ((count = in.read(buf)) != -1) {
-						bytesOut.write(buf, 0, count);
-						countNum = countNum + count;
-						if (contentLength == countNum) {
-							break;
+					Header contentLengthHeader = this.response.getHeader().get("Content-Length");
+					if (contentLengthHeader != null) {
+						int contentLength = Integer.valueOf(contentLengthHeader.toString());
+						byte[] buf = new byte[1024];
+						int countNum = 0;
+						while ((count = in.read(buf)) != -1) {
+							bytesOut.write(buf, 0, count);
+							countNum = countNum + count;
+							if (contentLength == countNum) {
+								break;
+							}
 						}
 					}
 				} catch (IllegalHeaderDataException | NumberFormatException ignored) {
@@ -116,7 +121,9 @@ public class HTTPURLConnection {
 
 			//GZip
 			try {
-				String contentEncoding = this.response.getHeader().get("Header", "Content-Encoding");
+				String contentEncoding = "";
+				Header contentEncodingHeader = this.response.getHeader().get("Content-Encoding");
+				if (contentEncodingHeader != null) contentEncoding = contentEncodingHeader.toString();
 				if ("gzip".equals(contentEncoding)) {
 					contentBuf = GZip.getInstance().decode(contentBuf);
 					GZip.clean();

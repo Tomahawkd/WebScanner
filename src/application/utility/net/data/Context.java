@@ -1,10 +1,9 @@
-package application.utility.net;
+package application.utility.net.data;
 
 import application.utility.net.Exceptions.IllegalHeaderDataException;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.util.Map;
 
 public interface Context extends Serializable {
 
@@ -25,11 +24,13 @@ public interface Context extends Serializable {
 	/*
 	 * Data
 	 */
-	HTTPHeaderMap getHeader();
+	HeaderMap getHeader();
 
-	Map<String, String> getCookie();
+	String getCookie();
+
+	String getMINEType();
 
 	String getData();
 
-	String toContextString() throws IllegalHeaderDataException;
+	String toFormString() throws IllegalHeaderDataException;
 }

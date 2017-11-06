@@ -1,14 +1,17 @@
-package application.utility.net;
+package application.utility.table;
+
+import application.utility.net.data.Header;
+import application.utility.net.data.HeaderMap;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import java.util.Map;
 
-class HTTPDataTableModel implements TableModel {
+class HeaderTableModel implements TableModel {
 
-	private HTTPHeaderMapImpl headerMap;
+	private HeaderMap headerMap;
 
-	HTTPDataTableModel(HTTPHeaderMapImpl headerMap) {
+	HeaderTableModel(HeaderMap headerMap) {
 		this.headerMap = headerMap;
 	}
 
@@ -19,17 +22,15 @@ class HTTPDataTableModel implements TableModel {
 
 	@Override
 	public int getColumnCount() {
-		return 3;
+		return 2;
 	}
 
 	@Override
 	public String getColumnName(int columnIndex) {
 		switch (columnIndex) {
 			case 0:
-				return "Type";
-			case 1:
 				return "Name";
-			case 2:
+			case 1:
 				return "Value";
 			default:
 				return null;
@@ -43,19 +44,17 @@ class HTTPDataTableModel implements TableModel {
 
 	@Override
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		return columnIndex == 2 && headerMap.getType() == HTTPHeaderMap.REQUEST;
+		return false;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Map.Entry<HTTPHeader, String> entry = headerMap.getAtIndex(rowIndex);
+		Map.Entry<String, Header> entry = headerMap.getAtIndex(rowIndex);
 		switch (columnIndex) {
 			case 0:
-				return entry.getKey().getType();
+				return entry.getKey();
 			case 1:
-				return entry.getKey().getName();
-			case 2:
-				return entry.getValue();
+				return entry.getValue().toString();
 			default:
 				return null;
 		}
@@ -63,10 +62,7 @@ class HTTPDataTableModel implements TableModel {
 
 	@Override
 	public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-		if (columnIndex == 2 && aValue instanceof String) {
-			Map.Entry<HTTPHeader, String> entry = headerMap.getAtIndex(rowIndex);
-			headerMap.put(entry.getKey().getType(), entry.getKey().getName(), (String) aValue);
-		}
+
 	}
 
 	@Override

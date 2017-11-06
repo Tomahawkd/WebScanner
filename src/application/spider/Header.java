@@ -2,7 +2,6 @@ package application.spider;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Map;
 
 public class Header {
 
@@ -32,17 +31,5 @@ public class Header {
 			headerBuilder.append(header).append("\r\n");
 		}
 		return headerBuilder.toString();
-	}
-
-	public void setCookie(Map<String, String> cookies) {
-		StringBuilder cookieBuilder = new StringBuilder();
-		cookieBuilder.append("Cookie: ");
-		for (Map.Entry<String, String> entry : cookies.entrySet()) {
-			cookieBuilder.append(entry.getKey()).append("=").append(entry.getValue()).append("; ");
-		}
-		String cookie = cookieBuilder.substring(0, cookieBuilder.length() - 2);
-		if (!cookie.equals("Cookie")) {
-			this.headers.add(cookie);
-		}
 	}
 }

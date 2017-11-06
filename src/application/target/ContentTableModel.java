@@ -1,7 +1,5 @@
 package application.target;
 
-import application.utility.net.Exceptions.IllegalHeaderDataException;
-
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -76,15 +74,15 @@ public class ContentTableModel implements TableModel {
 								.equals(TargetTreeModel.getDefaultModel().getRoot().getName()) ?
 								"/" : ((DataNode) leafNode).getName();
 					case 3:
-						return ((DataNode) leafNode).getData().getHeader().get("Status", "Code");
+						return ((DataNode) leafNode).getContext().getStatusCode();
 					case 4:
-						return ((DataNode) leafNode).getData().getHeader().get("Content", "Content-Type");
+						return ((DataNode) leafNode).getContext().getMINEType();
 					case 5:
-						return ((DataNode) leafNode).getData().getData().length();
+						return ((DataNode) leafNode).getContext().getData().length();
 					default:
 						return null;
 				}
-			} catch (IllegalHeaderDataException | NullPointerException e) {
+			} catch (NullPointerException e) {
 				return "";
 			}
 		} else {

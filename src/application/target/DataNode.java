@@ -1,6 +1,6 @@
 package application.target;
 
-import application.utility.net.Context;
+import application.utility.net.data.Context;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
@@ -26,7 +26,7 @@ public class DataNode extends DefaultMutableTreeNode {
 		this.method = method;
 	}
 
-	public Context getData() {
+	public Context getContext() {
 		return data;
 	}
 

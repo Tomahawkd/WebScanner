@@ -2,7 +2,7 @@ package application.view.frame.repeater;
 
 import application.alertHandler.AlertHandler;
 import application.repeater.RepeaterData;
-import application.utility.net.DataHandler;
+import application.utility.net.data.CoreData;
 import application.utility.net.Exceptions.IllegalHeaderDataException;
 import application.utility.parser.html.HTMLParser;
 import application.utility.parser.json.JSONParser;
@@ -64,7 +64,7 @@ class RepeaterPanel extends JPanel {
 					case 0:
 						try {
 							requestTextArea.setText(RepeaterData.getInstance()
-									.getDataHandler().getRequest().replace("\r\n", "\n"));
+									.getCoreData().getRequest().replace("\r\n", "\n"));
 						} catch (IllegalArgumentException ignored) {
 						} catch (IllegalHeaderDataException e1) {
 							JOptionPane.showMessageDialog(null,
@@ -78,7 +78,7 @@ class RepeaterPanel extends JPanel {
 					case 1:
 						try {
 							RepeaterData.getInstance()
-									.getDataHandler().setRequest(requestTextArea.getText());
+									.getCoreData().setRequest(requestTextArea.getText());
 							requestParamTable.updateUI();
 						} catch (IndexOutOfBoundsException | IllegalHeaderDataException e1) {
 							JOptionPane.showMessageDialog(null,
@@ -107,7 +107,7 @@ class RepeaterPanel extends JPanel {
 		requestTabbedPane.addTab("Param", null, requestParamScrollPane, null);
 
 		requestParamTable = new JTable();
-		requestParamTable.setModel(RepeaterData.getInstance().getDataHandler().getRequestModel());
+		requestParamTable.setModel(RepeaterData.getInstance().getCoreData().getRequestModel());
 		requestParamTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		requestParamScrollPane.setViewportView(requestParamTable);
 
@@ -124,7 +124,7 @@ class RepeaterPanel extends JPanel {
 		responseLabelPanel.add(lblResponse);
 
 		responseViewer = ViewerFactory.getInstance().createViewer();
-		responseViewer.setTableModel(RepeaterData.getInstance().getDataHandler().getResponseModel());
+		responseViewer.setTableModel(RepeaterData.getInstance().getCoreData().getResponseModel());
 		responseViewer.addChangeListener(e -> {
 
 			JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
@@ -223,7 +223,7 @@ class RepeaterPanel extends JPanel {
 	private Runnable getTarget() {
 		return () -> {
 			try {
-				RepeaterData.getInstance().getDataHandler().setRequest(requestTextArea.getText());
+				RepeaterData.getInstance().getCoreData().setRequest(requestTextArea.getText());
 				Viewer oldViewer = responseViewer;
 				try {
 					try {
@@ -234,18 +234,19 @@ class RepeaterPanel extends JPanel {
 										e.getClass().getName() + ": "
 												+ (e.getMessage() == null ? "" : e.getMessage()));
 					}
-					DataHandler handler = RepeaterData.getInstance().getDataHandler();
-					if (handler.getType().contains("text/html")) {
+					CoreData handler = RepeaterData.getInstance().getCoreData();
+					String type = handler.getType();
+					if (type.contains("text/html")) {
 						Document doc = HTMLParser.getParser().parse(handler.getResponseData(), "");
 						responseViewer = ViewerFactory.getInstance().createViewer(ViewerFactory.RESPONSE_HTML);
 						((HTMLViewer) responseViewer)
 								.setHTML(handler.getResponseData(), RepeaterData.getInstance().getURL());
 						((HTMLViewer) responseViewer).setTreeNode(HTMLParser.getParser().getTreeNode(doc));
-					} else if (handler.getType().contains("xml")) {
+					} else if (type.contains("xml")) {
 						JSONObject xml = XMLParser.getParser().parse(handler.getResponseData());
 						responseViewer = ViewerFactory.getInstance().createViewer(ViewerFactory.RESPONSE_XML);
 						((ExtendedViewer) responseViewer).setTreeNode(JSONParser.getParser().getTreeNode(xml));
-					} else if (handler.getType().contains("json")) {
+					} else if (type.contains("json")) {
 						JSONObject json = JSONParser.getParser().parse(handler.getResponseData());
 						responseViewer = ViewerFactory.getInstance().createViewer(ViewerFactory.RESPONSE_JSON);
 						((ExtendedViewer) responseViewer).setTreeNode(JSONParser.getParser().getTreeNode(json));
@@ -257,10 +258,10 @@ class RepeaterPanel extends JPanel {
 					responsePanel.remove(oldViewer);
 					responsePanel.add(responseViewer, BorderLayout.CENTER);
 					updateUI();
-				} catch (IllegalHeaderDataException | JSONException e) {
+				} catch (JSONException e) {
 					responseViewer = ViewerFactory.getInstance().createViewer(ViewerFactory.DEFAULT_RESPONSE);
-					responseViewer.setTableModel(RepeaterData.getInstance().getDataHandler().getResponseModel());
-					responseViewer.setText(RepeaterData.getInstance().getDataHandler()
+					responseViewer.setTableModel(RepeaterData.getInstance().getCoreData().getResponseModel());
+					responseViewer.setText(RepeaterData.getInstance().getCoreData()
 							.getResponse().replace("\r\n", "\n"));
 					responsePanel.remove(oldViewer);
 					responsePanel.add(responseViewer, BorderLayout.CENTER);
