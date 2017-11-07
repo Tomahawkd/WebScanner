@@ -78,7 +78,7 @@ public class ContentTableModel implements TableModel {
 					case 4:
 						return ((DataNode) leafNode).getContext().getMINEType();
 					case 5:
-						return ((DataNode) leafNode).getContext().getData().length();
+						return ((DataNode) leafNode).getContext().getResponseData().length();
 					default:
 						return null;
 				}

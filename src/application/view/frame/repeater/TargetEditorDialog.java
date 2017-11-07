@@ -48,10 +48,11 @@ class TargetEditorDialog extends JDialog {
 		chckbxUseHttps.setBounds(40, 104, 128, 23);
 		contentPanel.add(chckbxUseHttps);
 
-		if (RepeaterData.getInstance().getURL() != null) {
-			hostTextField.setText(RepeaterData.getInstance().getURL().getHost());
-			portTextField.setText("" + RepeaterData.getInstance().getURL().getPort());
-			chckbxUseHttps.setSelected(RepeaterData.getInstance().getURL().getProtocol().equals("https"));
+		if (RepeaterData.getInstance().getContext().getURL() != null) {
+			hostTextField.setText(RepeaterData.getInstance().getContext().getURL().getHost());
+			portTextField.setText("" + RepeaterData.getInstance().getContext().getURL().getPort());
+			chckbxUseHttps.setSelected(RepeaterData.getInstance().getContext().getURL()
+					.getProtocol().equals("https"));
 		}
 
 		{
