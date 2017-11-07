@@ -3,11 +3,11 @@ package application.view.contentViewer;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 
-class ParamViewer extends JScrollPane {
+class HeaderViewer extends JScrollPane {
 
 	private JTable paramTable;
 
-	ParamViewer() {
+	HeaderViewer() {
 
 		paramTable = new JTable();
 		paramTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);

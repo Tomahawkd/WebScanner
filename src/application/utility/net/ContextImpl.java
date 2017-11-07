@@ -104,7 +104,7 @@ class ContextImpl implements EditableContext {
 
 	@Override
 	public String getMINEType() {
-		Header header = requestHeader.get("Content-Type");
+		Header header = responseHeader.get("Content-Type");
 		if (header != null)
 			return header.toString();
 		else return "";

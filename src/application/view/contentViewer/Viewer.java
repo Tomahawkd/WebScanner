@@ -6,14 +6,14 @@ import javax.swing.table.TableModel;
 public abstract class Viewer extends JTabbedPane {
 
 	private RawViewer rawViewer;
-	private ParamViewer paramViewer;
+	private HeaderViewer headerViewer;
 
 	Viewer() {
 		rawViewer = new RawViewer();
 		addTab("Raw", rawViewer);
 
-		paramViewer = new ParamViewer();
-		addTab("Param", paramViewer);
+		headerViewer = new HeaderViewer();
+		addTab("Header", headerViewer);
 	}
 
 	public void setText(String text) {
@@ -25,10 +25,10 @@ public abstract class Viewer extends JTabbedPane {
 	}
 
 	public void setTableModel(TableModel model) {
-		paramViewer.setModel(model);
+		headerViewer.setModel(model);
 	}
 
 	public void updateViewerData() {
-		paramViewer.updateTableUI();
+		headerViewer.updateTableUI();
 	}
 }
