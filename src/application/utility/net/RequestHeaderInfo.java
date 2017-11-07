@@ -1,4 +1,4 @@
-package application.utility.net.data;
+package application.utility.net;
 
 import application.utility.net.Exceptions.IllegalHeaderDataException;
 

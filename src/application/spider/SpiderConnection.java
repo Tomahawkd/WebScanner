@@ -1,7 +1,7 @@
 package application.spider;
 
-import application.utility.net.Connection;
-import application.utility.net.data.EditableContext;
+import application.utility.net.Context;
+import application.utility.net.CoreData;
 import application.view.frame.spider.SpiderPanelController;
 
 import java.io.IOException;
@@ -9,33 +9,33 @@ import java.net.URL;
 
 public class SpiderConnection {
 
-	private Connection connection;
+	private CoreData data;
 	private Header header;
 	private static int requestCount = 0;
 
 	SpiderConnection() {
-		connection = new Connection();
+		data = new CoreData();
 		header = new Header();
 	}
 
 	SpiderConnection(URL url) {
-		connection = new Connection(url);
+		data = new CoreData(url);
 		header = new Header(url);
 	}
 
 	void setURL(URL url) {
-		connection.setURL(url);
+		data.setURL(url);
 		header.setHeader(url);
 	}
 
-	void connectWithCookie() throws IOException {
-		connection.getCoreData().setRequest(header.getHeader());
-		connection.connect();
+	void connect() throws IOException {
+		data.setRequest(header.getHeader());
+		data.connect();
 		requestCount++;
 		SpiderPanelController.getInstance().updateRequestCounter(requestCount);
 	}
 
-	public EditableContext getContext() {
-		return connection.getCoreData().getResponseContext();
+	public Context getContext() {
+		return data.getContext();
 	}
 }

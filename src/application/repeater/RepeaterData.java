@@ -1,13 +1,13 @@
 package application.repeater;
 
-import application.utility.net.Connection;
+import application.utility.net.CoreData;
 
 public class RepeaterData {
 
-	private static Connection connection;
+	private static CoreData data;
 
-	public static Connection getInstance() {
-		if (connection == null) connection = new Connection();
-		return connection;
+	public static CoreData getInstance() {
+		if (data == null) data = new CoreData();
+		return data;
 	}
 }

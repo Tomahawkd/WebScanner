@@ -1,6 +1,6 @@
 package application.utility.table;
 
-import application.utility.net.data.HeaderMap;
+import application.utility.net.HeaderMap;
 
 import javax.swing.table.TableModel;
 

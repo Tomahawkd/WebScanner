@@ -1,4 +1,4 @@
-package application.utility.net.data;
+package application.utility.net;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

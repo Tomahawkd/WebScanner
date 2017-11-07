@@ -1,6 +1,6 @@
 package application.target;
 
-import application.utility.net.data.Context;
+import application.utility.net.Context;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;

@@ -30,7 +30,7 @@ public class SpiderController {
 	//Regex
 
 	public void start() {
-		URL baseURL = RepeaterData.getInstance().getURL();
+		URL baseURL = RepeaterData.getInstance().getContext().getURL();
 		if (baseURL != null) {
 			String baseURLStr = baseURL.getProtocol() + "//:" + baseURL.getHost();
 			dataModel.setRoot(baseURLStr, null);
@@ -124,12 +124,12 @@ public class SpiderController {
 
 				try {
 					SpiderConnection conn = new SpiderConnection(link);
-					conn.connectWithCookie();
+					conn.connect();
 
 					dataModel.add(link, "GET", conn.getContext());
 
 					String host = link.getProtocol() + "://" + link.getHost();
-					Document doc = HTMLParser.getParser().parse(conn.getContext().getData(), host);
+					Document doc = HTMLParser.getParser().parse(conn.getContext().getResponseData(), host);
 
 					Map<String, Boolean> newCrawledURLMap = new ConcurrentHashMap<>();
 					for (String urlStr : HTMLParser.getParser().getLink(doc)) {

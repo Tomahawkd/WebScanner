@@ -1,7 +1,7 @@
 package application.utility.table;
 
-import application.utility.net.data.Header;
-import application.utility.net.data.HeaderMap;
+import application.utility.net.Header;
+import application.utility.net.HeaderMap;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;

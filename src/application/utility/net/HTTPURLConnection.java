@@ -2,8 +2,6 @@ package application.utility.net;
 
 import application.utility.coding.GZip;
 import application.utility.net.Exceptions.IllegalHeaderDataException;
-import application.utility.net.data.EditableContext;
-import application.utility.net.data.Header;
 
 import javax.net.ssl.SSLSocketFactory;
 import java.io.ByteArrayOutputStream;
@@ -11,45 +9,29 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
 import java.net.Socket;
-import java.net.URL;
 
 public class HTTPURLConnection {
 
 	/**
 	 *
 	 */
-	private URL url;
-	private EditableContext request;
-	private EditableContext response;
+	private EditableContext context;
 	private int timeout = 30000;
 
-	HTTPURLConnection(EditableContext request, EditableContext response) {
-		this.request = request;
-		this.response = response;
-	}
-
-	HTTPURLConnection(EditableContext request, EditableContext response, URL url) {
-		this(request, response);
-		this.url = url;
-	}
-
-	@Deprecated
-	HTTPURLConnection(EditableContext request, EditableContext response, String urlStr)
-			throws MalformedURLException {
-		this(request, response, new URL(urlStr));
+	HTTPURLConnection(EditableContext context) {
+		this.context = context;
 	}
 
 	/**
-	 * @throws IllegalArgumentException throws when the URL is null or the request context is null
+	 * @throws IllegalArgumentException throws when the URL is null or the context context is null
 	 * @throws IOException              socket exceptions
 	 */
 	void openConnection()
 			throws IndexOutOfBoundsException, IllegalArgumentException, IOException {
 
-		if (url == null) throw new IllegalArgumentException("URL cannot be null");
-		if (request == null) throw new IllegalArgumentException("Request data cannot be null");
+		if (context.getURL() == null) throw new IllegalArgumentException("URL cannot be null");
+		if (context == null) throw new IllegalArgumentException("Request data cannot be null");
 
 		Socket socket = null;
 		OutputStream out;
@@ -58,8 +40,8 @@ public class HTTPURLConnection {
 		try {
 
 			// Get the server's host and port
-			String host = url.getHost();
-			int port = url.getPort() == -1 ? 80 : url.getPort();
+			String host = context.getURL().getHost();
+			int port = context.getURL().getPort() == -1 ? 80 : context.getURL().getPort();
 
 			socket = getSocket();
 
@@ -69,15 +51,15 @@ public class HTTPURLConnection {
 
 			socket.connect(new InetSocketAddress(host, port), timeout);
 
-			// Send HTTP request
+			// Send HTTP context
 			out = socket.getOutputStream();
-			out.write(request.toFormString().getBytes());
+			out.write(context.getRequestForm().getBytes());
 
 			// Accept HTTP response
 			in = socket.getInputStream();
 
 			//Header
-			response.clear();
+			context.clearResponse();
 			int isClose;
 			ByteArrayOutputStream bytesOut = new ByteArrayOutputStream();
 			while ((isClose = in.read()) != -1) {
@@ -86,21 +68,21 @@ public class HTTPURLConnection {
 					String str = new String(bytesOut.toByteArray()).trim();
 					bytesOut.reset();
 					if ("".equals(str)) break;
-					response.addHeaderLine(str);
+					context.addResponse(str);
 				}
 			}
 
 			//body
 			int count;
 			String transferEncoding = "";
-			Header transferEncodingHeader = this.response.getHeader().get("Transfer-Encoding");
+			Header transferEncodingHeader = this.context.getResponseHeader().get("Transfer-Encoding");
 			if (transferEncodingHeader != null) transferEncoding = transferEncodingHeader.toString();
 
 			if ("chunked".equals(transferEncoding)) {
 				bytesOut = parseChunk(in);
 			} else {
 				try {
-					Header contentLengthHeader = this.response.getHeader().get("Content-Length");
+					Header contentLengthHeader = this.context.getResponseHeader().get("Content-Length");
 					if (contentLengthHeader != null) {
 						int contentLength = Integer.valueOf(contentLengthHeader.toString());
 						byte[] buf = new byte[1024];
@@ -122,7 +104,7 @@ public class HTTPURLConnection {
 			//GZip
 			try {
 				String contentEncoding = "";
-				Header contentEncodingHeader = this.response.getHeader().get("Content-Encoding");
+				Header contentEncodingHeader = this.context.getResponseHeader().get("Content-Encoding");
 				if (contentEncodingHeader != null) contentEncoding = contentEncodingHeader.toString();
 				if ("gzip".equals(contentEncoding)) {
 					contentBuf = GZip.getInstance().decode(contentBuf);
@@ -132,7 +114,7 @@ public class HTTPURLConnection {
 			}
 
 			// Save origin byte data array
-			response.setData(contentBuf);
+			context.setResponseData(contentBuf);
 
 		} finally {
 			if (null != socket && socket.isConnected() && !socket.isClosed()) {
@@ -143,18 +125,6 @@ public class HTTPURLConnection {
 			}
 		}
 
-	}
-
-	public void setURL(String urlStr) throws MalformedURLException {
-		this.url = new URL(urlStr);
-	}
-
-	public void setURL(URL url) {
-		this.url = url;
-	}
-
-	public URL getURL() {
-		return url;
 	}
 
 	void setTimeout(int timeout) throws IllegalArgumentException {
@@ -173,7 +143,7 @@ public class HTTPURLConnection {
 	private Socket getSocket() throws IOException {
 		Socket socket;
 
-		if (url.getProtocol().equalsIgnoreCase("https")) {
+		if (context.getURL().getProtocol().equalsIgnoreCase("https")) {
 			socket = SSLSocketFactory.getDefault().createSocket();
 		} else {
 			socket = new Socket();

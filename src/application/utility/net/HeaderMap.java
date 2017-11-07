@@ -1,4 +1,4 @@
-package application.utility.net.data;
+package application.utility.net;
 
 import java.io.Serializable;
 import java.util.Map;

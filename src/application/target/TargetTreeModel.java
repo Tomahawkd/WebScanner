@@ -1,6 +1,6 @@
 package application.target;
 
-import application.utility.net.data.Context;
+import application.utility.net.Context;
 import application.view.frame.target.TargetPanelController;
 
 import java.net.URL;

@@ -1,4 +1,4 @@
-package application.utility.net.data;
+package application.utility.net;
 
 import application.utility.net.Exceptions.IllegalHeaderDataException;
 
@@ -16,6 +16,7 @@ public interface Context extends Serializable {
 
 	// Request Header
 	String getMethod();
+	String getHost();
 
 	//Response Header
 	String getStatusCode();
@@ -24,13 +25,16 @@ public interface Context extends Serializable {
 	/*
 	 * Data
 	 */
-	HeaderMap getHeader();
+	HeaderMap getRequestHeader();
+	HeaderMap getResponseHeader();
+
+	String getRequestData();
+	String getResponseData();
+
+	String getRequestForm() throws IllegalHeaderDataException;
+	String getResponseForm() throws IllegalHeaderDataException;
 
 	String getCookie();
 
 	String getMINEType();
-
-	String getData();
-
-	String toFormString() throws IllegalHeaderDataException;
 }

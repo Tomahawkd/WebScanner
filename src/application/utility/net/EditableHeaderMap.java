@@ -1,4 +1,4 @@
-package application.utility.net.data;
+package application.utility.net;
 
 public interface EditableHeaderMap extends HeaderMap {
 
