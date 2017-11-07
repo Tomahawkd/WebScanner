@@ -8,11 +8,6 @@ class HeaderData implements Header {
 	}
 
 	@Override
-	public String toFormalHeader() {
-		return data + CRLF;
-	}
-
-	@Override
 	public String toString() {
 		return data;
 	}

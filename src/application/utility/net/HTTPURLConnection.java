@@ -11,7 +11,7 @@ import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-public class HTTPURLConnection {
+class HTTPURLConnection {
 
 	/**
 	 *
@@ -128,12 +128,8 @@ public class HTTPURLConnection {
 	}
 
 	void setTimeout(int timeout) throws IllegalArgumentException {
-		if (timeout < 0) {
-			this.timeout = 30000;
-			throw new IllegalArgumentException("Timeout cannot be negative");
-		} else {
-			this.timeout = timeout;
-		}
+		if (timeout < 0) throw new IllegalArgumentException("Timeout cannot be negative");
+		this.timeout = timeout;
 	}
 
 	int getTimeout() {

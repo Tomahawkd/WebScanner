@@ -24,11 +24,6 @@ class Cookies implements Header {
 	}
 
 	@Override
-	public String toFormalHeader() {
-		return toString() + CRLF;
-	}
-
-	@Override
 	public String toString() {
 		if (this.cookieMap.size() == 0) return "";
 

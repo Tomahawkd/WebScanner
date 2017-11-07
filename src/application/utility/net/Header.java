@@ -4,5 +4,7 @@ public interface Header {
 
 	String CRLF = "\r\n";
 
-	String toFormalHeader();
+	default String toFormalHeader() {
+		return toString() + CRLF;
+	}
 }

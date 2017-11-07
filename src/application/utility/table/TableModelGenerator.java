@@ -16,4 +16,8 @@ public class TableModelGenerator {
 	public TableModel generateHeaderModel(HeaderMap headerMap) {
 		return new HeaderTableModel(headerMap);
 	}
+
+	public TableModel generateParamModel(String param) {
+		return new ParamTableModel(param);
+	}
 }

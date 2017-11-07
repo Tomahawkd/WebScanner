@@ -7,6 +7,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static application.utility.net.Header.CRLF;
 
@@ -95,6 +97,33 @@ class ContextImpl implements EditableContext {
 	@Override
 	public String getRequestData() {
 		return requestData;
+	}
+
+	@Override
+	public String getParams() {
+		String method = getMethod();
+		if (method.equals("")) return "";
+		switch (method) {
+			case "GET":
+				Header info = requestHeader.get("Header Information");
+				if (info == null) return "";
+				String path = ((RequestHeaderInfo) info).getUrlPath();
+				if (path == null) return "";
+				else {
+					try {
+						return path.split("[?]")[1];
+					} catch (IndexOutOfBoundsException e) {
+						return "";
+					}
+				}
+			case "POST":
+				Matcher m = Pattern.compile(".*=.*")
+						.matcher(requestData);
+				if (m.matches()) return requestData;
+				else return "";
+			default:
+				return "";
+		}
 	}
 
 	@Override
