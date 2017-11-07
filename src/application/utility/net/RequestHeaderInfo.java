@@ -54,7 +54,7 @@ class RequestHeaderInfo extends HeaderInfo {
 	}
 
 	@Override
-	public String toFormalHeader() {
-		return method + " " + urlPath + " " + version + CRLF;
+	public String toString() {
+		return method + " " + urlPath + " " + version;
 	}
 }

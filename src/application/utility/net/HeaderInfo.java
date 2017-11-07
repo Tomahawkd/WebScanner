@@ -4,5 +4,7 @@ abstract class HeaderInfo implements Header {
 
 	abstract String getVersion();
 
-	public abstract String toFormalHeader();
+	public String toFormalHeader() {
+		return toString() + CRLF;
+	}
 }

@@ -31,7 +31,13 @@ class ContextImpl implements EditableContext {
 
 	@Override
 	public URL getURL() {
-		String path = ((RequestHeaderInfo) requestHeader.get("Header Information")).getUrlPath();
+		Header info = requestHeader.get("Header Information");
+		if (info == null) {
+			if (url == null) return null;
+			else return url;
+		}
+
+		String path = ((RequestHeaderInfo) info).getUrlPath();
 		if (path == null) return url;
 		try {
 			return new URL(getHost() + path);
@@ -238,8 +244,10 @@ class ContextImpl implements EditableContext {
 			switch (type) {
 				case HeaderMap.REQUEST:
 					put("Header Information", new RequestHeaderInfo(line));
+					break;
 				case HeaderMap.RESPONSE:
 					put("Header Information", new ResponseHeaderInfo(line));
+					break;
 				default:
 					throw new IllegalArgumentException("Unsupported type value: " + type);
 			}

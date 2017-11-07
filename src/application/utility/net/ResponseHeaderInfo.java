@@ -43,7 +43,7 @@ public class ResponseHeaderInfo extends HeaderInfo implements Header {
 	}
 
 	@Override
-	public String toFormalHeader() {
-		return version + " " + statusCode + " " + statusMessage + CRLF;
+	public String toString() {
+		return version + " " + statusCode + " " + statusMessage;
 	}
 }
