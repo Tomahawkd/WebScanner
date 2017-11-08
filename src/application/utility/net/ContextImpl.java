@@ -49,6 +49,11 @@ class ContextImpl implements EditableContext {
 	}
 
 	@Override
+	public URL getHostURL() throws MalformedURLException {
+		return new URL(getHost());
+	}
+
+	@Override
 	public String getHost() {
 		return url.getProtocol() + "://" + url.getHost() +
 				(url.getPort() == -1 ? ":80" : ":" + url.getPort());
@@ -66,7 +71,7 @@ class ContextImpl implements EditableContext {
 	public String getMethod() {
 		Header header = requestHeader.get("Header Information");
 		if (header != null)
-		return ((RequestHeaderInfo) header).getMethod();
+			return ((RequestHeaderInfo) header).getMethod();
 		else return "";
 	}
 
@@ -144,6 +149,7 @@ class ContextImpl implements EditableContext {
 	}
 
 	public void setRequestForm(String form) throws IllegalHeaderDataException {
+		if (form == null || form.equals("")) return;
 		String[] formSet = form.split("\n\n");
 		setRequestHeader(formSet[0]);
 		if (((RequestHeaderInfo) requestHeader.get("Header Information")).getMethod().equals("POST")) {
@@ -167,6 +173,19 @@ class ContextImpl implements EditableContext {
 			headerLine = headerLine.trim();
 			this.requestHeader.add(headerLine);
 		}
+	}
+
+	@Override
+	public void setResponseForm(String form) throws IllegalHeaderDataException {
+		if (form == null || form.equals("")) return;
+		try {
+			String[] formSet = form.split("\r\n\r\n");
+			String[] headers = formSet[0].split("\r\n");
+			for (String header : headers) addResponse(header);
+			setResponseData(formSet[1].getBytes());
+		} catch (IndexOutOfBoundsException ignored) {
+		}
+
 	}
 
 	public void addResponse(String line) throws IllegalHeaderDataException {
@@ -209,6 +228,25 @@ class ContextImpl implements EditableContext {
 	public void clearResponse() {
 		responseHeader.clear();
 		responseData = "";
+	}
+
+	@Override
+	public Context copy() {
+		ContextImpl copy = new ContextImpl();
+		copy.setForm(this.url, this.requestHeader, this.requestData,
+				this.responseHeader, this.responseData);
+		return copy;
+	}
+
+	private void setForm(URL url, HeaderMapImpl requestHeader, String requestData,
+	                     HeaderMapImpl responseHeader, String responseData) {
+		clearRequest();
+		clearResponse();
+		this.url = url;
+		this.requestHeader.putAll(requestHeader);
+		this.requestData = requestData;
+		this.responseHeader.putAll(responseHeader);
+		this.responseData = responseData;
 	}
 
 	private class HeaderMapImpl

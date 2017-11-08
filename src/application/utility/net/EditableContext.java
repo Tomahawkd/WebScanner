@@ -10,6 +10,8 @@ public interface EditableContext extends Context {
 
 	void setRequestForm(String form) throws IllegalHeaderDataException;
 
+	void setResponseForm(String form) throws IllegalHeaderDataException;
+
 	void addResponse(String line) throws IllegalHeaderDataException;
 
 	void setResponseData(byte[] data);

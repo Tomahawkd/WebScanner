@@ -2,12 +2,13 @@ package application.utility.net;
 
 import application.utility.net.Exceptions.IllegalHeaderDataException;
 
-import java.io.Serializable;
+import java.net.MalformedURLException;
 import java.net.URL;
 
-public interface Context extends Serializable {
+public interface Context {
 
 	URL getURL();
+	URL getHostURL() throws MalformedURLException;
 
 	/*
 	 * Status
@@ -39,4 +40,6 @@ public interface Context extends Serializable {
 	String getMINEType();
 
 	String getParams();
+
+	Context copy();
 }

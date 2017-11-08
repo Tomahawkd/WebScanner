@@ -9,7 +9,7 @@ class HeaderData implements EditableHeader {
 
 	@Override
 	public void setValue(String value) {
-		this.data = data;
+		this.data = value;
 	}
 
 	@Override
