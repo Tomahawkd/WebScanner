@@ -24,10 +24,10 @@ public class ViewerFactory {
 		switch (type) {
 
 			case REQUEST:
-				return new DefaultViewer(true);
+				return new Viewer(true);
 
 			case DEFAULT_RESPONSE:
-				return new DefaultViewer(false);
+				return new Viewer(false);
 
 			case RESPONSE_HTML:
 				return new HTMLViewer();

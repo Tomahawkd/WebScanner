@@ -60,43 +60,21 @@ class RepeaterPanel extends JPanel {
 		requestViewer.setParamTableModel(TableModelGenerator.getInstance()
 				.generateParamModel(RepeaterData.getInstance().getContext().getParams()));
 		requestViewer.addChangeListener(e -> {
-
-			JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-			int selectedIndex = tabbedPane.getSelectedIndex();
-			switch (selectedIndex) {
-				case 0:
-					try {
-						requestViewer.setText(RepeaterData.getInstance().getContext()
-								.getRequestForm().replace("\r\n", "\n"));
-					} catch (IllegalArgumentException ignored) {
-					} catch (IllegalHeaderDataException e1) {
-						JOptionPane.showMessageDialog(null,
-								e1.getMessage() == null ?
-										e1.getMessage() : "The request data is invalid",
-								"Data Invalid",
-								JOptionPane.WARNING_MESSAGE);
-					}
-					break;
-
-				case 1:
-				case 2:
-					try {
-						RepeaterData.getInstance().setRequestForm(requestViewer.getText());
-						requestViewer.updateUI();
-					} catch (IndexOutOfBoundsException | IllegalHeaderDataException e1) {
-						JOptionPane.showMessageDialog(null,
-								e1.getMessage() == null ?
-										e1.getMessage() : "The request data is invalid",
-								"Data Invalid",
-								JOptionPane.WARNING_MESSAGE);
-						tabbedPane.setSelectedIndex(0);
-					}
-					break;
-
-				default:
-					break;
+			try {
+				if (requestViewer.getSelectedIndex() != 0) {
+					RepeaterData.getInstance().setRequestForm(requestViewer.getText());
+				}
+				requestViewer.setText(RepeaterData.getInstance().getContext()
+						.getRequestForm().replace("\r\n", "\n"));
+				requestViewer.updateViewerData();
+			} catch (IllegalHeaderDataException e1) {
+				JOptionPane.showMessageDialog(null,
+						e1.getMessage() == null ?
+								e1.getMessage() : "The request data is invalid",
+						"Data Invalid",
+						JOptionPane.WARNING_MESSAGE);
+				((JTabbedPane) e.getSource()).setSelectedIndex(0);
 			}
-
 		});
 		requestPanel.add(requestViewer, BorderLayout.CENTER);
 
@@ -115,20 +93,7 @@ class RepeaterPanel extends JPanel {
 		responseViewer = ViewerFactory.getInstance().createViewer();
 		responseViewer.setHeaderTableModel(TableModelGenerator.getInstance()
 				.generateHeaderModel(RepeaterData.getInstance().getContext().getResponseHeader()));
-		responseViewer.addChangeListener(e -> {
-
-			JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-			int selectedIndex = tabbedPane.getSelectedIndex();
-			switch (selectedIndex) {
-				case 1:
-					responseViewer.updateViewerData();
-					break;
-
-				default:
-					break;
-			}
-
-		});
+		responseViewer.addChangeListener(e -> responseViewer.updateViewerData());
 		responsePanel.add(responseViewer, BorderLayout.CENTER);
 
 		JPanel targetPanel = new JPanel();

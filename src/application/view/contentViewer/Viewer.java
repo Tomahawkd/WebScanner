@@ -3,14 +3,15 @@ package application.view.contentViewer;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 
-public abstract class Viewer extends JTabbedPane {
+public class Viewer extends JTabbedPane {
 
 	private RawViewer rawViewer;
 	private TableViewer headerViewer;
 	private TableViewer paramViewer;
 
-	Viewer() {
+	Viewer(boolean editable) {
 		rawViewer = new RawViewer();
+		rawViewer.setEditable(editable);
 		addTab("Raw", rawViewer);
 
 		headerViewer = new TableViewer();
@@ -38,16 +39,6 @@ public abstract class Viewer extends JTabbedPane {
 
 	public void updateViewerData() {
 		headerViewer.updateTableUI();
-	}
-
-	void setEditable(boolean editable) {
-		rawViewer.setEditable(editable);
-	}
-}
-
-class DefaultViewer extends Viewer {
-
-	DefaultViewer(boolean editable) {
-		setEditable(editable);
+		paramViewer.updateTableUI();
 	}
 }

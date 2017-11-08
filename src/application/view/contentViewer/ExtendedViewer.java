@@ -8,7 +8,7 @@ public class ExtendedViewer extends Viewer {
 	private TreeViewer treeViewer;
 
 	ExtendedViewer(String title) {
-		super();
+		super(false);
 
 		treeViewer = new TreeViewer();
 		addTab(title, treeViewer);
