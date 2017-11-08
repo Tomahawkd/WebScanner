@@ -7,38 +7,32 @@ import java.util.regex.Pattern;
 
 class RequestHeaderInfo extends HeaderInfo {
 
-	private static final String[] methods = {
-		"GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE", "TRACE"
-	};
-
 	private String method;
 	private String urlPath;
 	private String version;
 
 	RequestHeaderInfo(String firstRequestHeader) throws IllegalHeaderDataException {
-
-		checkHeader(firstRequestHeader);
-
-		String[] infoSet = firstRequestHeader.split(" ");
-		String requestMethod = infoSet[0];
-		for (String method : methods) {
-			if (firstRequestHeader.contains(method)) {
-				this.method = requestMethod;
-				this.urlPath = infoSet[1];
-				this.version = infoSet[2];
-				return;
-			}
-		}
-		throw new IllegalHeaderDataException("Method " + requestMethod + " unsupported");
+		setValue(firstRequestHeader);
 	}
 
 	private void checkHeader(String firstHeader) throws IllegalHeaderDataException {
 
-		Matcher m = Pattern.compile("^[A-Z]*[\\s]/.*[\\s]HTTP/[0-9].[0-9]$")
+		Matcher m = Pattern
+				.compile("^(GET|POST|HEAD|OPTIONS|PUT|DLELTE|TRACE)*[\\s]/.*[\\s]HTTP/[0-9].[0-9]$")
 				.matcher(firstHeader);
-		if(!m.find()) {
+		if (!m.matches()) {
 			throw new IllegalHeaderDataException("Invalid HTTP request header");
 		}
+	}
+
+	@Override
+	public void setValue(String value) throws IllegalHeaderDataException {
+		checkHeader(value);
+		String[] valueSet = value.split(" ");
+		if (valueSet.length != 3) throw new IllegalHeaderDataException("Invalid HTTP header");
+		this.method = valueSet[0];
+		this.urlPath = valueSet[1];
+		this.version = valueSet[2];
 	}
 
 	String getMethod() {

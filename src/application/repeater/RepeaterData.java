@@ -1,13 +1,13 @@
 package application.repeater;
 
-import application.utility.net.CoreData;
+import application.utility.net.Form;
 
 public class RepeaterData {
 
-	private static CoreData data;
+	private static Form data;
 
-	public static CoreData getInstance() {
-		if (data == null) data = new CoreData();
+	public static Form getInstance() {
+		if (data == null) data = new Form();
 		return data;
 	}
 }

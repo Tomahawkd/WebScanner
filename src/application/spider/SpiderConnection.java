@@ -1,7 +1,7 @@
 package application.spider;
 
 import application.utility.net.Context;
-import application.utility.net.CoreData;
+import application.utility.net.Form;
 import application.view.frame.spider.SpiderPanelController;
 
 import java.io.IOException;
@@ -9,17 +9,17 @@ import java.net.URL;
 
 public class SpiderConnection {
 
-	private CoreData data;
+	private Form data;
 	private Header header;
 	private static int requestCount = 0;
 
 	SpiderConnection() {
-		data = new CoreData();
+		data = new Form();
 		header = new Header();
 	}
 
 	SpiderConnection(URL url) {
-		data = new CoreData(url);
+		data = new Form(url);
 		header = new Header(url);
 	}
 
@@ -29,7 +29,7 @@ public class SpiderConnection {
 	}
 
 	void connect() throws IOException {
-		data.setRequest(header.getHeader());
+		data.setRequestForm(header.getHeader());
 		data.connect();
 		requestCount++;
 		SpiderPanelController.getInstance().updateRequestCounter(requestCount);

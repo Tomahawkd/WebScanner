@@ -3,7 +3,7 @@ package application.utility.net;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-class Cookies implements Header {
+class Cookies implements EditableHeader {
 
 	private Map<String, String> cookieMap;
 
@@ -21,6 +21,11 @@ class Cookies implements Header {
 			String cookieValue = cookie.substring(cookie.indexOf("=") + 1);
 			cookieMap.put(cookieName, cookieValue);
 		}
+	}
+
+	@Override
+	public void setValue(String value) {
+		addCookies(value);
 	}
 
 	@Override

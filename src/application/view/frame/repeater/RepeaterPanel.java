@@ -2,8 +2,8 @@ package application.view.frame.repeater;
 
 import application.alertHandler.AlertHandler;
 import application.repeater.RepeaterData;
-import application.utility.net.CoreData;
 import application.utility.net.Exceptions.IllegalHeaderDataException;
+import application.utility.net.Form;
 import application.utility.parser.html.HTMLParser;
 import application.utility.parser.json.JSONParser;
 import application.utility.parser.xml.XMLParser;
@@ -30,8 +30,7 @@ class RepeaterPanel extends JPanel {
 	private JButton btnSend;
 	private JButton btnCancel;
 	private JLabel lblTarget;
-	private JTable requestParamTable;
-	private JTextArea requestTextArea;
+	private Viewer requestViewer;
 	private JPanel responsePanel;
 	private Viewer responseViewer;
 	private Thread connectionThread;
@@ -55,62 +54,51 @@ class RepeaterPanel extends JPanel {
 		lblRequest.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 		requestLabelPanel.add(lblRequest);
 
-		JTabbedPane requestTabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		requestTabbedPane.addChangeListener(e -> {
-
-			if (requestTextArea != null) {
-				JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
-				int selectedIndex = tabbedPane.getSelectedIndex();
-				switch (selectedIndex) {
-					case 0:
-						try {
-							requestTextArea.setText(RepeaterData.getInstance().getContext()
-									.getRequestForm().replace("\r\n", "\n"));
-						} catch (IllegalArgumentException ignored) {
-						} catch (IllegalHeaderDataException e1) {
-							JOptionPane.showMessageDialog(null,
-									e1.getMessage() == null ?
-											e1.getMessage() : "The request data is invalid",
-									"Data Invalid",
-									JOptionPane.WARNING_MESSAGE);
-						}
-						break;
-
-					case 1:
-						try {
-							RepeaterData.getInstance().setRequest(requestTextArea.getText());
-							requestParamTable.updateUI();
-						} catch (IndexOutOfBoundsException | IllegalHeaderDataException e1) {
-							JOptionPane.showMessageDialog(null,
-									e1.getMessage() == null ?
-											e1.getMessage() : "The request data is invalid",
-									"Data Invalid",
-									JOptionPane.WARNING_MESSAGE);
-							tabbedPane.setSelectedIndex(0);
-						}
-						break;
-
-					default:
-						break;
-				}
-			}
-		});
-		requestPanel.add(requestTabbedPane, BorderLayout.CENTER);
-
-		JScrollPane requestRawScrollPane = new JScrollPane();
-		requestTabbedPane.addTab("Raw", requestRawScrollPane);
-
-		requestTextArea = new JTextArea();
-		requestRawScrollPane.setViewportView(requestTextArea);
-
-		JScrollPane requestParamScrollPane = new JScrollPane();
-		requestTabbedPane.addTab("Param", null, requestParamScrollPane, null);
-
-		requestParamTable = new JTable();
-		requestParamTable.setModel(TableModelGenerator.getInstance()
+		requestViewer = ViewerFactory.getInstance().createViewer(ViewerFactory.REQUEST);
+		requestViewer.setHeaderTableModel(TableModelGenerator.getInstance()
 				.generateHeaderModel(RepeaterData.getInstance().getContext().getRequestHeader()));
-		requestParamTable.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		requestParamScrollPane.setViewportView(requestParamTable);
+		requestViewer.setParamTableModel(TableModelGenerator.getInstance()
+				.generateParamModel(RepeaterData.getInstance().getContext().getParams()));
+		requestViewer.addChangeListener(e -> {
+
+			JTabbedPane tabbedPane = (JTabbedPane) e.getSource();
+			int selectedIndex = tabbedPane.getSelectedIndex();
+			switch (selectedIndex) {
+				case 0:
+					try {
+						requestViewer.setText(RepeaterData.getInstance().getContext()
+								.getRequestForm().replace("\r\n", "\n"));
+					} catch (IllegalArgumentException ignored) {
+					} catch (IllegalHeaderDataException e1) {
+						JOptionPane.showMessageDialog(null,
+								e1.getMessage() == null ?
+										e1.getMessage() : "The request data is invalid",
+								"Data Invalid",
+								JOptionPane.WARNING_MESSAGE);
+					}
+					break;
+
+				case 1:
+				case 2:
+					try {
+						RepeaterData.getInstance().setRequestForm(requestViewer.getText());
+						requestViewer.updateUI();
+					} catch (IndexOutOfBoundsException | IllegalHeaderDataException e1) {
+						JOptionPane.showMessageDialog(null,
+								e1.getMessage() == null ?
+										e1.getMessage() : "The request data is invalid",
+								"Data Invalid",
+								JOptionPane.WARNING_MESSAGE);
+						tabbedPane.setSelectedIndex(0);
+					}
+					break;
+
+				default:
+					break;
+			}
+
+		});
+		requestPanel.add(requestViewer, BorderLayout.CENTER);
 
 		responsePanel = new JPanel();
 		mainSplitPane.setRightComponent(responsePanel);
@@ -125,7 +113,7 @@ class RepeaterPanel extends JPanel {
 		responseLabelPanel.add(lblResponse);
 
 		responseViewer = ViewerFactory.getInstance().createViewer();
-		responseViewer.setTableModel(TableModelGenerator.getInstance()
+		responseViewer.setHeaderTableModel(TableModelGenerator.getInstance()
 				.generateHeaderModel(RepeaterData.getInstance().getContext().getResponseHeader()));
 		responseViewer.addChangeListener(e -> {
 
@@ -208,7 +196,7 @@ class RepeaterPanel extends JPanel {
 						"Connection: close\n" +
 						"\n";
 
-				requestTextArea.setText(httpData);
+				requestViewer.setText(httpData);
 			}
 		});
 		targetPanel.add(btnGenerate);
@@ -225,7 +213,7 @@ class RepeaterPanel extends JPanel {
 	private Runnable getTarget() {
 		return () -> {
 			try {
-				RepeaterData.getInstance().setRequest(requestTextArea.getText());
+				RepeaterData.getInstance().setRequestForm(requestViewer.getText());
 				Viewer oldViewer = responseViewer;
 				try {
 					try {
@@ -236,7 +224,7 @@ class RepeaterPanel extends JPanel {
 										e.getClass().getName() + ": "
 												+ (e.getMessage() == null ? "" : e.getMessage()));
 					}
-					CoreData handler = RepeaterData.getInstance();
+					Form handler = RepeaterData.getInstance();
 					String type = handler.getContext().getMINEType();
 					if (type.contains("text/html")) {
 						Document doc = HTMLParser.getParser()
@@ -257,7 +245,7 @@ class RepeaterPanel extends JPanel {
 					} else {
 						responseViewer = ViewerFactory.getInstance().createViewer(ViewerFactory.DEFAULT_RESPONSE);
 					}
-					responseViewer.setTableModel(TableModelGenerator.getInstance()
+					responseViewer.setHeaderTableModel(TableModelGenerator.getInstance()
 							.generateHeaderModel(handler.getContext().getResponseHeader()));
 					responseViewer.setText(handler.getContext().getResponseForm()
 							.replace("\r\n", "\n"));
@@ -266,7 +254,7 @@ class RepeaterPanel extends JPanel {
 					updateUI();
 				} catch (JSONException e) {
 					responseViewer = ViewerFactory.getInstance().createViewer(ViewerFactory.DEFAULT_RESPONSE);
-					responseViewer.setTableModel(TableModelGenerator.getInstance()
+					responseViewer.setHeaderTableModel(TableModelGenerator.getInstance()
 							.generateHeaderModel(RepeaterData.getInstance().getContext().getResponseHeader()));
 					responseViewer.setText(RepeaterData.getInstance().getContext()
 							.getResponseForm().replace("\r\n", "\n"));
@@ -279,7 +267,7 @@ class RepeaterPanel extends JPanel {
 									e.getClass().getName() + ": "
 											+ (e.getMessage() == null ? "" : e.getMessage()));
 				}
-			} catch (IllegalHeaderDataException | IndexOutOfBoundsException e) {
+			} catch (IllegalHeaderDataException e) {
 				e.printStackTrace();
 				JOptionPane.showMessageDialog(null,
 						e.getMessage() == null ?

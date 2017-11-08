@@ -5,17 +5,17 @@ import application.utility.net.Exceptions.IllegalHeaderDataException;
 import java.io.IOException;
 import java.net.URL;
 
-public class CoreData {
+public class Form {
 
 	private EditableContext context;
 	private HTTPURLConnection connection;
 
-	public CoreData() {
+	public Form() {
 		context = new ContextImpl();
 		connection = new HTTPURLConnection(context);
 	}
 
-	public CoreData(URL url) {
+	public Form(URL url) {
 		this();
 		setURL(url);
 	}
@@ -28,7 +28,8 @@ public class CoreData {
 		return context;
 	}
 
-	public void setRequest(String requestStr) throws IllegalHeaderDataException {
+	public void setRequestForm(String requestStr) throws IllegalHeaderDataException {
+		if (requestStr == null || requestStr.equals("")) return;
 		context.clearRequest();
 		context.setRequestForm(requestStr);
 	}

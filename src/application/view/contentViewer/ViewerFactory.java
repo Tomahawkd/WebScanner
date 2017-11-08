@@ -3,10 +3,11 @@ package application.view.contentViewer;
 public class ViewerFactory {
 	private static ViewerFactory factory;
 
-	public static final int DEFAULT_RESPONSE = 0;
-	public static final int RESPONSE_HTML = 1;
-	public static final int RESPONSE_XML = 2;
-	public static final int RESPONSE_JSON = 3;
+	public static final int REQUEST = 0;
+	public static final int DEFAULT_RESPONSE = 1;
+	public static final int RESPONSE_HTML = 2;
+	public static final int RESPONSE_XML = 3;
+	public static final int RESPONSE_JSON = 4;
 
 
 	public static ViewerFactory getInstance() {
@@ -21,8 +22,12 @@ public class ViewerFactory {
 	public Viewer createViewer(int type) {
 
 		switch (type) {
+
+			case REQUEST:
+				return new DefaultViewer(true);
+
 			case DEFAULT_RESPONSE:
-				return new DefaultViewer();
+				return new DefaultViewer(false);
 
 			case RESPONSE_HTML:
 				return new HTMLViewer();

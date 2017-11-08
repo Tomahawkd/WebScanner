@@ -19,4 +19,8 @@ class RawViewer extends JScrollPane {
 	String getText() {
 		return rawTextArea.getText();
 	}
+
+	void setEditable(boolean editable) {
+		rawTextArea.setEditable(editable);
+	}
 }
