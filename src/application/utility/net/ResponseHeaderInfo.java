@@ -15,13 +15,19 @@ class ResponseHeaderInfo extends HeaderInfo {
 		setValue(firstResponseHeader);
 	}
 
+	private ResponseHeaderInfo(String version, String statusCode, String statusMessage) {
+		this.version = version;
+		this.statusCode = statusCode;
+		this.statusMessage = statusMessage;
+	}
+
 	private void checkHeader(String firstHeader) throws IllegalHeaderDataException {
 
 		Matcher m = Pattern
 				.compile("^HTTP/[0-9].[0-9][\\s]([0-9][0-9][0-9])[\\s].*$")
 				.matcher(firstHeader);
 		if (!m.matches()) {
-			throw new IllegalHeaderDataException("Invalid HTTP response header");
+			throw new IllegalHeaderDataException("Invalid HTTP response header: " + firstHeader);
 		}
 	}
 
@@ -50,5 +56,10 @@ class ResponseHeaderInfo extends HeaderInfo {
 	@Override
 	public String toString() {
 		return version + " " + statusCode + " " + statusMessage;
+	}
+
+	@Override
+	public ResponseHeaderInfo copy() {
+		return new ResponseHeaderInfo(version, statusCode, statusMessage);
 	}
 }

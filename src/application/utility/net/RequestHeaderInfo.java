@@ -15,13 +15,19 @@ class RequestHeaderInfo extends HeaderInfo {
 		setValue(firstRequestHeader);
 	}
 
+	private RequestHeaderInfo(String method, String urlPath, String version) {
+		this.method = method;
+		this.urlPath = urlPath;
+		this.version = version;
+	}
+
 	private void checkHeader(String firstHeader) throws IllegalHeaderDataException {
 
 		Matcher m = Pattern
-				.compile("^(GET|POST|HEAD|OPTIONS|PUT|DLELTE|TRACE)*[\\s]/.*[\\s]HTTP/[0-9].[0-9]$")
+				.compile("^(GET|POST|HEAD|OPTIONS|PUT|DELETE|TRACE)*[\\s]/.*[\\s]HTTP/[0-9].[0-9]$")
 				.matcher(firstHeader);
 		if (!m.matches()) {
-			throw new IllegalHeaderDataException("Invalid HTTP request header");
+			throw new IllegalHeaderDataException("Invalid HTTP request header: " + firstHeader);
 		}
 	}
 
@@ -50,5 +56,10 @@ class RequestHeaderInfo extends HeaderInfo {
 	@Override
 	public String toString() {
 		return method + " " + urlPath + " " + version;
+	}
+
+	@Override
+	public RequestHeaderInfo copy() {
+		return new RequestHeaderInfo(method, urlPath, version);
 	}
 }

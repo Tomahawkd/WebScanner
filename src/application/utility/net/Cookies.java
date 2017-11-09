@@ -12,6 +12,11 @@ class Cookies implements EditableHeader {
 		addCookies(cookiesString);
 	}
 
+	private Cookies(Map<String, String> cookieMap) {
+		this.cookieMap = new ConcurrentHashMap<>();
+		this.cookieMap.putAll(cookieMap);
+	}
+
 	void addCookies(String cookiesString) {
 		if (cookiesString == null || cookiesString.equals("")) return;
 		String[] cookieSet = cookiesString.split(";");
@@ -38,5 +43,10 @@ class Cookies implements EditableHeader {
 		}
 
 		return cookieBuilder.substring(0, cookieBuilder.length() - 2);
+	}
+
+	@Override
+	public Cookies copy() {
+		return new Cookies(this.cookieMap);
 	}
 }

@@ -7,4 +7,6 @@ public interface Header {
 	default String toFormalHeader() {
 		return toString() + CRLF;
 	}
+
+	Header copy();
 }

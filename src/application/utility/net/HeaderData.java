@@ -16,4 +16,9 @@ class HeaderData implements EditableHeader {
 	public String toString() {
 		return data;
 	}
+
+	@Override
+	public HeaderData copy() {
+		return new HeaderData(this.data);
+	}
 }

@@ -67,11 +67,11 @@ class ControlPane extends JScrollPane {
 		contentPane.add(lblRequestsQueued);
 
 		requestMadeCounter = new JLabel("0");
-		requestMadeCounter.setBounds(147, 83, 36, 16);
+		requestMadeCounter.setBounds(147, 83, 72, 16);
 		contentPane.add(requestMadeCounter);
 
 		requestQueueCounter = new JLabel("0");
-		requestQueueCounter.setBounds(147, 111, 36, 16);
+		requestQueueCounter.setBounds(147, 111, 72, 16);
 		contentPane.add(requestQueueCounter);
 	}
 
