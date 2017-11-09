@@ -7,15 +7,17 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class SpiderQueue extends ConcurrentHashMap<String, Boolean> {
 
-	private static int queueCount = 0;
+	private int queueCount;
 	private static SpiderQueue queue;
 
-	public static SpiderQueue getQueue() {
+	static SpiderQueue getQueue() {
 		if (queue == null) queue = new SpiderQueue();
 		return queue;
 	}
 
-	private SpiderQueue() {}
+	private SpiderQueue() {
+		queueCount = 0;
+	}
 
 	@Override
 	public Boolean put(String key, Boolean value) {

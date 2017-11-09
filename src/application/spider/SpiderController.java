@@ -2,7 +2,8 @@ package application.spider;
 
 import application.alertHandler.AlertHandler;
 import application.repeater.RepeaterData;
-import application.target.TargetTreeModel;
+import application.target.Target;
+import application.target.TargetContext;
 import application.utility.parser.html.HTMLParser;
 import org.jsoup.nodes.Document;
 
@@ -24,16 +25,15 @@ public class SpiderController {
 
 	//Data control
 	private final SpiderQueue queue = SpiderQueue.getQueue();
-	private final TargetTreeModel dataModel = TargetTreeModel.getDefaultModel();
+	private final Target contextList = TargetContext.getInstance();
 
 	//Scope control
 	//Regex
 
 	public void start() {
-		URL baseURL = RepeaterData.getInstance().getContext().getURL();
+		//TODo
+		URL baseURL = RepeaterData.getInstance().getContext().getHostURL();
 		if (baseURL != null) {
-			String baseURLStr = baseURL.getProtocol() + "//:" + baseURL.getHost();
-			dataModel.setRoot(baseURLStr, null);
 			queue.put(baseURL.toExternalForm(), false);
 			firstExecution = false;
 			suspendFlag = false;
@@ -63,7 +63,6 @@ public class SpiderController {
 	public boolean isFirstExecution() {
 		return firstExecution;
 	}
-
 
 	public void setThreadNum(int threadNum) throws IllegalArgumentException {
 		if (threadNum < 0) throw new IllegalArgumentException();
@@ -100,7 +99,9 @@ public class SpiderController {
 			executor.shutdown();
 			try {
 				boolean suspendFlag;
-				do suspendFlag = !executor.awaitTermination(60, TimeUnit.SECONDS); while (suspendFlag);
+				do {
+					suspendFlag = !executor.awaitTermination(60, TimeUnit.SECONDS);
+				} while (suspendFlag);
 			} catch (InterruptedException ignored) {
 			}
 
@@ -126,7 +127,7 @@ public class SpiderController {
 					SpiderConnection conn = new SpiderConnection(link);
 					conn.connect();
 
-					dataModel.add(link, "GET", conn.getContext());
+					contextList.addTarget(conn.getContext());
 
 					String host = link.getProtocol() + "://" + link.getHost();
 					Document doc = HTMLParser.getParser().parse(conn.getContext().getResponseData(), host);
@@ -134,7 +135,8 @@ public class SpiderController {
 					Map<String, Boolean> newCrawledURLMap = new ConcurrentHashMap<>();
 					for (String urlStr : HTMLParser.getParser().getLink(doc)) {
 						if (!urlStr.equals("") && !urlMap.containsKey(urlStr)) {
-							if (!newCrawledURLMap.containsKey(urlStr)) newCrawledURLMap.put(urlStr, false);
+							if (!newCrawledURLMap.containsKey(urlStr))
+								newCrawledURLMap.put(urlStr, false);
 						}
 					}
 					newURLMap.putAll(newCrawledURLMap);
@@ -146,7 +148,8 @@ public class SpiderController {
 						"MalformedURLException: URL " + url + " is not valid");
 			} catch (IOException e) {
 				AlertHandler.getInstance().addAlert("Spider",
-						e.getClass().getName() + ": " + (e.getMessage() == null ? "" : e.getMessage()));
+						e.getClass().getName() + ": " +
+								(e.getMessage() == null ? "" : e.getMessage()));
 			}
 		};
 	}
