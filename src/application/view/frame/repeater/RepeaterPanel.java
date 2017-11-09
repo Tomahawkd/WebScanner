@@ -118,7 +118,7 @@ class RepeaterPanel extends JPanel {
 			btnCancel.setEnabled(true);
 			btnSend.setEnabled(false);
 
-			if (RepeaterData.getInstance().getContext().getURL() == null) {
+			if (RepeaterData.getInstance().getContext().getHostURL() == null) {
 
 				btnSend.setEnabled(true);
 				btnCancel.setEnabled(false);
@@ -148,7 +148,7 @@ class RepeaterPanel extends JPanel {
 
 		JButton btnGenerate = new JButton("Generate");
 		btnGenerate.addActionListener(e -> {
-			if (RepeaterData.getInstance().getContext().getURL() == null) {
+			if (RepeaterData.getInstance().getContext().getHostURL() == null) {
 				JOptionPane.showMessageDialog(
 						null,
 						"Please set target URL",
@@ -157,7 +157,7 @@ class RepeaterPanel extends JPanel {
 			} else {
 
 				String httpData = "GET / HTTP/1.1\n" +
-						"Host: " + RepeaterData.getInstance().getContext().getURL().getHost() + "\n" +
+						"Host: " + RepeaterData.getInstance().getContext().getHostURL().getHost() + "\n" +
 						"Connection: close\n" +
 						"\n";
 
@@ -172,7 +172,7 @@ class RepeaterPanel extends JPanel {
 	}
 
 	void setURL(URL url) {
-		RepeaterData.getInstance().setURL(url);
+		RepeaterData.getInstance().setHostURL(url);
 	}
 
 	private Runnable getTarget() {
@@ -197,7 +197,7 @@ class RepeaterPanel extends JPanel {
 						responseViewer = ViewerFactory.getInstance().createViewer(ViewerFactory.RESPONSE_HTML);
 						((HTMLViewer) responseViewer)
 								.setHTML(handler.getContext().getResponseData(),
-										RepeaterData.getInstance().getContext().getURL());
+										RepeaterData.getInstance().getContext().getHostURL());
 						((HTMLViewer) responseViewer).setTreeNode(HTMLParser.getParser().getTreeNode(doc));
 					} else if (type.contains("xml")) {
 						JSONObject xml = XMLParser.getParser().parse(handler.getContext().getResponseData());

@@ -14,49 +14,56 @@ import static application.utility.net.Header.CRLF;
 
 class ContextImpl implements EditableContext {
 
-	private URL url;
+	private URL host;
 	private HeaderMapImpl requestHeader;
 	private HeaderMapImpl responseHeader;
 	private String requestData;
 	private String responseData;
+	private String issues;
 
 	ContextImpl() {
 		this.requestHeader = new HeaderMapImpl(HeaderMap.REQUEST);
 		this.responseHeader = new HeaderMapImpl(HeaderMap.RESPONSE);
 		this.requestData = "";
 		this.responseData = "";
+		this.issues = "";
 	}
 
-	public void setUrl(URL url) {
-		this.url = url;
+	@Override
+	public void setHostURL(URL host) {
+		this.host = host;
 	}
 
 	@Override
 	public URL getURL() {
 		Header info = requestHeader.get("Header Information");
-		if (info == null) {
-			if (url == null) return null;
-			else return url;
-		}
+		if (info == null) return null;
 
 		String path = ((RequestHeaderInfo) info).getUrlPath();
-		if (path == null) return url;
+		if (path == null) return null;
 		try {
 			return new URL(getHost() + path);
 		} catch (MalformedURLException e) {
-			return url;
+			return null;
 		}
 	}
 
 	@Override
-	public URL getHostURL() throws MalformedURLException {
-		return new URL(getHost());
+	public URL getHostURL() {
+		return host;
 	}
 
 	@Override
 	public String getHost() {
-		return url.getProtocol() + "://" + url.getHost() +
-				(url.getPort() == -1 ? ":80" : ":" + url.getPort());
+		return host.getProtocol() + "://" + host.getHost() +
+				(host.getPort() == -1 ? ":80" : ":" + host.getPort());
+	}
+
+	public String getPath() {
+		Header header = requestHeader.get("Header Information");
+		if (header != null)
+			return ((RequestHeaderInfo) header).getUrlPath();
+		else return "";
 	}
 
 	@Override
@@ -77,7 +84,7 @@ class ContextImpl implements EditableContext {
 
 	@Override
 	public String getStatusCode() {
-		Header header = requestHeader.get("Header Information");
+		Header header = responseHeader.get("Header Information");
 		if (header != null)
 			return ((ResponseHeaderInfo) header).getStatusCode();
 		else return "";
@@ -85,16 +92,18 @@ class ContextImpl implements EditableContext {
 
 	@Override
 	public String getStatusMessage() {
-		Header header = requestHeader.get("Header Information");
+		Header header = responseHeader.get("Header Information");
 		if (header != null)
 			return ((ResponseHeaderInfo) header).getStatusMessage();
 		else return "";
 	}
 
+	@Override
 	public HeaderMap getRequestHeader() {
 		return requestHeader;
 	}
 
+	@Override
 	public HeaderMap getResponseHeader() {
 		return responseHeader;
 	}
@@ -144,10 +153,24 @@ class ContextImpl implements EditableContext {
 		else return "";
 	}
 
+	@Override
 	public String getCookie() {
-		return Session.getInstance().getWithURL(url.getHost());
+		return Session.getInstance().getWithURL(host.getHost());
 	}
 
+
+	@Override
+	public String getIssues() {
+		return issues;
+	}
+
+	@Override
+	public void addIssue(String issue) {
+		if (issue.contains("&")) return;
+		issues = issues.concat("&").concat(issue);
+	}
+
+	@Override
 	public void setRequestForm(String form) throws IllegalHeaderDataException {
 		if (form == null || form.equals("")) return;
 		String[] formSet = form.split("\n\n");
@@ -188,11 +211,13 @@ class ContextImpl implements EditableContext {
 
 	}
 
+	@Override
 	public void addResponse(String line) throws IllegalHeaderDataException {
 		line = line.trim();
 		this.responseHeader.add(line);
 	}
 
+	@Override
 	public void setResponseData(byte[] data) {
 		try {
 			Header contentType = responseHeader.get("Content-Type");
@@ -220,11 +245,13 @@ class ContextImpl implements EditableContext {
 		return responseHeader.toFormalHeader() + responseData;
 	}
 
+	@Override
 	public void clearRequest() {
 		requestHeader.clear();
 		requestData = "";
 	}
 
+	@Override
 	public void clearResponse() {
 		responseHeader.clear();
 		responseData = "";
@@ -233,20 +260,28 @@ class ContextImpl implements EditableContext {
 	@Override
 	public Context copy() {
 		ContextImpl copy = new ContextImpl();
-		copy.setForm(this.url, this.requestHeader, this.requestData,
+		copy.setForm(this.host, this.requestHeader, this.requestData,
 				this.responseHeader, this.responseData);
 		return copy;
 	}
 
-	private void setForm(URL url, HeaderMapImpl requestHeader, String requestData,
+	private void setForm(URL host, HeaderMapImpl requestHeader, String requestData,
 	                     HeaderMapImpl responseHeader, String responseData) {
 		clearRequest();
 		clearResponse();
-		this.url = url;
-		this.requestHeader.putAll(requestHeader);
+		this.host = host;
 		this.requestData = requestData;
-		this.responseHeader.putAll(responseHeader);
 		this.responseData = responseData;
+
+		//Deep copy
+		this.requestHeader.clear();
+		for (Map.Entry<String, Header> mapping : requestHeader.entrySet()) {
+			this.requestHeader.put(mapping.getKey(), mapping.getValue().copy());
+		}
+		this.responseHeader.clear();
+		for (Map.Entry<String, Header> mapping : responseHeader.entrySet()) {
+			this.responseHeader.put(mapping.getKey(), mapping.getValue().copy());
+		}
 	}
 
 	private class HeaderMapImpl
@@ -300,8 +335,8 @@ class ContextImpl implements EditableContext {
 			if (line.contains(": ")) {
 				String[] infoSet = line.split(": ");
 				if (infoSet[0].contains("Cookie")) {
-					Session.getInstance().updateCookie(url.getHost(), infoSet[1]);
-					put(infoSet[0], Session.getInstance().getCookies(url.getHost()));
+					Session.getInstance().updateCookie(host.getHost(), infoSet[1]);
+					put(infoSet[0], Session.getInstance().getCookies(host.getHost()));
 				} else {
 					put(infoSet[0], new HeaderData(infoSet[1]));
 				}

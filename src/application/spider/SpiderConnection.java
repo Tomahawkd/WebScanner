@@ -24,7 +24,7 @@ public class SpiderConnection {
 	}
 
 	void setURL(URL url) {
-		data.setURL(url);
+		data.setHostURL(url);
 		header.setHeader(url);
 	}
 

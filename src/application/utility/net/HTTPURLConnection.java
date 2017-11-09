@@ -30,7 +30,7 @@ class HTTPURLConnection {
 	void openConnection()
 			throws IndexOutOfBoundsException, IllegalArgumentException, IOException {
 
-		if (context.getURL() == null) throw new IllegalArgumentException("URL cannot be null");
+		if (context.getHostURL() == null) throw new IllegalArgumentException("URL cannot be null");
 		if (context == null) throw new IllegalArgumentException("Request data cannot be null");
 
 		Socket socket = null;
@@ -40,8 +40,8 @@ class HTTPURLConnection {
 		try {
 
 			// Get the server's host and port
-			String host = context.getURL().getHost();
-			int port = context.getURL().getPort() == -1 ? 80 : context.getURL().getPort();
+			String host = context.getHostURL().getHost();
+			int port = context.getHostURL().getPort() == -1 ? 80 : context.getHostURL().getPort();
 
 			socket = getSocket();
 
@@ -139,7 +139,7 @@ class HTTPURLConnection {
 	private Socket getSocket() throws IOException {
 		Socket socket;
 
-		if (context.getURL().getProtocol().equalsIgnoreCase("https")) {
+		if (context.getHostURL().getProtocol().equalsIgnoreCase("https")) {
 			socket = SSLSocketFactory.getDefault().createSocket();
 		} else {
 			socket = new Socket();

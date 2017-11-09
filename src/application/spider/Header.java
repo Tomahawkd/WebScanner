@@ -17,12 +17,13 @@ public class Header {
 	}
 
 	void setHeader(URL url) {
-		this.headers.add("GET " +
-				url.toExternalForm()
-						.substring((url.getProtocol() + "://" + url.getHost() + ":" + url.getPort()).length()) +
-				" HTTP/1.1");
+		this.headers.add("GET " + url.getFile() + " HTTP/1.1");
 		this.headers.add("Host: " + url.getHost());
 		this.headers.add("Connection: close");
+	}
+
+	public void addHeader(String header) {
+		this.headers.add(header);
 	}
 
 	public String getHeader() {

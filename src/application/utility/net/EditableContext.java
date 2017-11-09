@@ -6,7 +6,7 @@ import java.net.URL;
 
 public interface EditableContext extends Context {
 
-	void setUrl(URL url);
+	void setHostURL(URL url);
 
 	void setRequestForm(String form) throws IllegalHeaderDataException;
 
@@ -18,4 +18,6 @@ public interface EditableContext extends Context {
 
 	void clearRequest();
 	void clearResponse();
+
+	void addIssue(String issue);
 }

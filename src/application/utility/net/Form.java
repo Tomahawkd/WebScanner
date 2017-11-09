@@ -15,13 +15,13 @@ public class Form {
 		connection = new HTTPURLConnection(context);
 	}
 
-	public Form(URL url) {
+	public Form(URL hostURL) {
 		this();
-		setURL(url);
+		setHostURL(hostURL);
 	}
 
-	public void setURL(URL url) {
-		context.setUrl(url);
+	public void setHostURL(URL hostURL) {
+		context.setHostURL(hostURL);
 	}
 
 	public Context getContext() {
