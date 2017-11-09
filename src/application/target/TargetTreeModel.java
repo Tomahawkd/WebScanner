@@ -3,33 +3,24 @@ package application.target;
 import application.utility.net.Context;
 import application.view.frame.target.TargetPanelController;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 import java.net.URL;
 
 public class TargetTreeModel {
 
-	private DataNode root;
-	private static TargetTreeModel treeModel;
+	private DataNodeImpl root;
 
-	public static TargetTreeModel getDefaultModel() {
-		if (treeModel == null) treeModel = new TargetTreeModel();
-		return treeModel;
-	}
-
-	private TargetTreeModel() {
-		root = new DataNode("", "", null);
-	}
-
-	public void setRoot(String name, Context data) {
-		root = new DataNode(name, "", data);
+	TargetTreeModel() {
+		root = new DataNodeImpl("", null);
 	}
 
 	public DataNode getRoot() {
 		return root;
 	}
 
-	public synchronized void add(URL path, String method, Context data) {
-
-		DataNode currentNode = root;
+	public synchronized void add(URL path, Context data) {
+		DataNodeImpl currentNode = root;
 
 		// Loop path array to locate the file
 		for (String aPath : toPathArray(path)) {
@@ -39,19 +30,18 @@ public class TargetTreeModel {
 			if (childIndex == -1) {
 
 				// Create new node
-				DataNode newChild = new DataNode(aPath, method, null);
+				DataNodeImpl newChild = new DataNodeImpl(aPath, null);
 				currentNode.add(newChild);
 				currentNode = newChild;
 
 			} else {
 
 				// Get child node
-				currentNode = (DataNode) currentNode.getChildAt(childIndex);
+				currentNode = (DataNodeImpl) currentNode.getChildAt(childIndex);
 			}
 		}
 
 		// Add data
-		currentNode.setMethod(method);
 		currentNode.setData(data);
 		TargetPanelController.getInstance().updateMapData();
 	}
@@ -62,9 +52,59 @@ public class TargetTreeModel {
 		path[path.length - 1] += (url.getQuery() != null ? "?" + url.getQuery() : "");
 
 		String[] pathArr = new String[path.length + 1];
-		pathArr[0] = url.getProtocol() + "://" + url.getHost();
+		pathArr[0] = url.getProtocol() + "://" + url.getHost() + ":" + url.getPort();
 
 		System.arraycopy(path, 0, pathArr, 1, pathArr.length - 1);
 		return pathArr;
+	}
+
+	class DataNodeImpl extends DefaultMutableTreeNode implements DataNode {
+
+		private String name;
+		private Context data;
+
+		private DataNodeImpl(String name, Context data) {
+			super(name);
+			this.name = name;
+			this.data = data;
+		}
+
+		public Context getContext() {
+			return data;
+		}
+
+		private void setData(Context data) {
+			this.data = data;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		private int getIndex(String name) {
+
+			if (this.children != null) {
+
+				// Point to the first child
+				int index = 0;
+				for (TreeNode child : this.children) {
+					try {
+
+						DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
+
+						// Check the child name
+						if (childNode.getUserObject().toString().equals(name)) {
+							return index;
+						}
+
+						// Point to next child
+						index++;
+
+					} catch (ClassCastException ignored) {
+					}
+				}
+			}
+			return -1;
+		}
 	}
 }

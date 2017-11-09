@@ -1,17 +1,17 @@
-package application.target;
+package application.utility.table;
+
+import application.target.DataNode;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 public class ContentTableModel implements TableModel {
 
-	private static ContentTableModel tableModel;
-	private DataNode treeNode = TargetTreeModel.getDefaultModel().getRoot();
+	private DataNode treeNode;
 
-	public static ContentTableModel getDefaultModel() {
-		if (tableModel == null) tableModel = new ContentTableModel();
-		return tableModel;
+	ContentTableModel(DataNode rootNode) {
+		this.treeNode = rootNode;
 	}
 
 	public void updateContent(DataNode treeNode) {
@@ -50,35 +50,32 @@ public class ContentTableModel implements TableModel {
 
 	@Override
 	public Class<?> getColumnClass(int columnIndex) {
-		return "".getClass();
+		return String.class;
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		DefaultMutableTreeNode leafNode = treeNode;
 		for (int i = 0; i < rowIndex; i++) {
-			if (leafNode != null) {
-				leafNode = leafNode.getNextLeaf();
+			TreeNode next;
+			if (treeNode != null && (next = treeNode.getNextLeaf()) instanceof DataNode) {
+				treeNode = (DataNode) next;
 			} else return "";
 		}
-		if (leafNode != null && leafNode instanceof DataNode) {
+		if (treeNode != null) {
 			try {
 				switch (columnIndex) {
 					case 0:
-						return TargetTreeModel.getDefaultModel().getRoot().getName();
+						return treeNode.getContext().getHost();
 					case 1:
-						return ((DataNode) leafNode).getMethod();
+						return treeNode.getContext().getMethod();
 					case 2:
-						//TODO
-						return ((DataNode) leafNode).getName()
-								.equals(TargetTreeModel.getDefaultModel().getRoot().getName()) ?
-								"/" : ((DataNode) leafNode).getName();
+						return treeNode.getContext().getPath();
 					case 3:
-						return ((DataNode) leafNode).getContext().getStatusCode();
+						return treeNode.getContext().getStatusCode();
 					case 4:
-						return ((DataNode) leafNode).getContext().getMINEType();
+						return treeNode.getContext().getMINEType();
 					case 5:
-						return ((DataNode) leafNode).getContext().getResponseData().length();
+						return treeNode.getContext().getResponseData().length();
 					default:
 						return null;
 				}

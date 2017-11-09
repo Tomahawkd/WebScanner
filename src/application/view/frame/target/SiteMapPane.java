@@ -1,8 +1,8 @@
 package application.view.frame.target;
 
-import application.target.ContentTableModel;
 import application.target.DataNode;
-import application.target.TargetTreeModel;
+import application.target.TargetContext;
+import application.utility.table.TableModelGenerator;
 
 import javax.swing.*;
 import javax.swing.tree.DefaultTreeModel;
@@ -25,7 +25,6 @@ class SiteMapPane extends JPanel {
 	SiteMapPane() {
 
 		setLayout(new BorderLayout(0, 0));
-
 
 		/*
 		 * Filter
@@ -58,14 +57,15 @@ class SiteMapPane extends JPanel {
 		add(splitPane, BorderLayout.CENTER);
 
 		{
-			siteMapTree = new JTree(new DefaultTreeModel(TargetTreeModel.getDefaultModel().getRoot()));
+			siteMapTree = new JTree(new DefaultTreeModel(TargetContext.getInstance().toTree()));
 			siteMapTree.setEditable(false);
 			siteMapTree.setRootVisible(false);
 			siteMapTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			siteMapTree.addTreeSelectionListener(tsl -> {
 				Object node = siteMapTree.getLastSelectedPathComponent();
 				if (node != null && node instanceof DataNode) {
-					ContentTableModel.getDefaultModel().updateContent((DataNode) node);
+					TableModelGenerator.getInstance()
+							.generateContentModel(TargetContext.getInstance().toTree());
 					contentTable.updateUI();
 				}
 			});
@@ -106,7 +106,8 @@ class SiteMapPane extends JPanel {
 					gbc_lblContents.gridy = 0;
 					labelPanel.add(lblContents, gbc_lblContents);
 
-					contentTable = new JTable(ContentTableModel.getDefaultModel());
+					contentTable = new JTable(TableModelGenerator.getInstance()
+							.generateContentModel(TargetContext.getInstance().toTree()));
 					contentTable.addMouseListener(new MouseAdapter() {
 						@Override
 						public void mouseClicked(MouseEvent e) {
@@ -154,7 +155,7 @@ class SiteMapPane extends JPanel {
 	}
 
 	void updateMapData() {
-		siteMapTree.setModel(new DefaultTreeModel(TargetTreeModel.getDefaultModel().getRoot()));
+		siteMapTree.setModel(new DefaultTreeModel(TargetContext.getInstance().toTree()));
 	}
 
 }

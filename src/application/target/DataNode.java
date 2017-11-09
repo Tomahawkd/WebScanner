@@ -3,64 +3,15 @@ package application.target;
 import application.utility.net.Context;
 
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreeNode;
+import javax.swing.tree.MutableTreeNode;
 
-public class DataNode extends DefaultMutableTreeNode {
+public interface DataNode extends MutableTreeNode {
 
-	private String name;
-	private String method;
-	private Context data;
+	String getName();
 
-	DataNode(String name, String method, Context data) {
-		super(name);
-		this.name = name;
-		this.method = method;
-		this.data = data;
-	}
+	Context getContext();
 
-	public String getMethod() {
-		return method;
-	}
+	int getLeafCount();
 
-	public void setMethod(String method) {
-		this.method = method;
-	}
-
-	public Context getContext() {
-		return data;
-	}
-
-	void setData(Context data) {
-		this.data = data;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	int getIndex(String name) {
-
-		if (this.children != null) {
-
-			// Point to the first child
-			int index = 0;
-			for (TreeNode child : this.children) {
-				try {
-
-					DefaultMutableTreeNode childNode = (DefaultMutableTreeNode) child;
-
-					// Check the child name
-					if (childNode.getUserObject().toString().equals(name)) {
-						return index;
-					}
-
-					// Point to next child
-					index++;
-
-				} catch (ClassCastException ignored) {
-				}
-			}
-		}
-		return -1;
-	}
+	DefaultMutableTreeNode getNextLeaf();
 }
