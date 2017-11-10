@@ -8,4 +8,8 @@ public class SpiderHandler {
 		if (instance == null) instance = new SpiderController();
 		return instance;
 	}
+
+	public void addToQueue(String url) {
+		SpiderQueue.getQueue().put(url, false);
+	}
 }

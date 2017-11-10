@@ -10,17 +10,17 @@ import java.net.URL;
 public class SpiderConnection {
 
 	private Form data;
-	private Header header;
+	private SpiderHeader header;
 	private static int requestCount = 0;
 
 	SpiderConnection() {
 		data = new Form();
-		header = new Header();
+		header = new SpiderHeader();
 	}
 
 	SpiderConnection(URL url) {
 		data = new Form(url);
-		header = new Header(url);
+		header = new SpiderHeader(url);
 	}
 
 	void setURL(URL url) {

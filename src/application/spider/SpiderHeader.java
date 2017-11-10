@@ -3,15 +3,15 @@ package application.spider;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class Header {
+public class SpiderHeader {
 
 	private ArrayList<String> headers;
 
-	Header() {
+	SpiderHeader() {
 		headers = new ArrayList<>();
 	}
 
-	Header(URL url) {
+	SpiderHeader(URL url) {
 		headers = new ArrayList<>();
 		setHeader(url);
 	}

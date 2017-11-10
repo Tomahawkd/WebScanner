@@ -31,7 +31,7 @@ public class SpiderController {
 	//Regex
 
 	public void start() {
-		//TODo
+		//TODO change to queue
 		URL baseURL = RepeaterData.getInstance().getContext().getHostURL();
 		if (baseURL != null) {
 			queue.put(baseURL.toExternalForm(), false);

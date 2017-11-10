@@ -1,6 +1,7 @@
 package application.target;
 
 import application.alertHandler.AlertHandler;
+import application.spider.SpiderHandler;
 import application.utility.file.DataSerializable;
 import application.utility.net.Context;
 
@@ -29,6 +30,7 @@ public class TargetContext implements Target, DataSerializable<TargetContext.Con
 	public void addTarget(Context context) {
 		if(context.getURL() != null) {
 			contextMap.add(context.getHost(), context.copy());
+			SpiderHandler.addToQueue(context.getURL().toExternalForm());
 		} else {
 			AlertHandler.getInstance().addAlert("Target", "URL is null");
 		}

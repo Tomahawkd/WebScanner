@@ -21,9 +21,11 @@ public class SpiderQueue extends ConcurrentHashMap<String, Boolean> {
 
 	@Override
 	public Boolean put(String key, Boolean value) {
-		queueCount++;
-		updateQueue();
-		return super.put(key, value);
+		if (get(key) != null) {
+			queueCount++;
+			updateQueue();
+			return super.put(key, value);
+		} else return false;
 	}
 
 	@Override
