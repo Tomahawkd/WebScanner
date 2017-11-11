@@ -65,17 +65,17 @@ public class ContentTableModel implements TableModel {
 			try {
 				switch (columnIndex) {
 					case 0:
-						return treeNode.getContext().getHost();
+						return treeNode.getHost();
 					case 1:
-						return treeNode.getContext().getMethod();
+						return treeNode.getMethod();
 					case 2:
-						return treeNode.getContext().getPath();
+						return treeNode.getURLPath();
 					case 3:
-						return treeNode.getContext().getStatusCode();
+						return treeNode.getStatusCode();
 					case 4:
-						return treeNode.getContext().getMINEType();
+						return treeNode.getMIMEType();
 					case 5:
-						return treeNode.getContext().getResponseData().length();
+						return treeNode.getLength();
 					default:
 						return null;
 				}

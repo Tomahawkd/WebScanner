@@ -12,14 +12,20 @@ public class TargetTreeModel {
 	private DataNodeImpl root;
 
 	TargetTreeModel() {
-		root = new DataNodeImpl("", null);
+		root = new DataNodeImpl("", "", "", "", "", "", "");
 	}
 
 	public DataNode getRoot() {
 		return root;
 	}
 
-	public synchronized void add(URL path, Context data) {
+	public synchronized void add(URL path,
+	                             String host,
+	                             String method,
+	                             String urlPath,
+	                             String status,
+	                             String type,
+	                             String length) {
 		DataNodeImpl currentNode = root;
 
 		// Loop path array to locate the file
@@ -30,7 +36,8 @@ public class TargetTreeModel {
 			if (childIndex == -1) {
 
 				// Create new node
-				DataNodeImpl newChild = new DataNodeImpl(aPath, null);
+				DataNodeImpl newChild = new DataNodeImpl(aPath,
+						"", "", "", "", "", "");
 				currentNode.add(newChild);
 				currentNode = newChild;
 
@@ -42,7 +49,7 @@ public class TargetTreeModel {
 		}
 
 		// Add data
-		currentNode.setData(data);
+		currentNode.setData(host, method, urlPath, status, type, length);
 		TargetPanelController.getInstance().updateMapData();
 	}
 
@@ -62,23 +69,71 @@ public class TargetTreeModel {
 
 		private String name;
 		private Context data;
+		private String host;
+		private String method;
+		private String path;
+		private String status;
+		private String type;
+		private String length;
 
-		private DataNodeImpl(String name, Context data) {
+		private DataNodeImpl(String name,
+		                     String host,
+		                     String method,
+		                     String path,
+		                     String status,
+		                     String type,
+		                     String length) {
 			super(name);
 			this.name = name;
-			this.data = data;
+			this.host = host;
+			this.method = method;
+			this.path = path;
+			this.status = status;
+			this.type = type;
+			this.length = length;
 		}
 
-		public Context getContext() {
-			return data;
-		}
-
-		private void setData(Context data) {
-			this.data = data;
+		private void setData(String host,
+		                     String method,
+		                     String path,
+		                     String status,
+		                     String type,
+		                     String length) {
+			this.host = host;
+			this.method = method;
+			this.path = path;
+			this.status = status;
+			this.type = type;
+			this.length = length;
 		}
 
 		public String getName() {
 			return name;
+		}
+
+
+		public String getHost() {
+			return host;
+		}
+
+		public String getMethod() {
+			return method;
+		}
+
+		public String getURLPath() {
+			return path;
+		}
+
+		public String getStatusCode() {
+			return status;
+		}
+
+		public String getMIMEType() {
+			return type;
+		}
+
+		public String getLength() {
+			return length;
 		}
 
 		private int getIndex(String name) {
