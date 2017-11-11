@@ -40,7 +40,7 @@ public interface Context extends Serializable {
 
 	String getCookie();
 
-	String getMINEType();
+	String getMIMEType();
 
 	String getParams();
 

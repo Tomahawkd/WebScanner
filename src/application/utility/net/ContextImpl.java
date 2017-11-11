@@ -146,7 +146,7 @@ class ContextImpl implements EditableContext {
 	}
 
 	@Override
-	public String getMINEType() {
+	public String getMIMEType() {
 		Header header = responseHeader.get("Content-Type");
 		if (header != null)
 			return header.toString();

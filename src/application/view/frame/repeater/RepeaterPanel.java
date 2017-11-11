@@ -190,7 +190,7 @@ class RepeaterPanel extends JPanel {
 												+ (e.getMessage() == null ? "" : e.getMessage()));
 					}
 					Form handler = RepeaterData.getInstance();
-					String type = handler.getContext().getMINEType();
+					String type = handler.getContext().getMIMEType();
 					if (type.contains("text/html")) {
 						Document doc = HTMLParser.getParser()
 								.parse(handler.getContext().getResponseData(), "");
