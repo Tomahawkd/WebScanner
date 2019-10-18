@@ -9,7 +9,7 @@ public class SpiderHandler {
 		return instance;
 	}
 
-	public void addToQueue(String url) {
+	public static void addToQueue(String url) {
 		SpiderQueue.getQueue().put(url, false);
 	}
 }
