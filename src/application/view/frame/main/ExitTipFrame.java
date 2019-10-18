@@ -1,5 +1,7 @@
 package application.view.frame.main;
 
+import application.utility.thread.TaskControl;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
@@ -53,7 +55,10 @@ class ExitTipFrame extends JFrame {
 		JButton btnOk = new JButton("OK");
 
 		// ExitTipFrame the application
-		btnOk.addActionListener(e -> System.exit(0));
+		btnOk.addActionListener(e -> {
+			TaskControl.getInstance().shutDown();
+			dispose();
+		});
 		btnOk.setBounds(76, 78, 117, 29);
 		contentPane.add(btnOk);
 

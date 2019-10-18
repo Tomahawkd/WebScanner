@@ -1,6 +1,7 @@
 package application.view.frame.spider;
 
 import application.spider.SpiderHandler;
+import application.utility.thread.TaskControl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,14 +39,14 @@ class ControlPane extends JScrollPane {
 			if (tglbtnSpiderControl.getText().equals("Spider Paused")) {
 				tglbtnSpiderControl.setText("Spider Running");
 
-				new Thread(() -> {
+				TaskControl.getInstance().getController().addTask(() -> {
 					if (SpiderHandler.getInstance().isFirstExecution()) {
 						SpiderHandler.getInstance().start();
 
 					} else {
 						SpiderHandler.getInstance().resume();
 					}
-				}, "Spider Main Control Thread").start();
+				});
 			} else {
 				tglbtnSpiderControl.setText("Spider Paused");
 				SpiderHandler.getInstance().suspend();

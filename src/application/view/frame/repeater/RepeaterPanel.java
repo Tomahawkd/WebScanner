@@ -8,6 +8,7 @@ import application.utility.parser.html.HTMLParser;
 import application.utility.parser.json.JSONParser;
 import application.utility.parser.xml.XMLParser;
 import application.utility.table.TableModelGenerator;
+import application.utility.thread.TaskControl;
 import application.view.contentViewer.ExtendedViewer;
 import application.view.contentViewer.HTMLViewer;
 import application.view.contentViewer.Viewer;
@@ -33,7 +34,7 @@ class RepeaterPanel extends JPanel {
 	private Viewer requestViewer;
 	private JPanel responsePanel;
 	private Viewer responseViewer;
-	private Thread connectionThread;
+	private String connectionThreadToken;
 
 	RepeaterPanel() {
 		setLayout(new BorderLayout(0, 0));
@@ -130,15 +131,15 @@ class RepeaterPanel extends JPanel {
 						JOptionPane.INFORMATION_MESSAGE);
 
 			} else {
-				connectionThread = new Thread(getTarget());
-				connectionThread.start();
+				connectionThreadToken =
+						TaskControl.getInstance().getController().addControllableTask(getTarget());
 			}
 		});
 		targetPanel.add(btnSend);
 
 		btnCancel = new JButton("Cancel");
 		btnCancel.addActionListener(e -> {
-			connectionThread.interrupt();
+			TaskControl.getInstance().getController().stopControllableTask(connectionThreadToken);
 
 			btnSend.setEnabled(true);
 			btnCancel.setEnabled(false);
